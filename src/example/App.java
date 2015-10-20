@@ -11,29 +11,55 @@ public class App {
 
     ClientMethods client = new ClientMethods();
 
-    Scanner input = new Scanner(System.in);
+    User currentUser = new User();
 
-    User user = new User();
+    Scanner input = new Scanner(System.in);
 
     System.out.println("Enter username: ");
 //    String username = input.next();
-    user.setUsername(input.next());
+    currentUser.setUsername(input.next());
 
     System.out.println("Enter password: ");
 //    String password = input.next();
-    user.setPassword(input.next());
+    currentUser.setPassword(input.next());
+    currentUser = client.getAuthenticatedUser(currentUser);
 
-    client.getUserObject();
+    if(currentUser != null){
 
-    if(client.isAuthenticated(user)){
+      int menu = client.mainMenu();
 
-      System.out.println("Login successful");
+      switch (menu){
+
+        case 1:
+          System.out.println("Type in new password: ");
+          currentUser.setPassword(input.next());
+          client.updatePassword(currentUser);
+          break;
+
+        case 2:
+          User createdUser = new User();
+          System.out.println("Type new users first name: ");
+          createdUser.setFirstName(input.next());
+          System.out.println("Type new users last name: ");
+          createdUser.setLastName(input.next());
+          System.out.println("Type new users email: ");
+          createdUser.setEmail(input.next());
+          System.out.println("Type new users username: ");
+          createdUser.setUsername(input.next());
+          System.out.println("Type new users password: ");
+          createdUser.setPassword(input.next());
+
+          //print and create. Multifunction FTW
+          System.out.println(client.createUser(createdUser));
+          break;
+
+        case 3:
+          //TODO: play a game?
+
+        default:
+          //TODO
+      }
     }
-
-    System.out.println("Change password");
-    System.out.println("Type in new password: ");
-    user.setPassword(input.next());
-    client.updatePassword(user);
 
   }
 }

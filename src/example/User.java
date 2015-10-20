@@ -118,11 +118,18 @@ public class User {
         this.type = type;
     }
 
-
     public String toJson() {
 
-        String s = String.format("{ \"id\" : %d, \"username\" : \"%s\", \"firstName\" : \"%s\", " +
-                "\"lastName\" : \"%s\", \"password\" : \"%s\" }", id, username, firstName, lastName, password);
+        return String.format("{ \"id\" : %d, \"firstName\" : \"%s\", " +
+                        "\"lastName\" : \"%s\", \"email\" : \"%s\", \"username\" : \"%s\", \"password\" : \"%s\" }",
+                id, firstName, lastName, email, username, password);
+    }
+
+    public String toEncryptedJson() {
+
+        String s = String.format("{ \"id\" : %d, \"firstName\" : \"%s\", " +
+                "\"lastName\" : \"%s\", \"email\" : \"%s\", \"username\" : \"%s\", \"password\" : \"%s\" }",
+                id, firstName, lastName, email, username, password);
 
         Security security = new Security();
 
