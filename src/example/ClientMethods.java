@@ -15,8 +15,9 @@ public class ClientMethods {
     WebResource webResource = null;
     ClientResponse response = null;
 
-    public void getUserObject(){
+    public User getUserObject(){
 
+        User user = null;
 
         try {
             webResource = client.resource("http://localhost:998/helloworld/user1");
@@ -41,10 +42,11 @@ public class ClientMethods {
 
             String decryptedUser = security.decrypt(encryptedUser, "1");
 
-            User user1 = new Gson().fromJson(decryptedUser, User.class);
+            user = new Gson().fromJson(decryptedUser, User.class);
 
-            System.out.println(user1.getUsername());
+            System.out.println(user.getUsername());
         }
+        return user;
     }
 
     public boolean isAuthenticated(User currentUser){
@@ -84,6 +86,20 @@ public class ClientMethods {
             isAuthenticated = false;
 
         return isAuthenticated;
+    }
+
+    public void updatePassword(User user){
+
+        try {
+            webResource = client.resource("http://localhost:998/helloworld/updateuser");
+
+            response = webResource.type("application/json").put(
+                    ClientResponse.class, new Security().encrypt(user.toJson(), "1"));
+
+        } catch (ClientHandlerException e) {
+
+        System.out.println("Test");
+        }
     }
 
     public int mainMenu(){

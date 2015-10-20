@@ -30,5 +30,10 @@ public class App {
       System.out.println("Login successful");
     }
 
+    System.out.println("Change password");
+    System.out.println("Type in new password: ");
+    user.setPassword(input.next());
+    client.updatePassword(user);
+
   }
 }
