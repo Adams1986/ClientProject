@@ -55,6 +55,15 @@ public class App {
 
         case 3:
           //TODO: play a game?
+          client.play();
+
+        case 4:
+          User userTodelete = new User();
+          System.out.println("Type username of user to delete: ");
+          userTodelete.setUsername(input.next());
+
+          System.out.println(client.softDeleteUser(userTodelete));
+          break;
 
         default:
           //TODO

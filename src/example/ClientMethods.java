@@ -143,4 +143,33 @@ public class ClientMethods {
         return "";
 
     }
+
+    public String softDeleteUser(User user){
+
+        try {
+            webResource = client.resource("http://localhost:998/helloworld/softdeleteuser/");
+
+            response = webResource.type("application/json").put(ClientResponse.class, user.toEncryptedJson());
+        }
+        catch (ClientHandlerException e){
+            System.out.println("Error");
+        }
+
+        if (response != null){
+            if (response.getStatus() != 200){
+
+                throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+            }
+
+            return response.getEntity(String.class);
+        }
+        return "";
+    }
+
+    public void play() {
+
+        Game game = new Game();
+
+        game.start();
+    }
 }
