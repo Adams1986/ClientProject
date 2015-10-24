@@ -15,14 +15,11 @@ public class Game extends JFrame {
 
         String moves = "wwwwwwddddddddd";
 
-//        SnakeJPanel snake = new SnakeJPanel(getHeight()/2,getWidth()/2, moves);
 
         for (int i = 0; i < moves.length(); i++) {
 
-            SnakeJPanel snake2 = new SnakeJPanel(getHeight()/2,getWidth()/2, moves);
-            add(snake2);
 
-            snake2.move();
+
         }
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
