@@ -1,4 +1,4 @@
-package example;
+package sdk;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -18,11 +18,11 @@ public class Security {
      * @param input
      * @return String
      */
-    public String hashing(String input) {
+    public static String hashing(String input) {
 
         MessageDigest digester = null;
         //TODO: Replace with Config.
-        String salt = "123456";
+        String salt = Config.getHashingSalt();
         String inputhash = input+salt;
         try {
             digester = MessageDigest.getInstance("SHA-256");
@@ -56,7 +56,7 @@ public class Security {
      * @param key
      * @return
      */
-    public String encrypt(String message, String key){
+    public static String encrypt(String message, String key){
         try {
             if (message==null || key==null ) return null;
 
@@ -88,7 +88,7 @@ public class Security {
      * @param key
      * @return
      */
-    public String decrypt(String message, String key){
+    public static String decrypt(String message, String key){
         try {
             if (message==null || key==null ) return null;
             BASE64Decoder decoder = new BASE64Decoder();

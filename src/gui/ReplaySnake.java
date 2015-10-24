@@ -1,4 +1,7 @@
-package example;
+package gui;
+
+import sdk.Config;
+import sdk.Snake;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,17 +13,12 @@ import java.awt.event.ActionListener;
  */
 public class ReplaySnake extends JPanel implements ActionListener{
 
-    private static final int FIELD_HEIGHT = 20;
-    private static final int FIELD_WIDTH = 20;
-    private static final int BOARD_HEIGHT = 15;
-    private static final int BOARD_WIDTH = 15;
-
     private Snake userSnake;
     private Snake opponentSnake;
 
     //Timer instead of Thread.sleep. Important in a JPanel
-    private Timer tm = new Timer(400, this);
-    private int counter = 0;
+    private Timer tm;
+    private int counter;
     ;
 
     /**
@@ -33,6 +31,8 @@ public class ReplaySnake extends JPanel implements ActionListener{
 
         this.userSnake = userSnake;
         this.opponentSnake = opponentSnake;
+        tm = new Timer(Config.getDelay(), this);
+        counter = Config.getCount();
 
     }
 
@@ -52,7 +52,6 @@ public class ReplaySnake extends JPanel implements ActionListener{
     @Override
     protected void paintComponent(Graphics g) {
 
-        System.out.println("hello");
         super.paintComponent(g);
 
         drawBoard(g);
@@ -76,13 +75,13 @@ public class ReplaySnake extends JPanel implements ActionListener{
 
         g.setColor(snake.getColor());
 
-        g.fillRect(snake.getMoves().peekFirst().x * FIELD_WIDTH,
-                snake.getMoves().peekFirst().y * FIELD_HEIGHT, FIELD_WIDTH, FIELD_HEIGHT);
+        g.fillRect(snake.getMoves().peekFirst().x * Config.getFieldWidth(),
+                snake.getMoves().peekFirst().y * Config.getFieldHeight(), Config.getFieldWidth(), Config.getFieldHeight());
 
 
         //draw points in snake to canvas
         for (Point p : snake.getMoves()) {
-            g.fillRect(p.x * FIELD_WIDTH, p.y * FIELD_HEIGHT, FIELD_WIDTH, FIELD_HEIGHT);
+            g.fillRect(p.x * Config.getFieldWidth(), p.y * Config.getFieldHeight(), Config.getFieldWidth(), Config.getFieldHeight());
         }
 
         //change back to black if we want to draw more.
@@ -97,8 +96,9 @@ public class ReplaySnake extends JPanel implements ActionListener{
     private void move(Snake snake, char ch){
 
         Point head = snake.getMoves().peekFirst();
-        Point newPoint = head;;
+        Point newPoint = head;
 
+        //hardcoded chars and Points
         switch (ch) {
 
             case 'w':
@@ -158,19 +158,19 @@ public class ReplaySnake extends JPanel implements ActionListener{
      */
     private void drawBoard(Graphics g){
 
-        g.drawRect(0, 0, FIELD_WIDTH * BOARD_WIDTH, FIELD_HEIGHT * BOARD_HEIGHT);
+        g.drawRect(Config.getBoardStartXY(), Config.getBoardStartXY(), Config.getFieldWidth() * Config.getBoardWidth(), Config.getFieldHeight() * Config.getBoardHeight());
 
 
         //horizontal lines
-        for (int x = FIELD_WIDTH; x < FIELD_WIDTH * BOARD_WIDTH ; x+= FIELD_WIDTH) {
+        for (int x = Config.getFieldWidth(); x < Config.getFieldWidth() * Config.getBoardWidth() ; x+= Config.getFieldWidth()) {
 
-            g.drawLine(x, 0, x, FIELD_HEIGHT * BOARD_HEIGHT);
+            g.drawLine(x, Config.getBoardStartXY(), x, Config.getFieldHeight() * Config.getBoardHeight());
         }
 
         //vertical lines
-        for (int y = FIELD_HEIGHT; y < FIELD_HEIGHT * BOARD_HEIGHT ; y+= FIELD_HEIGHT) {
+        for (int y = Config.getFieldHeight(); y < Config.getFieldHeight() * Config.getBoardHeight() ; y+= Config.getFieldHeight()) {
 
-            g.drawLine(0, y, FIELD_WIDTH * BOARD_WIDTH, y);
+            g.drawLine(Config.getBoardStartXY(), y, Config.getFieldWidth() * Config.getBoardWidth(), y);
         }
     }
 }

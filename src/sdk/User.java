@@ -1,44 +1,32 @@
-package example;
+package sdk;
 
 import java.sql.Date;
 
 
-/**
- * Created by Oscar on 12-10-2015.
- */
-//
 public class User {
 
     //creating variables
     private int id;
     private String firstName;
     private String lastName;
-    private String username;
+    private String userName;
     private String password;
     private Date created;
     private String status;
     private String email;
     private String type;
 
-
+    //TODO: Kan slettes?! Bruges ikke i wrapperen længere
     public User (int id, String firstName, String lastName, String email, String userName, String password, Date created, String status, String type ) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.username = userName;
+        this.userName = userName;
         this.password = password;
         this.created = created;
         this.status = status;
         this.type = type;
-    }
-
-    public User(int id, String firstName, String lastName, String username, String password) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.username = username;
-        this.password = password;
     }
 
     public User () {}
@@ -70,12 +58,12 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
@@ -116,25 +104,5 @@ public class User {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String toJson() {
-
-        return String.format("{ \"id\" : %d, \"firstName\" : \"%s\", " +
-                        "\"lastName\" : \"%s\", \"email\" : \"%s\", \"username\" : \"%s\", \"password\" : \"%s\" }",
-                id, firstName, lastName, email, username, password);
-    }
-
-    public String toEncryptedJson() {
-
-        String s = String.format("{ \"id\" : %d, \"firstName\" : \"%s\", " +
-                "\"lastName\" : \"%s\", \"email\" : \"%s\", \"username\" : \"%s\", \"password\" : \"%s\" }",
-                id, firstName, lastName, email, username, password);
-
-        Security security = new Security();
-
-        String encryptedUser = security.encrypt(s, "1");
-
-        return encryptedUser;
     }
 }

@@ -1,0 +1,22 @@
+{
+  "host": "localhost",
+  "port": "3306",
+  "username": "root",
+  "password": "",
+  "dbname": "dbcon",
+  "hashingsalt": "123456",
+  "encryptionkey": "123456",
+  "up": "w",
+  "down": "s",
+  "left": "a",
+  "right": "d",
+  "fieldheight": "20",
+  "fieldwidth": "20",
+  "boardheight": "15",
+  "boardwidth": "15",
+  "delay": "150",
+  "count": "0",
+  "boardstartxy": "0",
+  "replaywidth": "320",
+  "replayheight": "340"
+}

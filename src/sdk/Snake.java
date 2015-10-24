@@ -1,4 +1,4 @@
-package example;
+package sdk;
 
 import java.awt.*;
 import java.util.LinkedList;
