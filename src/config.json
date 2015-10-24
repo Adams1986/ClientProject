@@ -18,5 +18,9 @@
   "count": "0",
   "boardstartxy": "0",
   "replaywidth": "320",
-  "replayheight": "340"
+  "replayheight": "340",
+  "loginauthentication": "{\"Login\"successful\"}",
+  "loginscreen": "login screen",
+  "mainmenuscreen": "main menu screen",
+  "replaysnakescreen": "replay snake screen"
 }

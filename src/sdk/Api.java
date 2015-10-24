@@ -13,12 +13,36 @@ import java.util.Scanner;
  */
 public class Api {
 
-    Client client = Client.create();
+    Client client;
+    WebResource webResource;
+    ClientResponse response;
 
-    WebResource webResource = null;
-    ClientResponse response = null;
 
-    private String encryptionKey = "123456";
+    public static String authenticateLogin(User user) {
+
+        String message = "";
+        Client client = Client.create();
+
+        try {
+
+            WebResource webResource = client.resource("http://localhost:9998/api/login");
+            ClientResponse response = webResource.accept("application/json").post(ClientResponse.class,
+                    new Gson().toJson(user));
+
+            if(response != null) {
+//                if (response.getStatus() != 200) {
+//
+//                    throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+//                }
+
+                message = response.getEntity(String.class);
+            }
+
+        } catch (ClientHandlerException e) {
+            e.printStackTrace();
+        }
+        return message;
+    }
 
     public User getUserObject(){
 
@@ -94,7 +118,7 @@ public class Api {
             webResource = client.resource("http://localhost:9998/helloworld/createuser/");
 
             response = webResource.type("application/json").post(
-                    ClientResponse.class, Security.decrypt(new Gson().toJson(user), encryptionKey));
+                    ClientResponse.class, Security.decrypt(new Gson().toJson(user), Config.getEncryptionkey()));
 
         } catch (ClientHandlerException e) {
 

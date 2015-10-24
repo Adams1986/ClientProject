@@ -34,6 +34,11 @@ public class Config {
     private static int replayWidth;
     private static int replayHeight;
 
+    private static String loginAuthentication;
+    private static String loginScreen;
+    private static String mainMenuScreen;
+    private static String replaySnakeScreen;
+
 
     public static void init () {
 
@@ -82,6 +87,11 @@ public class Config {
 
             setReplayWidth(Integer.parseInt((String) jsonObject.get("replaywidth")));
             setReplayHeight(Integer.parseInt((String) jsonObject.get("replayheight")));
+
+            setLoginAuthentication((String) jsonObject.get("loginauthentication"));
+            setLoginScreen((String) jsonObject.get("loginscreen"));
+            setMainMenuScreen((String) jsonObject.get("mainmenuscreen"));
+            setReplaySnakeScreen((String) jsonObject.get("replaysnakescreen"));
 
 
         } catch (org.json.simple.parser.ParseException e) {
@@ -249,5 +259,37 @@ public class Config {
 
     public static void setReplayHeight(int replayHeight) {
         Config.replayHeight = replayHeight;
+    }
+
+    public static String getLoginAuthentication() {
+        return loginAuthentication;
+    }
+
+    public static void setLoginAuthentication(String loginAuthentication) {
+        Config.loginAuthentication = loginAuthentication;
+    }
+
+    public static String getLoginScreen() {
+        return loginScreen;
+    }
+
+    public static void setLoginScreen(String loginScreen) {
+        Config.loginScreen = loginScreen;
+    }
+
+    public static String getMainMenuScreen() {
+        return mainMenuScreen;
+    }
+
+    public static void setMainMenuScreen(String mainMenuScreen) {
+        Config.mainMenuScreen = mainMenuScreen;
+    }
+
+    public static String getReplaySnakeScreen() {
+        return replaySnakeScreen;
+    }
+
+    public static void setReplaySnakeScreen(String replaySnakeScreen) {
+        Config.replaySnakeScreen = replaySnakeScreen;
     }
 }

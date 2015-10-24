@@ -21,23 +21,22 @@ public class LoginPanel extends JPanel{
     /**
      * empty constructor which inits the JComponents
      */
-    public LoginPanel(){
+    public LoginPanel() {
 
         setLayout(null);
 
         infoLabel = new JLabel("Enter user details below");
-        depardieu = new ImageIcon("src/depardieu.png");
-//        System.out.println(this.location);
-        iconLabel = new JLabel(depardieu);
         usernameField = new JTextField(20);
         passwordField = new JPasswordField(20);
         btnLogin = new JButton("Login");
+        depardieu = new ImageIcon("src/depardieu.png");
+        iconLabel = new JLabel(depardieu);
 
-        infoLabel.setBounds(50, 100, 220, 20);
-        iconLabel.setBounds(300, 100, 320, 240);
-        usernameField.setBounds(50, 180, 220 ,20);
-        passwordField.setBounds(50, 240, 220, 20);
-        btnLogin.setBounds(50, 300, 100, 20);
+        infoLabel.setBounds(40, 140, 220, 20);
+        usernameField.setBounds(40, 180, 220 ,30);
+        passwordField.setBounds(40, 230, 220, 30);
+        btnLogin.setBounds(40, 280, 150, 30);
+        iconLabel.setBounds(280, 100, 320, 240);
 
         add(infoLabel);
         add(usernameField);
@@ -46,9 +45,9 @@ public class LoginPanel extends JPanel{
         add(iconLabel);
     }
 
-    public void addActionListeners(ActionListener l){
+    public void addActionListeners(ActionListener l) {
 
-        usernameField.addActionListener(l);
+        btnLogin.addActionListener(l);
     }
 
     public void clearFields(){
@@ -57,13 +56,18 @@ public class LoginPanel extends JPanel{
         passwordField.setText("");
     }
 
-    public String getUsernameInput(){
+    public String getUsernameInput() {
 
         return usernameField.getText();
     }
 
-    public String getPasswordInput(){
+    public String getPasswordInput() {
 
         return new String(passwordField.getPassword());
+    }
+
+    public void setFailedLoginAttempt(String message) {
+
+        infoLabel.setText(message);
     }
 }
