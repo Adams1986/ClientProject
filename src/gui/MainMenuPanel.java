@@ -1,9 +1,7 @@
 package gui;
 
 import sdk.Config;
-import sdk.Game;
 import sdk.Gamer;
-import sdk.Snake;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,9 +21,11 @@ public class MainMenuPanel extends JPanel{
     private JButton btnLogOut;
     private JPanel sidePanel;
     private JPanel centerPanel;
+    private JPanel snakePanel;
     private CardLayout cl;
     private PlaySnake playSnake;
     private String moves;
+
 
     public MainMenuPanel(){
         setLayout(null);
@@ -38,6 +38,7 @@ public class MainMenuPanel extends JPanel{
         btnLogOut = new JButton("Log out");
         sidePanel = new JPanel();
         centerPanel = new JPanel();
+        snakePanel = new JPanel();
         cl = new CardLayout();
 
         sidePanel.setBounds(0, 0, 320, 500);
@@ -94,6 +95,7 @@ public class MainMenuPanel extends JPanel{
 
         centerPanel.add(replaySnake);
         cl.addLayoutComponent(replaySnake, Config.getReplaySnakeScreen());
+        cl.show(centerPanel, Config.getReplaySnakeScreen());
 
     }
 
@@ -103,7 +105,7 @@ public class MainMenuPanel extends JPanel{
      */
     public void playSnake(){
 
-        PlaySnake playSnake = new PlaySnake();
+        playSnake = new PlaySnake();
         playSnake.setBounds(0, 80, 320, 500);
         moves = playSnake.getMoves();
 
@@ -124,6 +126,7 @@ public class MainMenuPanel extends JPanel{
         btnShowHighScore.addActionListener(l);
         btnDeleteGame.addActionListener(l);
         btnLogOut.addActionListener(l);
+
     }
 
     public void show(String card){

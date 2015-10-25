@@ -24,5 +24,7 @@
   "loginscreen": "login screen",
   "mainmenuscreen": "main menu screen",
   "replaysnakescreen": "replay snake screen",
-  "playsnakescreen": "play snake screen"
+  "playsnakescreen": "play snake screen",
+  "logoutmessage": "Are you sure?",
+  "logouttitle": "Logging out"
 }

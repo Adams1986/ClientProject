@@ -41,6 +41,9 @@ public class Config {
     private static String replaySnakeScreen;
     private static String playSnakeScreen;
 
+    private static String logoutMessage;
+    private static String logoutTitle;
+
 
     public static void init () {
 
@@ -87,7 +90,6 @@ public class Config {
 
             setBoardStartXY(Integer.parseInt((String) jsonObject.get("boardstartxy")));
 
-
             setReplayWidth(Integer.parseInt((String) jsonObject.get("replaywidth")));
             setReplayHeight(Integer.parseInt((String) jsonObject.get("replayheight")));
 
@@ -96,6 +98,9 @@ public class Config {
             setMainMenuScreen((String) jsonObject.get("mainmenuscreen"));
             setReplaySnakeScreen((String) jsonObject.get("replaysnakescreen"));
             setPlaySnakeScreen((String) jsonObject.get("playsnakescreen"));
+
+            setLogoutMessage((String) jsonObject.get("logoutmessage"));
+            setLogoutTitle((String) jsonObject.get("logouttitle"));
 
 
         } catch (org.json.simple.parser.ParseException e) {
@@ -311,5 +316,21 @@ public class Config {
 
     public static void setPlaySnakeScreen(String playSnakeScreen) {
         Config.playSnakeScreen = playSnakeScreen;
+    }
+
+    public static String getLogoutMessage() {
+        return logoutMessage;
+    }
+
+    public static void setLogoutMessage(String logoutMessage) {
+        Config.logoutMessage = logoutMessage;
+    }
+
+    public static String getLogoutTitle() {
+        return logoutTitle;
+    }
+
+    public static void setLogoutTitle(String logoutTitle) {
+        Config.logoutTitle = logoutTitle;
     }
 }

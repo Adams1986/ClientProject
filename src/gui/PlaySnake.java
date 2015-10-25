@@ -22,11 +22,23 @@ public class PlaySnake extends JPanel implements ActionListener, KeyListener {
     private Timer tm;
     private boolean gameEnded;
 
-    private JButton btnRestart;
+    private JButton btnSend;
+    private JTextField sendField;
 
     public PlaySnake(){
 
+        setLayout(null);
+
         addKeyListener(this);
+
+        btnSend = new JButton("Send challenge");
+        sendField = new JTextField(20);
+
+        btnSend.setBounds(40, 380, 150, 30);
+        sendField.setBounds(40, 340, 220, 30);
+
+        add(btnSend);
+        add(sendField);
 
         //TODO: move to paintComponent if trouble restarting game?
         snake = new LinkedList<>();
@@ -37,6 +49,15 @@ public class PlaySnake extends JPanel implements ActionListener, KeyListener {
         generateDefaultSnake();
         setFocusable(true);
         gameEnded = false;
+    }
+
+    public String getSendField() {
+        return sendField.getText();
+    }
+
+    public void addActionlistener(ActionListener l){
+
+        btnSend.addActionListener(l);
     }
 
     private void generateDefaultSnake() {

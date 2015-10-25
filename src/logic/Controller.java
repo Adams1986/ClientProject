@@ -1,5 +1,6 @@
 package logic;
 
+import gui.DialogMessage;
 import gui.PlaySnake;
 import gui.Screen;
 import logic.subcontroller.LoginLogic;
@@ -25,15 +26,20 @@ public class Controller {
 
         isAuthenticated = false;
         screen = new Screen();
-//        screen.show(Config.getLoginScreen());
     }
 
+    /**
+     * Injection of actionlisteners via inner classes
+     */
     public void run(){
 
         screen.getLoginPanel().addActionListeners(new LoginHandlerClass());
         screen.getMainMenuPanel().addActionListeners(new MainMenuHandlerClass());
     }
 
+    /**
+     * Inner class action listener for login panel
+     */
     private class LoginHandlerClass implements ActionListener {
 
         @Override
@@ -48,7 +54,6 @@ public class Controller {
 
             if(isAuthenticated){
 
-                //screen.show(Screen.MAIN_MENU);
                 screen.show(Config.getMainMenuScreen());
                 screen.getMainMenuPanel().setWelcomeMessage(message);
             }
@@ -59,26 +64,46 @@ public class Controller {
         }
     }
 
+    /**
+     * Inner class actionlistener for main menu panel
+     */
     private class MainMenuHandlerClass implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
 
             switch (e.getActionCommand()){
 
+                //TODO: bigish workaround to not hard code these
                 case "Play a game":
                     screen.getMainMenuPanel().playSnake();
-//                    screen.getMainMenuPanel().show(Config.getPlaySnakeScreen());
-//                    screen.getMainMenuPanel().focusPlaySnake();
 
                     if (screen.getMainMenuPanel().getMoves() != null){
                         currentUser.setControls(screen.getMainMenuPanel().getMoves());
                         screen.getMainMenuPanel().setWelcomeMessage(screen.getMainMenuPanel().getMoves());
                     }
                     break;
+
                 case "Watch a replay":
-                    screen.getMainMenuPanel().show(Config.getReplaySnakeScreen());
                     screen.getMainMenuPanel().replayGame();
                     break;
+
+                case "High scores":
+                    break;
+
+                case "Delete a game":
+                    Api.deleteUser(7);
+                    break;
+
+                //TODO: for some reason when pressing log out after a replay is done running, part of board disappears
+                case "Log out":
+                    if(DialogMessage.showConfirmMessage(screen, Config.getLogoutMessage(), Config.getLogoutTitle()))
+                        screen.show(Config.getLoginScreen());
+                    break;
+
+                case "Send challenge":
+                    System.out.println("in here");
+                    break;
+
 
             }
         }

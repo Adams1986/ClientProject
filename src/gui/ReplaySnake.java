@@ -1,9 +1,7 @@
 package gui;
 
 import sdk.Config;
-import sdk.Game;
 import sdk.Gamer;
-import sdk.Snake;
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,6 +45,10 @@ public class ReplaySnake extends JPanel implements ActionListener{
     public ReplaySnake(Gamer user){
 
         this.user = user;
+        tm = new Timer(Config.getDelay(), this);
+        counter = Config.getCount();
+
+        setBounds(0, 80, 320, 500);
     }
 
     /**
@@ -59,10 +61,9 @@ public class ReplaySnake extends JPanel implements ActionListener{
         super.paintComponent(g);
 
         drawBoard(g);
-
-
         drawSnake(g, user);
 
+        //makes it possible to replay runs with single user
         if (opponent != null) {
             drawSnake(g, opponent);
         }
@@ -79,11 +80,12 @@ public class ReplaySnake extends JPanel implements ActionListener{
 
         g.setColor(gamer.getSnakeColor());
 
+        //draw starting point pf snake
         g.fillRect(gamer.getSnake().peekFirst().x * Config.getFieldWidth(),
                 gamer.getSnake().peekFirst().y * Config.getFieldHeight(), Config.getFieldWidth(), Config.getFieldHeight());
 
 
-        //draw points in snake to canvas
+        //draw points in snake to jpanel
         for (Point p : gamer.getSnake()) {
             g.fillRect(p.x * Config.getFieldWidth(), p.y * Config.getFieldHeight(), Config.getFieldWidth(), Config.getFieldHeight());
         }
@@ -138,11 +140,13 @@ public class ReplaySnake extends JPanel implements ActionListener{
         if (counter < user.getControls().length()) {
             move(user, user.getControls().charAt(counter));
         }
+        //checking theres an opponent and populates the snake with points
         if (opponent != null) {
             if (counter < opponent.getControls().length()){
                 move(opponent, opponent.getControls().charAt(counter));
             }
         }
+        //repaints as long as there are usercontrols and opponentcontrols
         if(counter > user.getControls().length() &&
                 (opponent != null && counter > opponent.getControls().length())){
 
@@ -162,16 +166,18 @@ public class ReplaySnake extends JPanel implements ActionListener{
      */
     private void drawBoard(Graphics g){
 
-        g.drawRect(Config.getBoardStartXY(), Config.getBoardStartXY(), Config.getFieldWidth() * Config.getBoardWidth(), Config.getFieldHeight() * Config.getBoardHeight());
+        //draw outer frame
+        g.drawRect(Config.getBoardStartXY(), Config.getBoardStartXY(), Config.getFieldWidth() * Config.getBoardWidth(),
+                Config.getFieldHeight() * Config.getBoardHeight());
 
 
-        //TODO: horizontal lines or is it
+        //draw vertical lines
         for (int x = Config.getFieldWidth(); x < Config.getFieldWidth() * Config.getBoardWidth() ; x+= Config.getFieldWidth()) {
 
             g.drawLine(x, Config.getBoardStartXY(), x, Config.getFieldHeight() * Config.getBoardHeight());
         }
 
-        //TODO: vertical lines
+        //draw horizontal lines
         for (int y = Config.getFieldHeight(); y < Config.getFieldHeight() * Config.getBoardHeight() ; y+= Config.getFieldHeight()) {
 
             g.drawLine(Config.getBoardStartXY(), y, Config.getFieldWidth() * Config.getBoardWidth(), y);
