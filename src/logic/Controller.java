@@ -4,6 +4,7 @@ import gui.Screen;
 import logic.subcontroller.LoginLogic;
 import sdk.Api;
 import sdk.Config;
+import sdk.Gamer;
 import sdk.User;
 
 import java.awt.event.ActionEvent;
@@ -16,7 +17,7 @@ public class Controller {
 
     private Screen screen;
 
-    private User currentUser;
+    private Gamer currentUser;
     private boolean isAuthenticated;
 
     public Controller(){
@@ -37,7 +38,7 @@ public class Controller {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            currentUser = new User();
+            currentUser = new Gamer();
             currentUser.setUserName(screen.getLoginPanel().getUsernameInput());
             currentUser.setPassword(screen.getLoginPanel().getPasswordInput());
 
@@ -63,9 +64,18 @@ public class Controller {
 
             switch (e.getActionCommand()){
 
+                case "Play a game":
+                    screen.getMainMenuPanel().show(Config.getPlaySnakeScreen());
+                    screen.getMainMenuPanel().focusPlaySnake();
+                    if (screen.getMainMenuPanel().getMoves() != null){
+                        currentUser.setControls(screen.getMainMenuPanel().getMoves());
+                        screen.getMainMenuPanel().setWelcomeMessage(screen.getMainMenuPanel().getMoves());
+                    }
+                    break;
                 case "Watch a replay":
                     screen.getMainMenuPanel().show(Config.getReplaySnakeScreen());
                     break;
+
             }
         }
     }

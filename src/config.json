@@ -10,6 +10,7 @@
   "down": "s",
   "left": "a",
   "right": "d",
+  "awaiting":"u",
   "fieldheight": "20",
   "fieldwidth": "20",
   "boardheight": "15",
@@ -22,5 +23,6 @@
   "loginauthentication": "{\"Login\"successful\"}",
   "loginscreen": "login screen",
   "mainmenuscreen": "main menu screen",
-  "replaysnakescreen": "replay snake screen"
+  "replaysnakescreen": "replay snake screen",
+  "playsnakescreen": "play snake screen"
 }

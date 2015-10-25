@@ -26,10 +26,11 @@ public class Config {
     private static int boardStartXY;
 
     //TODO: is this neccesary? when using in switch values have to be static. Seems like a stupid workaround?
-    private static char UP;
-    private static char DOWN;
-    private static char LEFT;
-    private static char RIGHT;
+    private static String UP;
+    private static String DOWN;
+    private static String LEFT;
+    private static String RIGHT;
+    private static String AWAITING;
 
     private static int replayWidth;
     private static int replayHeight;
@@ -38,6 +39,7 @@ public class Config {
     private static String loginScreen;
     private static String mainMenuScreen;
     private static String replaySnakeScreen;
+    private static String playSnakeScreen;
 
 
     public static void init () {
@@ -69,10 +71,11 @@ public class Config {
             setEncryptionkey((String) jsonObject.get("encryptionkey"));
             setHashingSalt((String) jsonObject.get("hashingSalt"));
 
-//            setUP((char)Integer.parseInt((String) jsonObject.get("up")));
-//            setDOWN((char) Integer.parseInt((String) jsonObject.get("down")));
-//            setLEFT((char) Integer.parseInt((String) jsonObject.get("left")));
-//            setRIGHT((char) Integer.parseInt((String) jsonObject.get("right")));
+            setUP((String) jsonObject.get("up"));
+            setDOWN((String) jsonObject.get("down"));
+            setLEFT((String) jsonObject.get("left"));
+            setRIGHT((String) jsonObject.get("right"));
+            setAWAITING((String) jsonObject.get("awaiting"));
 
             setFieldHeight(Integer.parseInt((String) jsonObject.get("fieldheight")));
             setFieldWidth(Integer.parseInt((String) jsonObject.get("fieldwidth")));
@@ -92,6 +95,7 @@ public class Config {
             setLoginScreen((String) jsonObject.get("loginscreen"));
             setMainMenuScreen((String) jsonObject.get("mainmenuscreen"));
             setReplaySnakeScreen((String) jsonObject.get("replaysnakescreen"));
+            setPlaySnakeScreen((String) jsonObject.get("playsnakescreen"));
 
 
         } catch (org.json.simple.parser.ParseException e) {
@@ -158,35 +162,43 @@ public class Config {
     }
 
     public static final char getUP() {
-        return UP;
+        return UP.charAt(0);
     }
 
-    public static void setUP(char UP) {
+    public static void setUP(String UP) {
         Config.UP = UP;
     }
 
     public static char getDOWN() {
-        return DOWN;
+        return DOWN.charAt(0);
     }
 
-    public static void setDOWN(char DOWN) {
+    public static void setDOWN(String DOWN) {
         Config.DOWN = DOWN;
     }
 
     public static char getLEFT() {
-        return LEFT;
+        return LEFT.charAt(0);
     }
 
-    public static void setLEFT(char LEFT) {
+    public static void setLEFT(String LEFT) {
         Config.LEFT = LEFT;
     }
 
     public static char getRIGHT() {
-        return RIGHT;
+        return RIGHT.charAt(0);
     }
 
-    public static void setRIGHT(char RIGHT) {
+    public static void setRIGHT(String RIGHT) {
         Config.RIGHT = RIGHT;
+    }
+
+    public static char getAwaiting() {
+        return AWAITING.charAt(0);
+    }
+
+    public static void setAWAITING(String AWAITING) {
+        Config.AWAITING = AWAITING;
     }
 
     public static int getFieldHeight() {
@@ -291,5 +303,13 @@ public class Config {
 
     public static void setReplaySnakeScreen(String replaySnakeScreen) {
         Config.replaySnakeScreen = replaySnakeScreen;
+    }
+
+    public static String getPlaySnakeScreen() {
+        return playSnakeScreen;
+    }
+
+    public static void setPlaySnakeScreen(String playSnakeScreen) {
+        Config.playSnakeScreen = playSnakeScreen;
     }
 }

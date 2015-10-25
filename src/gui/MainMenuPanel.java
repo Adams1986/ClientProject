@@ -22,6 +22,9 @@ public class MainMenuPanel extends JPanel{
     private JPanel sidePanel;
     private JPanel centerPanel;
     private CardLayout cl;
+    private PlaySnake playSnake;
+
+    private String moves;
 
 
     public MainMenuPanel(){
@@ -66,12 +69,18 @@ public class MainMenuPanel extends JPanel{
         ReplaySnake replaySnake = new ReplaySnake(snake1, snake2);
         replaySnake.setBounds(0, 80, 320, 500);
 
+        playSnake = new PlaySnake();
+        playSnake.setBounds(0, 80, 320, 500);
+        moves = playSnake.getMoves();
+
         centerPanel.add(replaySnake);
+        centerPanel.add(playSnake);
         cl.addLayoutComponent(replaySnake, Config.getReplaySnakeScreen());
+        cl.addLayoutComponent(playSnake, Config.getPlaySnakeScreen());
+        cl.show(centerPanel, Config.getPlaySnakeScreen());
 
         add(sidePanel);
         add(centerPanel);
-
 
 
     }
@@ -92,7 +101,17 @@ public class MainMenuPanel extends JPanel{
         cl.show(centerPanel, card);
     }
 
+    public void focusPlaySnake(){
+        playSnake.setFocusable(true);
+        playSnake.requestFocus();
+        playSnake.requestFocusInWindow();
+    }
+
     public void setWelcomeMessage(String welcomeMessage) {
         welcomeLabel.setText(welcomeMessage);
+    }
+
+    public String getMoves() {
+        return moves;
     }
 }
