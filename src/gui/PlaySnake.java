@@ -22,6 +22,8 @@ public class PlaySnake extends JPanel implements ActionListener, KeyListener {
     private Timer tm;
     private boolean gameEnded;
 
+    private JButton btnRestart;
+
     public PlaySnake(){
 
         addKeyListener(this);
@@ -61,7 +63,6 @@ public class PlaySnake extends JPanel implements ActionListener, KeyListener {
         }
         else{
             moves = sb.toString();
-            System.out.println(moves);
         }
         repaint();
     }
@@ -95,6 +96,15 @@ public class PlaySnake extends JPanel implements ActionListener, KeyListener {
                 if(direction != Config.getLEFT())
                     direction = Config.getRIGHT();
                 break;
+
+            case KeyEvent.VK_SPACE:
+                if(gameEnded){
+                    System.out.println("space");
+                    revalidate();
+                    removeAll();
+                    repaint();
+                    break;
+                }
         }
     }
 

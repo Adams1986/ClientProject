@@ -1,5 +1,6 @@
 package logic;
 
+import gui.PlaySnake;
 import gui.Screen;
 import logic.subcontroller.LoginLogic;
 import sdk.Api;
@@ -65,8 +66,10 @@ public class Controller {
             switch (e.getActionCommand()){
 
                 case "Play a game":
-                    screen.getMainMenuPanel().show(Config.getPlaySnakeScreen());
-                    screen.getMainMenuPanel().focusPlaySnake();
+                    screen.getMainMenuPanel().playSnake();
+//                    screen.getMainMenuPanel().show(Config.getPlaySnakeScreen());
+//                    screen.getMainMenuPanel().focusPlaySnake();
+
                     if (screen.getMainMenuPanel().getMoves() != null){
                         currentUser.setControls(screen.getMainMenuPanel().getMoves());
                         screen.getMainMenuPanel().setWelcomeMessage(screen.getMainMenuPanel().getMoves());
@@ -74,6 +77,7 @@ public class Controller {
                     break;
                 case "Watch a replay":
                     screen.getMainMenuPanel().show(Config.getReplaySnakeScreen());
+                    screen.getMainMenuPanel().replayGame();
                     break;
 
             }

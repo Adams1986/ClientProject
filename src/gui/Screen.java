@@ -45,7 +45,7 @@ public class Screen extends JFrame {
         cl.addLayoutComponent(mainMenuPanel, Config.getMainMenuScreen());
         cl.show(clPanel, Config.getLoginScreen());
         //TODO: remove again, but use to see layout
-//        cl.show(clPanel, Config.getMainMenuScreen());
+        cl.show(clPanel, Config.getMainMenuScreen());
 
 //        setResizable(false);
 
@@ -53,7 +53,6 @@ public class Screen extends JFrame {
         setSize(Config.getReplayWidth() * 2, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
-        mainMenuPanel.focusPlaySnake();
     }
 
     //TODO: remove later

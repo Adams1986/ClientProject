@@ -22,10 +22,10 @@ public class App {
         Snake snake1 = new Snake(Color.BLUE, new LinkedList<Point>(), new Point(0,0), "dddddddddddssaaaaaaaasssssssssdwwwwwdd");
         Snake snake2 = new Snake(Color.RED, new LinkedList<Point>(), new Point(14,14), "wwwwwwwwwwaassssssssaaaaaaaawwddddddw");
 
-        ReplaySnake replaySnake = new ReplaySnake(snake1, snake2);
+//        ReplaySnake replaySnake = new ReplaySnake(snake1, snake2);
 //
         JFrame jFrame = new JFrame("snake");
-        jFrame.add(replaySnake);
+//        jFrame.add(replaySnake);
         jFrame.setLocationRelativeTo(null);
 
         jFrame.setSize(Config.getReplayWidth(), Config.getReplayHeight());

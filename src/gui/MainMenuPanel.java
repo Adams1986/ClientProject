@@ -1,6 +1,8 @@
 package gui;
 
 import sdk.Config;
+import sdk.Game;
+import sdk.Gamer;
 import sdk.Snake;
 
 import javax.swing.*;
@@ -23,9 +25,7 @@ public class MainMenuPanel extends JPanel{
     private JPanel centerPanel;
     private CardLayout cl;
     private PlaySnake playSnake;
-
     private String moves;
-
 
     public MainMenuPanel(){
         setLayout(null);
@@ -63,26 +63,55 @@ public class MainMenuPanel extends JPanel{
         sidePanel.add(btnDeleteGame);
         sidePanel.add(btnLogOut);
 
-        Snake snake1 = new Snake(Color.BLUE, new LinkedList<Point>(), new Point(6,6), "aaaaaawwwwwwdssssddddwwwddd");
-        Snake snake2 = new Snake(Color.RED, new LinkedList<Point>(), new Point(8,8), "ddddddssssssaaaaaaaaawwwwddd");
-
-        ReplaySnake replaySnake = new ReplaySnake(snake1, snake2);
-        replaySnake.setBounds(0, 80, 320, 500);
-
-        playSnake = new PlaySnake();
-        playSnake.setBounds(0, 80, 320, 500);
-        moves = playSnake.getMoves();
-
-        centerPanel.add(replaySnake);
-        centerPanel.add(playSnake);
-        cl.addLayoutComponent(replaySnake, Config.getReplaySnakeScreen());
-        cl.addLayoutComponent(playSnake, Config.getPlaySnakeScreen());
-        cl.show(centerPanel, Config.getPlaySnakeScreen());
 
         add(sidePanel);
         add(centerPanel);
 
 
+    }
+
+    /**
+     * Dynamically shows a replay of a game. To be used in the logic
+     */
+    public void replayGame(){
+
+        //TODO: will probably take to gamer objects as parameter, for dynamic creating
+        Gamer user = new Gamer();
+        Gamer opponent = new Gamer();
+
+        user.setSnakeColor(Color.BLUE);
+        user.setSnake(new LinkedList<Point>());
+        user.getSnake().add(new Point(6, 6));
+        user.setControls("aaaaaawwwwwwdssssddddwwwddd");
+
+        opponent.setSnakeColor(Color.RED);
+        opponent.setSnake(new LinkedList<Point>());
+        opponent.getSnake().add(new Point(8, 8));
+        opponent.setControls("ddddddssssssaaaaaaaaawwwwddd");
+
+        ReplaySnake replaySnake = new ReplaySnake(user, opponent);
+        replaySnake.setBounds(0, 80, 320, 500);
+
+        centerPanel.add(replaySnake);
+        cl.addLayoutComponent(replaySnake, Config.getReplaySnakeScreen());
+
+    }
+
+    /**
+     * Creates a new instance of the PlaySnake JPanel,
+     * to be started everytime an event happens (e.g. button-click)
+     */
+    public void playSnake(){
+
+        PlaySnake playSnake = new PlaySnake();
+        playSnake.setBounds(0, 80, 320, 500);
+        moves = playSnake.getMoves();
+
+        centerPanel.add(playSnake);
+        cl.addLayoutComponent(playSnake, Config.getPlaySnakeScreen());
+        cl.show(centerPanel, Config.getPlaySnakeScreen());
+
+        focusPlaySnake(playSnake);
     }
     /**
      * Method to be used by logic to inject an actionlistener,
@@ -101,7 +130,12 @@ public class MainMenuPanel extends JPanel{
         cl.show(centerPanel, card);
     }
 
-    public void focusPlaySnake(){
+    /**
+     * Gives fokus to PlaySnake panel. Important for the keylistener!
+     * Also important to initialize after JFrame has loaded
+     * @param playSnake
+     */
+    public void focusPlaySnake(PlaySnake playSnake){
         playSnake.setFocusable(true);
         playSnake.requestFocus();
         playSnake.requestFocusInWindow();

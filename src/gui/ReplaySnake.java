@@ -1,6 +1,8 @@
 package gui;
 
 import sdk.Config;
+import sdk.Game;
+import sdk.Gamer;
 import sdk.Snake;
 
 import javax.swing.*;
@@ -13,8 +15,8 @@ import java.awt.event.ActionListener;
  */
 public class ReplaySnake extends JPanel implements ActionListener{
 
-    private Snake userSnake;
-    private Snake opponentSnake;
+    private Gamer user;
+    private Gamer opponent;
 
     //Timer instead of Thread.sleep. Important in a JPanel
     private Timer tm;
@@ -23,14 +25,14 @@ public class ReplaySnake extends JPanel implements ActionListener{
 
     /**
      * Constructor for completed game.
-     * Two snake objects, for a completed game with two moving snakes.
-     * @param userSnake
-     * @param opponentSnake
+     * Two gamer objects, for a completed game with two moving snakes.
+     * @param user
+     * @param opponent
      */
-    public ReplaySnake(Snake userSnake, Snake opponentSnake){
+    public ReplaySnake(Gamer user, Gamer opponent){
 
-        this.userSnake = userSnake;
-        this.opponentSnake = opponentSnake;
+        this.user = user;
+        this.opponent = opponent;
         tm = new Timer(Config.getDelay(), this);
         counter = Config.getCount();
 
@@ -40,11 +42,11 @@ public class ReplaySnake extends JPanel implements ActionListener{
 
     /**
      * Constructor for a single users game, so he can watch his own movement.
-     * @param userSnake
+     * @param user
      */
-    public ReplaySnake(Snake userSnake){
+    public ReplaySnake(Gamer user){
 
-        this.userSnake = userSnake;
+        this.user = user;
     }
 
     /**
@@ -59,30 +61,30 @@ public class ReplaySnake extends JPanel implements ActionListener{
         drawBoard(g);
 
 
-        drawSnake(g, userSnake);
+        drawSnake(g, user);
 
-        if (opponentSnake != null) {
-            drawSnake(g, opponentSnake);
+        if (opponent != null) {
+            drawSnake(g, opponent);
         }
         tm.start();
     }
 
     /**
-     * Draws the snake objects linked list to the canvas. Uses the move method to populate the list.
+     * Draws the gamer objects linked list to the canvas. Uses the move method to populate the list.
      * @param g takes a graphics object as parameter
-     * @param snake takes a snake object as a parameter (see snake class for more info)
+     * @param gamer takes a gamer object as a parameter (see gamer class for more info)
      */
-    private void drawSnake(Graphics g, Snake snake) {
+    private void drawSnake(Graphics g, Gamer gamer) {
 
 
-        g.setColor(snake.getColor());
+        g.setColor(gamer.getSnakeColor());
 
-        g.fillRect(snake.getMoves().peekFirst().x * Config.getFieldWidth(),
-                snake.getMoves().peekFirst().y * Config.getFieldHeight(), Config.getFieldWidth(), Config.getFieldHeight());
+        g.fillRect(gamer.getSnake().peekFirst().x * Config.getFieldWidth(),
+                gamer.getSnake().peekFirst().y * Config.getFieldHeight(), Config.getFieldWidth(), Config.getFieldHeight());
 
 
         //draw points in snake to canvas
-        for (Point p : snake.getMoves()) {
+        for (Point p : gamer.getSnake()) {
             g.fillRect(p.x * Config.getFieldWidth(), p.y * Config.getFieldHeight(), Config.getFieldWidth(), Config.getFieldHeight());
         }
 
@@ -92,12 +94,12 @@ public class ReplaySnake extends JPanel implements ActionListener{
 
     /**
      * The move method. Uses a snakes controls to asses the direction of the snake
-     * @param snake
+     * @param user
      * @param ch
      */
-    private void move(Snake snake, char ch){
+    private void move(Gamer user, char ch){
 
-        Point head = snake.getMoves().peekFirst();
+        Point head = user.getSnake().peekFirst();
         Point newPoint = head;
 
         //hardcoded chars and Points
@@ -120,7 +122,7 @@ public class ReplaySnake extends JPanel implements ActionListener{
                 newPoint = new Point(head.x + 1, head.y);
                 break;
         }
-        snake.getMoves().push(newPoint);
+        user.getSnake().push(newPoint);
 
     }
 
@@ -133,16 +135,16 @@ public class ReplaySnake extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e) {
 
         //populates snake by taking the string controls and checking whether up, down, left or right (w,s,a,d).
-        if (counter < userSnake.getControls().length()) {
-            move(userSnake, userSnake.getControls().charAt(counter));
+        if (counter < user.getControls().length()) {
+            move(user, user.getControls().charAt(counter));
         }
-        if (opponentSnake != null) {
-            if (counter < opponentSnake.getControls().length()){
-                move(opponentSnake, opponentSnake.getControls().charAt(counter));
+        if (opponent != null) {
+            if (counter < opponent.getControls().length()){
+                move(opponent, opponent.getControls().charAt(counter));
             }
         }
-        if(counter > userSnake.getControls().length() &&
-                (opponentSnake!= null && counter > opponentSnake.getControls().length())){
+        if(counter > user.getControls().length() &&
+                (opponent != null && counter > opponent.getControls().length())){
 
             tm.stop();
         }

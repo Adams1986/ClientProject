@@ -1,5 +1,8 @@
 package sdk;
 
+import java.awt.*;
+import java.util.LinkedList;
+
 public class Gamer extends User {
 
     private int score;
@@ -7,6 +10,8 @@ public class Gamer extends User {
     private int kills;
     private String controls;
     private boolean winner;
+    private LinkedList<Point> snake;
+    private Color snakeColor;
 
     public boolean isWinner() {
         return winner;
@@ -46,5 +51,21 @@ public class Gamer extends User {
 
     public String getControls() {
         return controls;
+    }
+
+    public LinkedList<Point> getSnake() {
+        return snake;
+    }
+
+    public void setSnake(LinkedList<Point> snake) {
+        this.snake = snake;
+    }
+
+    public Color getSnakeColor() {
+        return snakeColor;
+    }
+
+    public void setSnakeColor(Color snakeColor) {
+        this.snakeColor = snakeColor;
     }
 }
