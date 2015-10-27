@@ -9,8 +9,11 @@ import sdk.Config;
 import sdk.Gamer;
 import sdk.User;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 /**
  * Created by ADI on 24-10-2015.
@@ -35,6 +38,9 @@ public class Controller {
 
         screen.getLoginPanel().addActionListeners(new LoginHandlerClass());
         screen.getMainMenuPanel().addActionListeners(new MainMenuHandlerClass());
+        screen.getCreateUserPanel().addActionListeners(new CreateUserHandlerClass());
+
+        //screen.getMainMenuPanel().getPlaySnake().keyBindings(new PlaySnakeKeyBindingHandlerClass());
     }
 
     /**
@@ -45,21 +51,28 @@ public class Controller {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            currentUser = new Gamer();
-            currentUser.setUserName(screen.getLoginPanel().getUsernameInput());
-            currentUser.setPassword(screen.getLoginPanel().getPasswordInput());
+            switch (e.getActionCommand()) {
 
-            String message = Api.authenticateLogin(currentUser);
-            isAuthenticated = message.equals(Config.getLoginAuthentication());
+                case "Login":
+                    currentUser = new Gamer();
+                    currentUser.setUserName(screen.getLoginPanel().getUsernameInput());
+                    currentUser.setPassword(screen.getLoginPanel().getPasswordInput());
 
-            if(isAuthenticated){
+                    String message = Api.authenticateLogin(currentUser);
+                    isAuthenticated = message.equals(Config.getLoginAuthentication());
 
-                screen.show(Config.getMainMenuScreen());
-                screen.getMainMenuPanel().setWelcomeMessage(message);
-            }
-            else{
-                screen.getLoginPanel().clearFields();
-                screen.getLoginPanel().setFailedLoginAttempt(message);
+                    if (isAuthenticated) {
+
+                        screen.show(Config.getMainMenuScreen());
+                        screen.getMainMenuPanel().setWelcomeMessage(message);
+                    } else {
+                        screen.getLoginPanel().clearFields();
+                        screen.getLoginPanel().setFailedLoginAttempt(message);
+                    }
+                    break;
+
+                case "Don't have a user? Create a new one":
+                    screen.show(Config.getCreateUserScreen());
             }
         }
     }
@@ -68,6 +81,7 @@ public class Controller {
      * Inner class actionlistener for main menu panel
      */
     private class MainMenuHandlerClass implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
 
@@ -75,23 +89,26 @@ public class Controller {
 
                 //TODO: bigish workaround to not hard code these
                 case "Play a game":
-                    screen.getMainMenuPanel().playSnake();
+                    //takes an actionlistener as parameter for a dynamic injection of listener
+                    screen.getMainMenuPanel().playSnake(this, Api.getUsers());
 
                     if (screen.getMainMenuPanel().getMoves() != null){
+                        System.out.println(screen.getMainMenuPanel().getMoves());
                         currentUser.setControls(screen.getMainMenuPanel().getMoves());
                         screen.getMainMenuPanel().setWelcomeMessage(screen.getMainMenuPanel().getMoves());
                     }
                     break;
 
                 case "Watch a replay":
-                    screen.getMainMenuPanel().replayGame();
+                    screen.getMainMenuPanel().replayGame(currentUser);
                     break;
 
                 case "High scores":
+
                     break;
 
                 case "Delete a game":
-                    Api.deleteUser(7);
+                    Api.deleteUser(3);
                     break;
 
                 //TODO: for some reason when pressing log out after a replay is done running, part of board disappears
@@ -101,11 +118,58 @@ public class Controller {
                     break;
 
                 case "Send challenge":
-                    System.out.println("in here");
+                    if(screen.getMainMenuPanel().getPlaySnake().isGameEnded())
+                        System.out.println(screen.getMainMenuPanel().getPlaySnake().getMoves());
+                    else {
+                        DialogMessage.showMessage(screen, "Play a game first");
+
+                        screen.getMainMenuPanel().focusPlaySnake(new PlaySnake());
+                    }
                     break;
 
 
             }
         }
     }
+
+    private class CreateUserHandlerClass implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            switch (e.getActionCommand()){
+
+                case "Create user":
+                    User createNewUser = new User();
+                    createNewUser.setFirstName(screen.getCreateUserPanel().getFirstNameField());
+                    createNewUser.setLastName(screen.getCreateUserPanel().getLastNameField());
+                    createNewUser.setEmail(screen.getCreateUserPanel().getEmailField());
+                    createNewUser.setUserName(screen.getCreateUserPanel().getUsernameField());
+                    createNewUser.setPassword(screen.getCreateUserPanel().getPasswordField());
+                    String message = Api.createUser(createNewUser);
+
+                    DialogMessage.showMessage(screen, message);
+
+                    if(!message.equals("User was created")){
+
+                    }
+                    else
+                        screen.getCreateUserPanel().clearFields();
+                    break;
+
+                case "To Login":
+                    screen.show(Config.getLoginScreen());
+                    break;
+            }
+        }
+    }
+
+    private class PlaySnakeKeyBindingHandlerClass extends AbstractAction {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                //if (direction != Config.getDOWN())
+                    //direction = Config.getUP();
+            }
+        }
 }

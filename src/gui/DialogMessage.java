@@ -14,7 +14,7 @@ public class DialogMessage {
      */
     public static void showMessage(Screen screen, String message){
 
-        JOptionPane.showConfirmDialog(screen, message);
+        JOptionPane.showMessageDialog(screen, message);
     }
 
     /**

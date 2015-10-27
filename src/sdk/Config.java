@@ -43,6 +43,7 @@ public class Config {
 
     private static String logoutMessage;
     private static String logoutTitle;
+    private static String createUserScreen;
 
 
     public static void init () {
@@ -96,6 +97,7 @@ public class Config {
             setLoginAuthentication((String) jsonObject.get("loginauthentication"));
             setLoginScreen((String) jsonObject.get("loginscreen"));
             setMainMenuScreen((String) jsonObject.get("mainmenuscreen"));
+            setCreateUserScreen((String) jsonObject.get("createuserscreen"));
             setReplaySnakeScreen((String) jsonObject.get("replaysnakescreen"));
             setPlaySnakeScreen((String) jsonObject.get("playsnakescreen"));
 
@@ -300,6 +302,14 @@ public class Config {
 
     public static void setMainMenuScreen(String mainMenuScreen) {
         Config.mainMenuScreen = mainMenuScreen;
+    }
+
+    public static String getCreateUserScreen() {
+        return createUserScreen;
+    }
+
+    public static void setCreateUserScreen(String createUserScreen) {
+        Config.createUserScreen = createUserScreen;
     }
 
     public static String getReplaySnakeScreen() {

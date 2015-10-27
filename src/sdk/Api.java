@@ -31,6 +31,7 @@ public class Api {
     public static String authenticateLogin(User user) {
 
         String message = "";
+        JSONParser jsonParser = new JSONParser();
         Client client = Client.create();
 
         try {
@@ -46,6 +47,21 @@ public class Api {
 //                }
 
                 message = response.getEntity(String.class);
+
+                try {
+                    //Initialize Object class as json, parsed by jsonParsed.
+                    Object obj = jsonParser.parse(message);
+
+                    //Instantiate JSONObject class as jsonObject equal to obj object.
+                    org.json.simple.JSONObject jsonObject = (org.json.simple.JSONObject) obj;
+
+                    //Use set-methods for defifing static variables from json-file.
+                    message = ((String) jsonObject.get("message"));
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
             }
 
         } catch (ClientHandlerException e) {
@@ -87,11 +103,11 @@ public class Api {
         return users;
     }
 
-    //TODO: does not work for a delete
-    public static boolean deleteUser(int userID){
+    //TODO: does not work for a delete. Needs to be path parameter on the server
+    public static String deleteUser(int userID){
 
 
-        String message;
+        String message = "";
         Client client = Client.create();
 
         try {
@@ -111,8 +127,53 @@ public class Api {
         } catch (ClientHandlerException e) {
             e.printStackTrace();
         }
-        return false;
+        return message;
     }
+
+    //TODO: put urls into config file
+    public static String createUser(User user){
+
+        String message = "";
+        JSONParser jsonParser = new JSONParser();
+        Client client = Client.create();
+
+
+        try {
+            WebResource webResource = client.resource("http://localhost:9998/api/user");
+            ClientResponse response = webResource.accept("application/json").post(ClientResponse.class, new Gson().toJson(user));
+
+            message = response.getEntity(String.class);
+
+            try {
+                //Initialize Object class as json, parsed by jsonParsed.
+                Object obj = jsonParser.parse(message);
+
+                //Instantiate JSONObject class as jsonObject equal to obj object.
+                org.json.simple.JSONObject jsonObject = (org.json.simple.JSONObject) obj;
+
+                //Use set-methods for defifing static variables from json-file.
+                message = ((String) jsonObject.get("message"));
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+        } catch (ClientHandlerException e) {
+            e.printStackTrace();
+        }
+
+        return message;
+    }
+
+
+
+
+
+
+
+
+
+
 
     public User getUserObject(){
 
@@ -182,7 +243,7 @@ public class Api {
         return null;
     }
 
-    public String createUser(User user) {
+    public String createUserEncryption(User user) {
 
         try {
             webResource = client.resource("http://localhost:9998/helloworld/createuser/");

@@ -16,6 +16,7 @@ public class LoginPanel extends JPanel{
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton btnLogin;
+    private JButton btnCreateNewUser;
 
 
     /**
@@ -29,6 +30,7 @@ public class LoginPanel extends JPanel{
         usernameField = new JTextField(20);
         passwordField = new JPasswordField(20);
         btnLogin = new JButton("Login");
+        btnCreateNewUser = new JButton("Don't have a user? Create a new one");
         depardieu = new ImageIcon("src/depardieu.png");
         iconLabel = new JLabel(depardieu);
 
@@ -36,6 +38,7 @@ public class LoginPanel extends JPanel{
         usernameField.setBounds(40, 180, 220 ,30);
         passwordField.setBounds(40, 230, 220, 30);
         btnLogin.setBounds(40, 280, 150, 30);
+        btnCreateNewUser.setBounds(40, 370, 300, 30);
         iconLabel.setBounds(280, 100, 320, 240);
 
         add(infoLabel);
@@ -43,11 +46,13 @@ public class LoginPanel extends JPanel{
         add(passwordField);
         add(btnLogin);
         add(iconLabel);
+        add(btnCreateNewUser);
     }
 
     public void addActionListeners(ActionListener l) {
 
         btnLogin.addActionListener(l);
+        btnCreateNewUser.addActionListener(l);
     }
 
     public void clearFields(){

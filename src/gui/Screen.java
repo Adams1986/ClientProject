@@ -17,6 +17,7 @@ public class Screen extends JFrame {
     private CardLayout cl;
     private LoginPanel loginPanel;
     private MainMenuPanel mainMenuPanel;
+    private CreateUserPanel createUserPanel;
 
     public Screen(){
 
@@ -33,19 +34,23 @@ public class Screen extends JFrame {
 
         loginPanel = new LoginPanel();
         mainMenuPanel = new MainMenuPanel();
+        createUserPanel = new CreateUserPanel();
+
         clPanel = new JPanel();
         cl = new CardLayout();
 
         clPanel.setLayout(cl);
         clPanel.add(loginPanel);
         clPanel.add(mainMenuPanel);
+        clPanel.add(createUserPanel);
         contentPane.add(clPanel, BorderLayout.CENTER);
 
         cl.addLayoutComponent(loginPanel,Config.getLoginScreen());
         cl.addLayoutComponent(mainMenuPanel, Config.getMainMenuScreen());
+        cl.addLayoutComponent(createUserPanel, Config.getCreateUserScreen());
         cl.show(clPanel, Config.getLoginScreen());
         //TODO: remove again, but use to see layout
-        cl.show(clPanel, Config.getMainMenuScreen());
+        //cl.show(clPanel, Config.getMainMenuScreen());
 
 //        setResizable(false);
 
@@ -80,5 +85,9 @@ public class Screen extends JFrame {
 
     public MainMenuPanel getMainMenuPanel() {
         return mainMenuPanel;
+    }
+
+    public CreateUserPanel getCreateUserPanel(){
+        return createUserPanel;
     }
 }

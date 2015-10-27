@@ -6,6 +6,8 @@ import sdk.Gamer;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -74,9 +76,9 @@ public class MainMenuPanel extends JPanel{
     /**
      * Dynamically shows a replay of a game. To be used in the logic
      */
-    public void replayGame(){
+    public void replayGame(Gamer test){
 
-        //TODO: will probably take to gamer objects as parameter, for dynamic creating
+        //TODO: will probably take two gamer objects as parameter, for dynamic creating
         Gamer user = new Gamer();
         Gamer opponent = new Gamer();
 
@@ -103,7 +105,7 @@ public class MainMenuPanel extends JPanel{
      * Creates a new instance of the PlaySnake JPanel,
      * to be started everytime an event happens (e.g. button-click)
      */
-    public void playSnake(){
+    public void playSnake(ActionListener l, ArrayList<Gamer> gamers){
 
         playSnake = new PlaySnake();
         playSnake.setBounds(0, 80, 320, 500);
@@ -114,6 +116,13 @@ public class MainMenuPanel extends JPanel{
         cl.show(centerPanel, Config.getPlaySnakeScreen());
 
         focusPlaySnake(playSnake);
+        playSnake.addActionlistener(l);
+        playSnake.addOpponentsToList(gamers);
+    }
+
+    public PlaySnake getPlaySnake(){
+
+        return playSnake;
     }
     /**
      * Method to be used by logic to inject an actionlistener,
