@@ -19,6 +19,7 @@ import java.util.LinkedList;
 public class PlaySnake extends JPanel implements ActionListener{
 
     private LinkedList<Point> snake;
+    //TODO: flytte move over i controller
     private char direction;
     private StringBuilder sb;
     private String moves;
@@ -58,56 +59,22 @@ public class PlaySnake extends JPanel implements ActionListener{
 
     public void keyBindings() {
 
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), Config.getUP());
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), Config.getDOWN());
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), Config.getLEFT());
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), Config.getRIGHT());
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), "SPACE");
+        getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), Config.getUP());
+        getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), Config.getDOWN());
+        getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), Config.getLEFT());
+        getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), Config.getRIGHT());
 
-        //TODO either create a getter for the actionmap and below in controller or find a way to implement all in same class in controller with AbstractionAction
-        getActionMap().put(Config.getUP(), new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                if(direction != Config.getDOWN())
-                    direction = Config.getUP();
-            }
-        });
-        getActionMap().put(Config.getDOWN(), new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(direction != Config.getUP())
-                    direction = Config.getDOWN();
-            }
-        });
-        getActionMap().put(Config.getLEFT(), new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(direction != Config.getRIGHT())
-                    direction = Config.getLEFT();
-            }
-        });
-        getActionMap().put(Config.getRIGHT(), new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(direction != Config.getLEFT())
-                    direction = Config.getRIGHT();
-            }
-        });
-
-        getActionMap().put("SPACE", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(gameEnded) {
-                    System.out.println("space");
-                    revalidate();
-                    removeAll();
-                    repaint();
-                }
-            }
-        });
-
+        //TODO: Done in controller
+//        getActionMap().put(Config.getUP(), new AbstractAction() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//
+//                if(direction != Config.getDOWN())
+//                    direction = Config.getUP();
+//            }
+//        });
     }
+
 
     public String getOpponent() {
         return opponentList.getSelectedItem().toString();
@@ -152,61 +119,11 @@ public class PlaySnake extends JPanel implements ActionListener{
         repaint();
     }
 
-//    @Override
-//    public void keyTyped(KeyEvent e) {
-//
-//    }
-//
-//    @Override
-//    public void keyPressed(KeyEvent e) {
-//
-//        switch (e.getKeyCode()){
-//
-//            case KeyEvent.VK_UP:
-//                if(direction != Config.getDOWN())
-//                    direction = Config.getUP();
-//                break;
-//
-//            case KeyEvent.VK_DOWN:
-//                if(direction != Config.getUP())
-//                    direction = Config.getDOWN();
-//                break;
-//
-//            case KeyEvent.VK_LEFT:
-//                if(direction != Config.getRIGHT())
-//                    direction = Config.getLEFT();
-//                break;
-//
-//            case KeyEvent.VK_RIGHT:
-//                if(direction != Config.getLEFT())
-//                    direction = Config.getRIGHT();
-//                break;
-//
-//            case KeyEvent.VK_SPACE:
-//                if(gameEnded){
-//                    System.out.println("space");
-//                    revalidate();
-//                    removeAll();
-//                    repaint();
-//                    break;
-//                }
-//        }
-//    }
-//
-//    @Override
-//    public void keyReleased(KeyEvent e) {
-//
-//    }
-
 
 
     private void drawSnake(Graphics g){
 
         g.setColor(Color.BLUE);
-
-        //this draws first point, was implemented for replaysnake
-//        g.fillRect(snake.peekFirst().x * Config.getFieldWidth(),
-//                snake.peekFirst().y * Config.getFieldHeight(), Config.getFieldWidth(), Config.getFieldHeight());
 
         //draw points in snake to canvas
         for (Point p : snake) {

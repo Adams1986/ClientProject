@@ -50,6 +50,7 @@ public class Controller {
 
             switch (e.getActionCommand()) {
 
+                //TODO: lad være med at bruge switch og i stedet bruge if-else for brug af Config filen
                 case "Login":
                     currentUser = new Gamer();
                     currentUser.setUserName(screen.getLoginPanel().getUsernameInput());
@@ -62,16 +63,6 @@ public class Controller {
 
                         screen.show(Config.getMainMenuScreen());
                         screen.getMainMenuPanel().setWelcomeMessage(message);
-
-                        Game game = new Game();
-                        game.setName("New game");
-
-                        Gamer host = new Gamer();
-                        host.setId(6);
-                        host.setControls("wwwwwddddd");
-                        Gamer opponent = new Gamer();
-                        opponent.setId(3);
-                        System.out.println(Api.createGame(game, host, opponent));
                     } else {
                         screen.getLoginPanel().clearFields();
                         screen.getLoginPanel().setFailedLoginAttempt(message);
@@ -99,6 +90,17 @@ public class Controller {
                     //takes an actionlistener as parameter for a dynamic injection of listener
                     screen.getMainMenuPanel().playSnake(this, Api.getUsers());
 
+                    //TODO: put this somewhere else and call method here
+                    screen.getMainMenuPanel().getPlaySnake().getActionMap().put(Config.getUP(),
+                            new PlaySnakeKeyBindingHandlerClass(Character.toString(Config.getUP())));
+                    screen.getMainMenuPanel().getPlaySnake().getActionMap().put(Config.getDOWN(),
+                            new PlaySnakeKeyBindingHandlerClass(Character.toString(Config.getDOWN())));
+                    screen.getMainMenuPanel().getPlaySnake().getActionMap().put(Config.getLEFT(),
+                            new PlaySnakeKeyBindingHandlerClass(Character.toString(Config.getLEFT())));
+                    screen.getMainMenuPanel().getPlaySnake().getActionMap().put(Config.getRIGHT(),
+                            new PlaySnakeKeyBindingHandlerClass(Character.toString(Config.getRIGHT())));
+
+
                     if (screen.getMainMenuPanel().getMoves() != null){
                         System.out.println(screen.getMainMenuPanel().getMoves());
                         currentUser.setControls(screen.getMainMenuPanel().getMoves());
@@ -125,8 +127,18 @@ public class Controller {
                     break;
 
                 case "Send challenge":
-                    if(screen.getMainMenuPanel().getPlaySnake().isGameEnded())
+                    if(screen.getMainMenuPanel().getPlaySnake().isGameEnded()) {
                         System.out.println(screen.getMainMenuPanel().getPlaySnake().getMoves());
+                        Game game = new Game();
+                        game.setName("New game");
+
+                        Gamer host = new Gamer();
+                        host.setId(6);
+                        host.setControls(screen.getMainMenuPanel().getPlaySnake().getMoves());
+                        Gamer opponent = new Gamer();
+                        opponent.setId(3);
+                        System.out.println(Api.createGame(game, host, opponent));
+                    }
                     else {
                         DialogMessage.showMessage(screen, "Play a game first");
 
@@ -172,11 +184,32 @@ public class Controller {
 
     private class PlaySnakeKeyBindingHandlerClass extends AbstractAction {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        public PlaySnakeKeyBindingHandlerClass(String text){
+            super(text);
+            putValue(ACTION_COMMAND_KEY, text);
+        }
 
-                //if (direction != Config.getDOWN())
-                    //direction = Config.getUP();
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            String cmd = e.getActionCommand();
+
+            if(cmd.equals(Character.toString(Config.getUP()))){
+                if(screen.getMainMenuPanel().getPlaySnake().getDirection()!= Config.getDOWN())
+                    screen.getMainMenuPanel().getPlaySnake().setDirection(Config.getUP());
+            }
+            else if (cmd.equals(Character.toString(Config.getDOWN()))){
+                if(screen.getMainMenuPanel().getPlaySnake().getDirection()!= Config.getUP())
+                    screen.getMainMenuPanel().getPlaySnake().setDirection(Config.getDOWN());
+            }
+            else if (cmd.equals(Character.toString(Config.getLEFT()))){
+                if(screen.getMainMenuPanel().getPlaySnake().getDirection()!= Config.getRIGHT())
+                    screen.getMainMenuPanel().getPlaySnake().setDirection(Config.getLEFT());
+            }
+            else if (cmd.equals(Character.toString(Config.getRIGHT()))){
+                if(screen.getMainMenuPanel().getPlaySnake().getDirection()!= Config.getLEFT())
+                    screen.getMainMenuPanel().getPlaySnake().setDirection(Config.getRIGHT());
             }
         }
+    }
 }
