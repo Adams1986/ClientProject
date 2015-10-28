@@ -4,10 +4,7 @@ import gui.DialogMessage;
 import gui.PlaySnake;
 import gui.Screen;
 import logic.subcontroller.LoginLogic;
-import sdk.Api;
-import sdk.Config;
-import sdk.Gamer;
-import sdk.User;
+import sdk.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -65,6 +62,16 @@ public class Controller {
 
                         screen.show(Config.getMainMenuScreen());
                         screen.getMainMenuPanel().setWelcomeMessage(message);
+
+                        Game game = new Game();
+                        game.setName("New game");
+
+                        Gamer host = new Gamer();
+                        host.setId(6);
+                        host.setControls("wwwwwddddd");
+                        Gamer opponent = new Gamer();
+                        opponent.setId(3);
+                        System.out.println(Api.createGame(game, host, opponent));
                     } else {
                         screen.getLoginPanel().clearFields();
                         screen.getLoginPanel().setFailedLoginAttempt(message);

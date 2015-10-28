@@ -165,6 +165,28 @@ public class Api {
         return message;
     }
 
+    public static String createGame(Game game, Gamer user, Gamer opponent){
+
+        String message = "";
+        Client client = Client.create();
+
+
+        try {
+            //TODO:wtf altså...
+            WebResource webResource = client.resource("http://localhost:9998/api/game/");
+            String toJson = "{\"gameName\":\""+game.getName()+"\", \"host\":"
+                    +user.getId()+", \"opponent\":"+opponent.getId()+",\"hostControls\":\""+user.getControls()+"\"}";
+
+            ClientResponse response = webResource.accept("application/json").post(ClientResponse.class, toJson);
+            System.out.println(toJson);
+
+            message = response.getEntity(String.class);
+        } catch (ClientHandlerException e){
+            e.printStackTrace();
+        }
+        return message;
+    }
+
 
 
 
