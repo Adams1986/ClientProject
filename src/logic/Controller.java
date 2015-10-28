@@ -1,10 +1,15 @@
 package logic;
 
+import com.google.gson.Gson;
 import gui.DialogMessage;
 import gui.PlaySnake;
 import gui.Screen;
 import logic.subcontroller.LoginLogic;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import sdk.*;
+import sun.org.mozilla.javascript.internal.json.JsonParser;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -62,15 +67,19 @@ public class Controller {
                     if (isAuthenticated) {
 
                         screen.show(Config.getMainMenuScreen());
+//                        screen.getMainMenuPanel().replayGame(currentUser);
+                        screen.getMainMenuPanel().playSnake(new MainMenuHandlerClass(), Api.getUsers());
+                        //TODO: change ^this^ to some start menu or something, works like crap
                         screen.getMainMenuPanel().setWelcomeMessage(message);
                     } else {
-                        screen.getLoginPanel().clearFields();
                         screen.getLoginPanel().setFailedLoginAttempt(message);
                     }
+                    screen.getLoginPanel().clearFields();
                     break;
 
                 case "Don't have a user? Create a new one":
                     screen.show(Config.getCreateUserScreen());
+                    break;
             }
         }
     }
@@ -108,7 +117,18 @@ public class Controller {
                     }
                     break;
 
+                //får et map retur fra API, kan måske bruges til at tegne spillet?
                 case "Watch a replay":
+                    try {
+                        //TODO: successful test, change to work obv
+                        Object obj = new JSONParser().parse(Api.startGame(26));
+                        JSONObject jsonObject = (JSONObject) obj;
+                        currentUser.setControls((String) jsonObject.get("hostControls"));
+                        System.out.println(currentUser.getControls());
+                    } catch (ParseException e1) {
+                        e1.printStackTrace();
+                    }
+
                     screen.getMainMenuPanel().replayGame(currentUser);
                     break;
 
@@ -117,26 +137,39 @@ public class Controller {
                     break;
 
                 case "Delete a game":
-                    Api.deleteUser(3);
+                    Api.deleteGame(23);
                     break;
 
-                //TODO: for some reason when pressing log out after a replay is done running, part of board disappears
+                //TODO: for some reason when pressing log out after a replay is done running, part of board disappears. Also if in play screen, game cannot regain focus
                 case "Log out":
-                    if(DialogMessage.showConfirmMessage(screen, Config.getLogoutMessage(), Config.getLogoutTitle()))
+                    if(DialogMessage.showConfirmMessage(screen, Config.getLogoutMessage(), Config.getLogoutTitle())) {
                         screen.show(Config.getLoginScreen());
+                        currentUser = null;
+                    }
                     break;
 
+                //TODO: not working even just a little bit. Problems with the ids for some reason.
                 case "Send challenge":
                     if(screen.getMainMenuPanel().getPlaySnake().isGameEnded()) {
-                        System.out.println(screen.getMainMenuPanel().getPlaySnake().getMoves());
+                        System.out.println(screen.getMainMenuPanel().getPlaySnake().getOpponent());
                         Game game = new Game();
                         game.setName("New game");
 
                         Gamer host = new Gamer();
-                        host.setId(6);
                         host.setControls(screen.getMainMenuPanel().getPlaySnake().getMoves());
                         Gamer opponent = new Gamer();
-                        opponent.setId(3);
+
+                        for (Gamer g : Api.getUsers()) {
+
+                            if(g.getUserName().equals(currentUser.getUserName())) {
+                                host.setId(g.getId());
+                                System.out.println(g.getUserName());
+                            }
+                            if(g.getUserName().equals(screen.getMainMenuPanel().getPlaySnake().getOpponent())) {
+                                System.out.println(g.getUserName());
+                                opponent.setId(g.getId());
+                            }
+                        }
                         System.out.println(Api.createGame(game, host, opponent));
                     }
                     else {

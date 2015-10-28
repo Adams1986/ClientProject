@@ -6,8 +6,8 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
+
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -149,7 +149,7 @@ public class Api {
                 Object obj = jsonParser.parse(message);
 
                 //Instantiate JSONObject class as jsonObject equal to obj object.
-                org.json.simple.JSONObject jsonObject = (org.json.simple.JSONObject) obj;
+                JSONObject jsonObject = (JSONObject) obj;
 
                 //Use set-methods for defifing static variables from json-file.
                 message = ((String) jsonObject.get("message"));
@@ -187,7 +187,47 @@ public class Api {
         return message;
     }
 
+    public static String startGame(int gameId) {
 
+        String message = "";
+        Client client = Client.create();
+
+
+        try {
+            WebResource webResource = client.resource("http://localhost:9998/api/startgame/" + gameId);
+
+            ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
+
+            message = response.getEntity(String.class);
+            System.out.println(message);
+
+        } catch (ClientHandlerException e){
+            e.printStackTrace();
+        }
+        return message;
+
+    }
+
+    public static String deleteGame(int gameId) {
+
+        String message = "";
+        Client client = Client.create();
+
+
+        try {
+            WebResource webResource = client.resource("http://localhost:9998/api/game/" + gameId);
+
+            ClientResponse response = webResource.accept("application/json").delete(ClientResponse.class);
+
+            message = response.getEntity(String.class);
+            System.out.println(message);
+
+        } catch (ClientHandlerException e){
+            e.printStackTrace();
+        }
+        return message;
+
+    }
 
 
 

@@ -40,6 +40,9 @@ public class PlaySnake extends JPanel implements ActionListener{
         btnSend.setBounds(40, 380, 150, 30);
         opponentList.setBounds(40, 340, 220, 30);
 
+        btnSend.setEnabled(false);
+        opponentList.setEnabled(false);
+
         add(btnSend);
         add(opponentList);
 
@@ -59,10 +62,10 @@ public class PlaySnake extends JPanel implements ActionListener{
 
     public void keyBindings() {
 
-        getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), Config.getUP());
-        getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), Config.getDOWN());
-        getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), Config.getLEFT());
-        getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), Config.getRIGHT());
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), Config.getUP());
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), Config.getDOWN());
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), Config.getLEFT());
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), Config.getRIGHT());
 
         //TODO: Done in controller
 //        getActionMap().put(Config.getUP(), new AbstractAction() {
@@ -112,9 +115,13 @@ public class PlaySnake extends JPanel implements ActionListener{
 
         if(!gameEnded) {
             move(direction);
+            btnSend.setEnabled(false);
+            opponentList.setEnabled(false);
         }
         else{
             moves = sb.toString();
+            btnSend.setEnabled(true);
+            opponentList.setEnabled(true);
         }
         repaint();
     }

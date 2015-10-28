@@ -41,6 +41,7 @@ public class MainMenuPanel extends JPanel{
         sidePanel = new JPanel();
         centerPanel = new JPanel();
         snakePanel = new JPanel();
+        playSnake = new PlaySnake();
         cl = new CardLayout();
 
         sidePanel.setBounds(0, 0, 320, 500);
@@ -76,16 +77,15 @@ public class MainMenuPanel extends JPanel{
     /**
      * Dynamically shows a replay of a game. To be used in the logic
      */
-    public void replayGame(Gamer test){
+    public void replayGame(Gamer user){
 
         //TODO: will probably take two gamer objects as parameter, for dynamic creating
-        Gamer user = new Gamer();
+//        Gamer user = new Gamer();
         Gamer opponent = new Gamer();
 
         user.setSnakeColor(Color.BLUE);
         user.setSnake(new LinkedList<Point>());
         user.getSnake().add(new Point(6, 6));
-        user.setControls("aaaaaawwwwwwdssssddddwwwddd");
 
         opponent.setSnakeColor(Color.RED);
         opponent.setSnake(new LinkedList<Point>());
