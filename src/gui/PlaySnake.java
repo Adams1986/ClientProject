@@ -2,6 +2,7 @@ package gui;
 
 import sdk.Config;
 import sdk.Gamer;
+import sdk.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -83,10 +84,10 @@ public class PlaySnake extends JPanel implements ActionListener{
         return opponentList.getSelectedItem().toString();
     }
 
-    public void addOpponentsToList(ArrayList<Gamer> gamers){
+    public void addOpponentsToList(ArrayList<User> users){
 
-        for(Gamer gamer : gamers)
-            opponentList.addItem(gamer.getUserName());
+        for(User user : users)
+            opponentList.addItem(user.getUsername());
     }
 
     public void addActionlistener(ActionListener l){

@@ -55,10 +55,10 @@ public class Controller {
 
             switch (e.getActionCommand()) {
 
-                //TODO: lad være med at bruge switch og i stedet bruge if-else for brug af Config filen
+                //TODO: lad vï¿½re med at bruge switch og i stedet bruge if-else for brug af Config filen
                 case "Login":
                     currentUser = new Gamer();
-                    currentUser.setUserName(screen.getLoginPanel().getUsernameInput());
+                    currentUser.setUsername(screen.getLoginPanel().getUsernameInput());
                     currentUser.setPassword(screen.getLoginPanel().getPasswordInput());
 
                     String message = Api.authenticateLogin(currentUser);
@@ -117,7 +117,7 @@ public class Controller {
                     }
                     break;
 
-                //får et map retur fra API, kan måske bruges til at tegne spillet?
+                //fï¿½r et map retur fra API, kan mï¿½ske bruges til at tegne spillet?
                 case "Watch a replay":
                     try {
                         //TODO: successful test, change to work obv
@@ -159,15 +159,15 @@ public class Controller {
                         host.setControls(screen.getMainMenuPanel().getPlaySnake().getMoves());
                         Gamer opponent = new Gamer();
 
-                        for (Gamer g : Api.getUsers()) {
+                        for (User u : Api.getUsers()) {
 
-                            if(g.getUserName().equals(currentUser.getUserName())) {
-                                host.setId(g.getId());
-                                System.out.println(g.getUserName());
+                            if(u.getUsername().equals(currentUser.getUsername())) {
+                                host.setId(u.getId());
+                                System.out.println(u.getUsername());
                             }
-                            if(g.getUserName().equals(screen.getMainMenuPanel().getPlaySnake().getOpponent())) {
-                                System.out.println(g.getUserName());
-                                opponent.setId(g.getId());
+                            if(u.getUsername().equals(screen.getMainMenuPanel().getPlaySnake().getOpponent())) {
+                                System.out.println(u.getUsername());
+                                opponent.setId(u.getId());
                             }
                         }
                         System.out.println(Api.createGame(game, host, opponent));
@@ -195,7 +195,7 @@ public class Controller {
                     createNewUser.setFirstName(screen.getCreateUserPanel().getFirstNameField());
                     createNewUser.setLastName(screen.getCreateUserPanel().getLastNameField());
                     createNewUser.setEmail(screen.getCreateUserPanel().getEmailField());
-                    createNewUser.setUserName(screen.getCreateUserPanel().getUsernameField());
+                    createNewUser.setUsername(screen.getCreateUserPanel().getUsernameField());
                     createNewUser.setPassword(screen.getCreateUserPanel().getPasswordField());
                     String message = Api.createUser(createNewUser);
 

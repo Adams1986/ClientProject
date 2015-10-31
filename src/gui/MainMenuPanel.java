@@ -2,6 +2,7 @@ package gui;
 
 import sdk.Config;
 import sdk.Gamer;
+import sdk.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -105,7 +106,7 @@ public class MainMenuPanel extends JPanel{
      * Creates a new instance of the PlaySnake JPanel,
      * to be started everytime an event happens (e.g. button-click)
      */
-    public void playSnake(ActionListener l, ArrayList<Gamer> gamers){
+    public void playSnake(ActionListener l, ArrayList<User> users){
 
         playSnake = new PlaySnake();
         playSnake.setBounds(0, 80, 320, 500);
@@ -117,7 +118,7 @@ public class MainMenuPanel extends JPanel{
 
         focusPlaySnake(playSnake);
         playSnake.addActionlistener(l);
-        playSnake.addOpponentsToList(gamers);
+        playSnake.addOpponentsToList(users);
     }
 
     public PlaySnake getPlaySnake(){

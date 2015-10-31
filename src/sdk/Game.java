@@ -1,5 +1,6 @@
 package sdk;
 
+
 import java.sql.Date;
 
 /**
@@ -9,18 +10,18 @@ import java.sql.Date;
 public class Game {
     //Creating the variables needed for the game
     private int gameId;
-    private User winner;
+    private Gamer winner;
     private String name;
     private String hostControls;
-    private User host;
-    private User opponent;
+    private Gamer host;
+    private Gamer opponent;
     private String opponentControls;
     private String status;
     private Date created;
     private int mapSize;
 
     //Creating the constructor and initiating the variables
-    public Game(int gameId, User winner, String hostControls, Date created, String name, User host, User
+    public Game(int gameId, Gamer winner, String hostControls, Date created, String name, Gamer host, Gamer
             opponent, String status, int mapSize){
         this.mapSize = mapSize;
         this.gameId = gameId;
@@ -68,7 +69,7 @@ public class Game {
         return winner;
     }
 
-    public void setWinner(User winner) {
+    public void setWinner(Gamer winner) {
         this.winner = winner;
     }
 
@@ -91,19 +92,19 @@ public class Game {
         this.hostControls = controls;
     }
 
-    public User getHost(){
+    public Gamer getHost(){
         return host;
     }
 
-    public void setHost(User host){
+    public void setHost(Gamer host){
         this.host = host;
     }
 
-    public User getOpponent(){
+    public Gamer getOpponent(){
         return opponent;
     }
 
-    public void setOpponent(User opponent){
+    public void setOpponent(Gamer opponent){
         this.opponent = opponent;
     }
 

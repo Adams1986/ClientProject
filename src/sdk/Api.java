@@ -74,15 +74,15 @@ public class Api {
      * Retrieves all users from the server and saves them in an arraylist
      * @return Arraylist of all users/gamers
      */
-    public static ArrayList<Gamer> getUsers() {
+    public static ArrayList<User> getUsers() {
 
         String message;
         Client client = Client.create();
-        ArrayList<Gamer> users = null;
+        ArrayList<User> users = null;
 
         try {
 
-            WebResource webResource = client.resource("http://localhost:9998/api/user");
+            WebResource webResource = client.resource("http://localhost:9998/api/users");
             ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
 
             if (response != null) {
@@ -93,7 +93,8 @@ public class Api {
 
                 message = response.getEntity(String.class);
 
-                users = new Gson().fromJson(message, new TypeToken<ArrayList<Gamer>>(){}.getType());
+                System.out.println(message);
+                users = new Gson().fromJson(message, new TypeToken<ArrayList<User>>(){}.getType());
 
 
             }
@@ -177,7 +178,8 @@ public class Api {
             String toJson = "{\"gameName\":\""+game.getName()+"\", \"host\":"
                     +user.getId()+", \"opponent\":"+opponent.getId()+",\"hostControls\":\""+user.getControls()+"\"}";
 
-            ClientResponse response = webResource.accept("application/json").post(ClientResponse.class, toJson);
+
+            ClientResponse response = webResource.accept("application/json").post(ClientResponse.class, new Gson().toJson(game));
             System.out.println(toJson);
 
             message = response.getEntity(String.class);
@@ -266,7 +268,7 @@ public class Api {
 
             user = new Gson().fromJson(decryptedUser, User.class);
 
-            System.out.println(user.getUserName());
+            System.out.println(user.getUsername());
         }
         return user;
     }
