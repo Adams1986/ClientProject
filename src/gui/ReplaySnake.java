@@ -24,12 +24,12 @@ public class ReplaySnake extends JPanel implements ActionListener{
     /**
      * Constructor for completed game.
      * Two gamer objects, for a completed game with two moving snakes.
-     * @param user
+     * @param host
      * @param opponent
      */
-    public ReplaySnake(Gamer user, Gamer opponent){
+    public ReplaySnake(Gamer host, Gamer opponent){
 
-        this.user = user;
+        this.user = host;
         this.opponent = opponent;
         tm = new Timer(Config.getDelay(), this);
         counter = Config.getCount();

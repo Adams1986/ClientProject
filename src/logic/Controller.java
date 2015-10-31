@@ -1,21 +1,16 @@
 package logic;
 
-import com.google.gson.Gson;
 import gui.DialogMessage;
 import gui.PlaySnake;
 import gui.Screen;
-import logic.subcontroller.LoginLogic;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import sdk.*;
-import sun.org.mozilla.javascript.internal.json.JsonParser;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 /**
  * Created by ADI on 24-10-2015.
@@ -68,7 +63,7 @@ public class Controller {
 
                         screen.show(Config.getMainMenuScreen());
 //                        screen.getMainMenuPanel().replayGame(currentUser);
-                        screen.getMainMenuPanel().playSnake(new MainMenuHandlerClass(), Api.getUsers());
+                        screen.getMainMenuPanel().playSnake(new MainMenuHandlerClass());
                         //TODO: change ^this^ to some start menu or something, works like crap
                         screen.getMainMenuPanel().setWelcomeMessage(message);
                     } else {
@@ -97,7 +92,8 @@ public class Controller {
                 //TODO: bigish workaround to not hard code these
                 case "Play a game":
                     //takes an actionlistener as parameter for a dynamic injection of listener
-                    screen.getMainMenuPanel().playSnake(this, Api.getUsers());
+                    screen.getMainMenuPanel().playSnake(new PlaySnakeHandlerClass());
+                    screen.getMainMenuPanel().getPlaySnake().setOpponentTableModel(Api.getUsers());
 
                     //TODO: put this somewhere else and call method here
                     screen.getMainMenuPanel().getPlaySnake().getActionMap().put(Config.getUP(),
@@ -108,13 +104,6 @@ public class Controller {
                             new PlaySnakeKeyBindingHandlerClass(Character.toString(Config.getLEFT())));
                     screen.getMainMenuPanel().getPlaySnake().getActionMap().put(Config.getRIGHT(),
                             new PlaySnakeKeyBindingHandlerClass(Character.toString(Config.getRIGHT())));
-
-
-                    if (screen.getMainMenuPanel().getMoves() != null){
-                        System.out.println(screen.getMainMenuPanel().getMoves());
-                        currentUser.setControls(screen.getMainMenuPanel().getMoves());
-                        screen.getMainMenuPanel().setWelcomeMessage(screen.getMainMenuPanel().getMoves());
-                    }
                     break;
 
                 //f�r et map retur fra API, kan m�ske bruges til at tegne spillet?
@@ -146,40 +135,8 @@ public class Controller {
                         screen.show(Config.getLoginScreen());
                         currentUser = null;
                     }
+                    screen.getMainMenuPanel().getPlaySnake().repaint();
                     break;
-
-                //TODO: not working even just a little bit. Problems with the ids for some reason.
-                case "Send challenge":
-                    if(screen.getMainMenuPanel().getPlaySnake().isGameEnded()) {
-                        System.out.println(screen.getMainMenuPanel().getPlaySnake().getOpponent());
-                        Game game = new Game();
-                        game.setName("New game");
-
-                        Gamer host = new Gamer();
-                        host.setControls(screen.getMainMenuPanel().getPlaySnake().getMoves());
-                        Gamer opponent = new Gamer();
-
-                        for (User u : Api.getUsers()) {
-
-                            if(u.getUsername().equals(currentUser.getUsername())) {
-                                host.setId(u.getId());
-                                System.out.println(u.getUsername());
-                            }
-                            if(u.getUsername().equals(screen.getMainMenuPanel().getPlaySnake().getOpponent())) {
-                                System.out.println(u.getUsername());
-                                opponent.setId(u.getId());
-                            }
-                        }
-                        System.out.println(Api.createGame(game, host, opponent));
-                    }
-                    else {
-                        DialogMessage.showMessage(screen, "Play a game first");
-
-                        screen.getMainMenuPanel().focusPlaySnake(new PlaySnake());
-                    }
-                    break;
-
-
             }
         }
     }
@@ -242,6 +199,41 @@ public class Controller {
             else if (cmd.equals(Character.toString(Config.getRIGHT()))){
                 if(screen.getMainMenuPanel().getPlaySnake().getDirection()!= Config.getLEFT())
                     screen.getMainMenuPanel().getPlaySnake().setDirection(Config.getRIGHT());
+            }
+        }
+    }
+
+    private class PlaySnakeHandlerClass implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+
+
+            switch (e.getActionCommand()) {
+                case "Send challenge":
+                    if (screen.getMainMenuPanel().getPlaySnake().isGameEnded()) {
+
+                        Game game = new Game();
+                        game.setName(screen.getMainMenuPanel().getPlaySnake().getGameNameText());
+
+                        Gamer host = new Gamer();
+                        host.setControls(screen.getMainMenuPanel().getPlaySnake().getMoves());
+                        Gamer opponent = new Gamer();
+
+                        host.setId(currentUser.getId());
+                        opponent.setId(screen.getMainMenuPanel().getPlaySnake().getOpponent().getId());
+                        game.setHost(host);
+                        game.setOpponent(opponent);
+                        game.setMapSize(Config.getBoardHeight());
+                        DialogMessage.showMessage(screen, Api.createGame(game));
+
+                    } else {
+                        DialogMessage.showMessage(screen, "Play a game first");
+
+                        screen.getMainMenuPanel().focusPlaySnake(new PlaySnake());
+                    }
+                    break;
             }
         }
     }

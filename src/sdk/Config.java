@@ -44,6 +44,12 @@ public class Config {
     private static String logoutMessage;
     private static String logoutTitle;
     private static String createUserScreen;
+    private static String ipAdresse;
+    private static int appHeight;
+    private static int appWidth;
+
+    private static String [] columnNamesGameTable;
+    private static String [] columnNamesUserTable = new String[3];;
 
 
     public static void init () {
@@ -66,6 +72,7 @@ public class Config {
             setHost((String) jsonObject.get("host"));
             setPort((String) jsonObject.get("port"));
             setUsername((String) jsonObject.get("username"));
+            setIpAdresse((String) jsonObject.get("ipadresse"));
 
             //setUsername("root");
 
@@ -81,18 +88,20 @@ public class Config {
             setRIGHT((String) jsonObject.get("right"));
             setAWAITING((String) jsonObject.get("awaiting"));
 
-            setFieldHeight(Integer.parseInt((String) jsonObject.get("fieldheight")));
-            setFieldWidth(Integer.parseInt((String) jsonObject.get("fieldwidth")));
-            setBoardHeight(Integer.parseInt((String) jsonObject.get("boardheight")));
-            setBoardWidth(Integer.parseInt((String) jsonObject.get("boardwidth")));
+            setAppHeight((int) (long) jsonObject.get("appheight"));
+            setAppWidth((int) (long) jsonObject.get("appwidth"));
+            setFieldHeight((int) (long) jsonObject.get("fieldheight"));
+            setFieldWidth((int) (long) jsonObject.get("fieldwidth"));
+            setBoardHeight((int) (long) jsonObject.get("boardheight"));
+            setBoardWidth((int) (long) jsonObject.get("boardwidth"));
 
-            setCount(Integer.parseInt((String) jsonObject.get("count")));
-            setDelay(Integer.parseInt((String) jsonObject.get("delay")));
+            setCount((int) (long) jsonObject.get("count"));
+            setDelay((int) (long) jsonObject.get("delay"));
 
-            setBoardStartXY(Integer.parseInt((String) jsonObject.get("boardstartxy")));
+            setBoardStartXY((int) (long) jsonObject.get("boardstartxy"));
 
-            setReplayWidth(Integer.parseInt((String) jsonObject.get("replaywidth")));
-            setReplayHeight(Integer.parseInt((String) jsonObject.get("replayheight")));
+            setReplayWidth((int) (long) jsonObject.get("replaywidth"));
+            setReplayHeight((int) (long) jsonObject.get("replayheight"));
 
             setLoginAuthentication((String) jsonObject.get("loginauthentication"));
             setLoginScreen((String) jsonObject.get("loginscreen"));
@@ -103,6 +112,11 @@ public class Config {
 
             setLogoutMessage((String) jsonObject.get("logoutmessage"));
             setLogoutTitle((String) jsonObject.get("logouttitle"));
+
+            //setColumnNamesGameTable((String[]) jsonObject.get("columnnamesgametable"));
+            getColumnNamesUserTable()[0] = ((String) jsonObject.get("firstname"));
+            getColumnNamesUserTable()[1] = ((String) jsonObject.get("lastname"));
+            getColumnNamesUserTable()[2] = ((String) jsonObject.get("username"));
 
 
         } catch (org.json.simple.parser.ParseException e) {
@@ -342,5 +356,45 @@ public class Config {
 
     public static void setLogoutTitle(String logoutTitle) {
         Config.logoutTitle = logoutTitle;
+    }
+
+    public static String getIpAdresse() {
+        return ipAdresse;
+    }
+
+    public static void setIpAdresse(String ipAdresse) {
+        Config.ipAdresse = ipAdresse;
+    }
+
+    public static int getAppHeight() {
+        return appHeight;
+    }
+
+    public static void setAppHeight(int appHeight) {
+        Config.appHeight = appHeight;
+    }
+
+    public static int getAppWidth() {
+        return appWidth;
+    }
+
+    public static void setAppWidth(int appWidth) {
+        Config.appWidth = appWidth;
+    }
+
+    public static String[] getColumnNamesGameTable() {
+        return columnNamesGameTable;
+    }
+
+    public static void setColumnNamesGameTable(String[] columnNamesGameTable) {
+        Config.columnNamesGameTable = columnNamesGameTable;
+    }
+
+    public static String[] getColumnNamesUserTable() {
+        return columnNamesUserTable;
+    }
+
+    public static void setColumnNamesUserTable(String[] columnNamesUserTable) {
+        Config.columnNamesUserTable = columnNamesUserTable;
     }
 }

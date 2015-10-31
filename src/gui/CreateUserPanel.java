@@ -43,23 +43,23 @@ public class CreateUserPanel extends JPanel {
         btnCreate = new JButton("Create user");
         btnBack = new JButton("To Login");
 
-        infoLabel.setBounds(40, 40, 220, 20);
+        infoLabel.setBounds(40, 40, 220, 30);
         infoLabel.setFont(new Font("Verdana", Font.BOLD, 16));
 
-        firstNameLabel.setBounds(40, 80, 220, 20);
-        lastNameLabel.setBounds(40, 120, 220, 20);
-        emailLabel.setBounds(40, 160, 220, 20);
-        usernameLabel.setBounds(40, 200, 220, 20);
-        passwordLabel.setBounds(40, 240, 220, 20);
+        firstNameLabel.setBounds(40, 180, 220, 20);
+        lastNameLabel.setBounds(40, 230, 220, 20);
+        emailLabel.setBounds(40, 280, 220, 20);
+        usernameLabel.setBounds(40, 330, 220, 20);
+        passwordLabel.setBounds(40, 380, 220, 20);
 
-        firstNameField.setBounds(200, 80, 220, 20);
-        lastNameField.setBounds(200, 120, 220, 20);
-        emailField.setBounds(200, 160, 220, 20);
-        usernameField.setBounds(200, 200, 220, 20);
-        passwordField.setBounds(200, 240, 220, 20);
+        firstNameField.setBounds(200, 180, 220, 30);
+        lastNameField.setBounds(200, 230, 220, 30);
+        emailField.setBounds(200, 280, 220, 30);
+        usernameField.setBounds(200, 330, 220, 30);
+        passwordField.setBounds(200, 380, 220, 30);
 
-        btnBack.setBounds(40, 290, 150, 30);
-        btnCreate.setBounds(200, 290, 150, 30);
+        btnBack.setBounds(40, 430, 150, 30);
+        btnCreate.setBounds(200, 430, 150, 30);
 
         add(infoLabel);
         add(firstNameLabel);

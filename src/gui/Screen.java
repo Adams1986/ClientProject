@@ -55,7 +55,7 @@ public class Screen extends JFrame {
 //        setResizable(false);
 
         //TODO: change,
-        setSize(Config.getReplayWidth() * 2, 500);
+        setSize(Config.getAppWidth(), Config.getAppHeight());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }

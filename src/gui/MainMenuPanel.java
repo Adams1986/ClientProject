@@ -2,13 +2,10 @@ package gui;
 
 import sdk.Config;
 import sdk.Gamer;
-import sdk.User;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyListener;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -27,7 +24,6 @@ public class MainMenuPanel extends JPanel{
     private JPanel snakePanel;
     private CardLayout cl;
     private PlaySnake playSnake;
-    private String moves;
 
 
     public MainMenuPanel(){
@@ -46,7 +42,7 @@ public class MainMenuPanel extends JPanel{
         cl = new CardLayout();
 
         sidePanel.setBounds(0, 0, 320, 500);
-        centerPanel.setBounds(300, 0, 320, 500);
+        centerPanel.setBounds(300, 0, Config.getReplayWidth()*2, Config.getAppHeight());
         sidePanel.setLayout(null);
         centerPanel.setLayout(cl);
 
@@ -78,23 +74,23 @@ public class MainMenuPanel extends JPanel{
     /**
      * Dynamically shows a replay of a game. To be used in the logic
      */
-    public void replayGame(Gamer user){
+    public void replayGame(Gamer gamer){
 
         //TODO: will probably take two gamer objects as parameter, for dynamic creating
-//        Gamer user = new Gamer();
+//        Gamer gamer = new Gamer();
         Gamer opponent = new Gamer();
 
-        user.setSnakeColor(Color.BLUE);
-        user.setSnake(new LinkedList<Point>());
-        user.getSnake().add(new Point(6, 6));
+        gamer.setSnakeColor(Color.BLUE);
+        gamer.setSnake(new LinkedList<Point>());
+        gamer.getSnake().add(new Point((Config.getBoardWidth()-2)/2, (Config.getBoardHeight()-2)/2));
 
         opponent.setSnakeColor(Color.RED);
         opponent.setSnake(new LinkedList<Point>());
-        opponent.getSnake().add(new Point(8, 8));
+        opponent.getSnake().add(new Point((Config.getBoardWidth()+2)/2, (Config.getBoardHeight()+2)/2));
         opponent.setControls("ddddddssssssaaaaaaaaawwwwddd");
 
-        ReplaySnake replaySnake = new ReplaySnake(user, opponent);
-        replaySnake.setBounds(0, 80, 320, 500);
+        ReplaySnake replaySnake = new ReplaySnake(gamer, opponent);
+        replaySnake.setBounds(0, 80, Config.getReplayWidth()*2, Config.getAppHeight());
 
         centerPanel.add(replaySnake);
         cl.addLayoutComponent(replaySnake, Config.getReplaySnakeScreen());
@@ -106,19 +102,17 @@ public class MainMenuPanel extends JPanel{
      * Creates a new instance of the PlaySnake JPanel,
      * to be started everytime an event happens (e.g. button-click)
      */
-    public void playSnake(ActionListener l, ArrayList<User> users){
+    public void playSnake(ActionListener l){
 
         playSnake = new PlaySnake();
-        playSnake.setBounds(0, 80, 320, 500);
-        moves = playSnake.getMoves();
+        //playSnake.setBounds(0, 80, Config.getReplayWidth()*2, Config.getReplayHeight()*2);
 
         centerPanel.add(playSnake);
         cl.addLayoutComponent(playSnake, Config.getPlaySnakeScreen());
         cl.show(centerPanel, Config.getPlaySnakeScreen());
 
         focusPlaySnake(playSnake);
-        playSnake.addActionlistener(l);
-        playSnake.addOpponentsToList(users);
+        playSnake.addActionListener(l);
     }
 
     public PlaySnake getPlaySnake(){
@@ -156,9 +150,5 @@ public class MainMenuPanel extends JPanel{
 
     public void setWelcomeMessage(String welcomeMessage) {
         welcomeLabel.setText(welcomeMessage);
-    }
-
-    public String getMoves() {
-        return moves;
     }
 }

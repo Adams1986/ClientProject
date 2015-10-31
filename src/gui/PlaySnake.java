@@ -28,24 +28,35 @@ public class PlaySnake extends JPanel implements ActionListener{
     private boolean gameEnded;
 
     private JButton btnSend;
-    private JComboBox<String>opponentList;
+    private JTable opponentTable;
+    private JTextField gameNameField;
+    private JScrollPane scrollPane;
+    private UserTableModel tableModel;
 
     public PlaySnake(){
 
         setLayout(null);
         //addKeyListener(this);
 
+        gameNameField = new JTextField();
         btnSend = new JButton("Send challenge");
-        opponentList = new JComboBox<>();
 
-        btnSend.setBounds(40, 380, 150, 30);
-        opponentList.setBounds(40, 340, 220, 30);
+        opponentTable = new JTable();
+        scrollPane = new JScrollPane(opponentTable);
 
+        gameNameField.setBounds(40, 840, 150, 30);
+        btnSend.setBounds(40, 900, 150, 30);
+        //opponentTable.setBounds(40, 720, 220, 30);
+        scrollPane.setBounds(0, 540, 500, 260);
+
+        gameNameField.setToolTipText("Give your game a name");
+        gameNameField.setEnabled(false);
         btnSend.setEnabled(false);
-        opponentList.setEnabled(false);
 
+        add(gameNameField);
         add(btnSend);
-        add(opponentList);
+        add(scrollPane);
+        //add(opponentList);
 
         //TODO: move to paintComponent if trouble restarting game?
         snake = new LinkedList<>();
@@ -61,6 +72,16 @@ public class PlaySnake extends JPanel implements ActionListener{
         //getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), Config.getUP());
     }
 
+    public String getGameNameText(){
+
+        return gameNameField.getText();
+    }
+
+    public void setOpponentTableModel(ArrayList<User> users){
+
+        tableModel = new UserTableModel(users);
+        opponentTable.setModel(tableModel);
+    }
     public void keyBindings() {
 
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), Config.getUP());
@@ -79,26 +100,21 @@ public class PlaySnake extends JPanel implements ActionListener{
 //        });
     }
 
+    public User getOpponent(){
 
-    public String getOpponent() {
-        return opponentList.getSelectedItem().toString();
+        return tableModel.getUserFromTable(opponentTable.getSelectedRow());
     }
 
-    public void addOpponentsToList(ArrayList<User> users){
-
-        for(User user : users)
-            opponentList.addItem(user.getUsername());
-    }
-
-    public void addActionlistener(ActionListener l){
+    public void addActionListener(ActionListener l){
 
         btnSend.addActionListener(l);
     }
 
     private void generateDefaultSnake() {
 
+        //TODO: When playing a game from challenge, change to +2 instead
         snake.clear();
-        snake.add(new Point(6,6));
+        snake.add(new Point((Config.getBoardWidth()-2)/2,(Config.getBoardHeight()-2)/2));
         direction = Config.getAwaiting();
     }
 
@@ -117,12 +133,14 @@ public class PlaySnake extends JPanel implements ActionListener{
         if(!gameEnded) {
             move(direction);
             btnSend.setEnabled(false);
-            opponentList.setEnabled(false);
+            gameNameField.setEnabled(false);
+            gameNameField.setText("Type game name here..");
         }
         else{
             moves = sb.toString();
             btnSend.setEnabled(true);
-            opponentList.setEnabled(true);
+            gameNameField.setEnabled(true);
+            gameNameField.setText("");
         }
         repaint();
     }

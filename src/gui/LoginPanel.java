@@ -39,7 +39,7 @@ public class LoginPanel extends JPanel{
         passwordField.setBounds(40, 230, 220, 30);
         btnLogin.setBounds(40, 280, 150, 30);
         btnCreateNewUser.setBounds(40, 370, 300, 30);
-        iconLabel.setBounds(280, 100, 320, 240);
+        iconLabel.setBounds(340, 100, 320, 240);
 
         add(infoLabel);
         add(usernameField);

@@ -36,7 +36,7 @@ public class Api {
 
         try {
 
-            WebResource webResource = client.resource("http://localhost:9998/api/login");
+            WebResource webResource = client.resource("http://" + Config.getIpAdresse() + ":9998/api/login");
             ClientResponse response = webResource.accept("application/json").post(ClientResponse.class,
                     new Gson().toJson(user));
 
@@ -49,14 +49,12 @@ public class Api {
                 message = response.getEntity(String.class);
 
                 try {
-                    //Initialize Object class as json, parsed by jsonParsed.
                     Object obj = jsonParser.parse(message);
-
-                    //Instantiate JSONObject class as jsonObject equal to obj object.
-                    org.json.simple.JSONObject jsonObject = (org.json.simple.JSONObject) obj;
-
-                    //Use set-methods for defifing static variables from json-file.
+                    JSONObject jsonObject = (JSONObject) obj;
                     message = ((String) jsonObject.get("message"));
+
+                    if (jsonObject.get("userid") != null)
+                    user.setId((int)(long) jsonObject.get("userid"));
 
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -82,7 +80,7 @@ public class Api {
 
         try {
 
-            WebResource webResource = client.resource("http://localhost:9998/api/users");
+            WebResource webResource = client.resource("http://" + Config.getIpAdresse() + ":9998/api/users");
             ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
 
             if (response != null) {
@@ -93,7 +91,6 @@ public class Api {
 
                 message = response.getEntity(String.class);
 
-                System.out.println(message);
                 users = new Gson().fromJson(message, new TypeToken<ArrayList<User>>(){}.getType());
 
 
@@ -140,10 +137,11 @@ public class Api {
 
 
         try {
-            WebResource webResource = client.resource("http://localhost:9998/api/user");
+            WebResource webResource = client.resource("http://" + Config.getIpAdresse() + ":9998/api/user");
             ClientResponse response = webResource.accept("application/json").post(ClientResponse.class, new Gson().toJson(user));
 
             message = response.getEntity(String.class);
+            System.out.println(message);
 
             try {
                 //Initialize Object class as json, parsed by jsonParsed.
@@ -166,24 +164,33 @@ public class Api {
         return message;
     }
 
-    public static String createGame(Game game, Gamer user, Gamer opponent){
+    public static String createGame(Game game){
 
+        JSONParser jsonParser = new JSONParser();
         String message = "";
         Client client = Client.create();
 
 
         try {
             //TODO:wtf altså...
-            WebResource webResource = client.resource("http://localhost:9998/api/game/");
-            String toJson = "{\"gameName\":\""+game.getName()+"\", \"host\":"
-                    +user.getId()+", \"opponent\":"+opponent.getId()+",\"hostControls\":\""+user.getControls()+"\"}";
-
+            WebResource webResource = client.resource("http://" + Config.getIpAdresse() + ":9998/api/game/");
 
             ClientResponse response = webResource.accept("application/json").post(ClientResponse.class, new Gson().toJson(game));
-            System.out.println(toJson);
 
             message = response.getEntity(String.class);
-        } catch (ClientHandlerException e){
+            //Initialize Object class as json, parsed by jsonParsed.
+            Object obj = jsonParser.parse(message);
+
+            //Instantiate JSONObject class as jsonObject equal to obj object.
+            JSONObject jsonObject = (JSONObject) obj;
+
+            //Use set-methods for defifing static variables from json-file.
+            message = ((String) jsonObject.get("message"));
+
+        } catch (ParseException p){
+            p.printStackTrace();
+        }
+        catch (ClientHandlerException e){
             e.printStackTrace();
         }
         return message;
@@ -196,7 +203,7 @@ public class Api {
 
 
         try {
-            WebResource webResource = client.resource("http://localhost:9998/api/startgame/" + gameId);
+            WebResource webResource = client.resource("http://" + Config.getIpAdresse() + ":9998/api/startgame/" + gameId);
 
             ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
 
@@ -217,7 +224,7 @@ public class Api {
 
 
         try {
-            WebResource webResource = client.resource("http://localhost:9998/api/game/" + gameId);
+            WebResource webResource = client.resource("http://" + Config.getIpAdresse() + ":9998/api/game/" + gameId);
 
             ClientResponse response = webResource.accept("application/json").delete(ClientResponse.class);
 
@@ -244,7 +251,7 @@ public class Api {
         User user = null;
 
         try {
-            webResource = client.resource("http://localhost:9998/helloworld/user1");
+            webResource = client.resource("http://" + Config.getIpAdresse() + ":9998/api/user1");
 
 
             response = webResource.accept("application/json").get(ClientResponse.class);
@@ -276,7 +283,7 @@ public class Api {
     public String getAuthenticatedUser(User user){
 
         try {
-            webResource = client.resource("http://localhost:9998/api/login/");
+            webResource = client.resource("http://" + Config.getIpAdresse() + ":9998/api/login/");
 
             response = webResource.accept("application/json")
                     .post(ClientResponse.class, new Gson().toJson(user));
@@ -310,7 +317,7 @@ public class Api {
     public String createUserEncryption(User user) {
 
         try {
-            webResource = client.resource("http://localhost:9998/helloworld/createuser/");
+            webResource = client.resource("http://" + Config.getIpAdresse() + ":9998/api/createuser/");
 
             response = webResource.type("application/json").post(
                     ClientResponse.class, Security.decrypt(new Gson().toJson(user), Config.getEncryptionkey()));
