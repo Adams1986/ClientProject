@@ -37,9 +37,11 @@ public class PlaySnake extends JPanel implements ActionListener{
 
         setLayout(null);
         //addKeyListener(this);
+        //addActionListener(l);
 
         gameNameField = new JTextField();
         btnSend = new JButton("Send challenge");
+        //btnSend.addActionListener(l);
 
         opponentTable = new JTable();
         scrollPane = new JScrollPane(opponentTable);
@@ -70,6 +72,19 @@ public class PlaySnake extends JPanel implements ActionListener{
 
         keyBindings();
         //getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), Config.getUP());
+
+        focusThis();
+    }
+
+    /**
+     * Gives focus to PlaySnake panel. Important for the key listener!
+     *
+     */
+    public void focusThis(){
+
+        setFocusable(true);
+        requestFocus();
+        requestFocusInWindow();
     }
 
     public String getGameNameText(){
@@ -180,7 +195,7 @@ public class PlaySnake extends JPanel implements ActionListener{
     }
 
 
-    private void move(char ch){
+    public void move(char ch){
 
         if(direction == Config.getAwaiting()) return;
 
@@ -256,5 +271,23 @@ public class PlaySnake extends JPanel implements ActionListener{
 
     public void setDirection(char direction) {
         this.direction = direction;
+    }
+
+    public void setGameNameField(String text) {
+        gameNameField.setText(text);
+    }
+
+    public void componentsSetEnabled(boolean b) {
+
+        btnSend.setEnabled(b);
+        gameNameField.setEnabled(b);
+    }
+
+    public String getSbToString() {
+        return sb.toString();
+    }
+
+    public void setMoves(String moves) {
+        this.moves = moves;
     }
 }

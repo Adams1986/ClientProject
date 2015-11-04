@@ -38,7 +38,7 @@ public class MainMenuPanel extends JPanel{
         sidePanel = new JPanel();
         centerPanel = new JPanel();
         snakePanel = new JPanel();
-        playSnake = new PlaySnake();
+        //playSnake = new PlaySnake();
         cl = new CardLayout();
 
         sidePanel.setBounds(0, 0, 320, 500);
@@ -76,7 +76,7 @@ public class MainMenuPanel extends JPanel{
      */
     public void replayGame(Gamer gamer){
 
-        //TODO: will probably take two gamer objects as parameter, for dynamic creating
+        //TODO: will probably take two gamer objects as parameter, for dynamic creating or just a game object!!
 //        Gamer gamer = new Gamer();
         Gamer opponent = new Gamer();
 
@@ -102,16 +102,16 @@ public class MainMenuPanel extends JPanel{
      * Creates a new instance of the PlaySnake JPanel,
      * to be started everytime an event happens (e.g. button-click)
      */
-    public void playSnake(ActionListener l){
+    public void addPlaySnake(ActionListener l){
 
         playSnake = new PlaySnake();
-        //playSnake.setBounds(0, 80, Config.getReplayWidth()*2, Config.getReplayHeight()*2);
+        playSnake.setBounds(0, 80, Config.getReplayWidth()*2, Config.getReplayHeight()*2);
 
         centerPanel.add(playSnake);
         cl.addLayoutComponent(playSnake, Config.getPlaySnakeScreen());
         cl.show(centerPanel, Config.getPlaySnakeScreen());
 
-        focusPlaySnake(playSnake);
+        //focusPlaySnake(playSnake);
         playSnake.addActionListener(l);
     }
 

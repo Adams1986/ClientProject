@@ -63,7 +63,7 @@ public class Controller {
 
                         screen.show(Config.getMainMenuScreen());
 //                        screen.getMainMenuPanel().replayGame(currentUser);
-                        screen.getMainMenuPanel().playSnake(new MainMenuHandlerClass());
+                        screen.getMainMenuPanel().addPlaySnake(new MainMenuHandlerClass());
                         //TODO: change ^this^ to some start menu or something, works like crap
                         screen.getMainMenuPanel().setWelcomeMessage(message);
                     } else {
@@ -92,7 +92,7 @@ public class Controller {
                 //TODO: bigish workaround to not hard code these
                 case "Play a game":
                     //takes an actionlistener as parameter for a dynamic injection of listener
-                    screen.getMainMenuPanel().playSnake(new PlaySnakeHandlerClass());
+                    screen.getMainMenuPanel().addPlaySnake(new PlaySnakeHandlerClass());
                     screen.getMainMenuPanel().getPlaySnake().setOpponentTableModel(Api.getUsers());
 
                     //TODO: put this somewhere else and call method here
@@ -154,6 +154,9 @@ public class Controller {
                     createNewUser.setEmail(screen.getCreateUserPanel().getEmailField());
                     createNewUser.setUsername(screen.getCreateUserPanel().getUsernameField());
                     createNewUser.setPassword(screen.getCreateUserPanel().getPasswordField());
+
+                    //TODO: default setting of this in some way
+                    createNewUser.setStatus("active");
                     String message = Api.createUser(createNewUser);
 
                     DialogMessage.showMessage(screen, message);
@@ -208,7 +211,19 @@ public class Controller {
         @Override
         public void actionPerformed(ActionEvent e) {
 
+            //TODO: redundant right now
+            /*if(!screen.getMainMenuPanel().getPlaySnake().isGameEnded()) {
+                screen.getMainMenuPanel().getPlaySnake().move(screen.getMainMenuPanel().getPlaySnake().getDirection());
+                screen.getMainMenuPanel().getPlaySnake().componentsSetEnabled(false);
+                screen.getMainMenuPanel().getPlaySnake().setGameNameField("Type game name here..");
+            }
+            else{
 
+                screen.getMainMenuPanel().getPlaySnake().setMoves(screen.getMainMenuPanel().getPlaySnake().getSbToString());
+                screen.getMainMenuPanel().getPlaySnake().componentsSetEnabled(true);
+                screen.getMainMenuPanel().getPlaySnake().setGameNameField("");
+            }
+            screen.getMainMenuPanel().getPlaySnake().repaint();*/
 
             switch (e.getActionCommand()) {
                 case "Send challenge":
@@ -231,7 +246,8 @@ public class Controller {
                     } else {
                         DialogMessage.showMessage(screen, "Play a game first");
 
-                        screen.getMainMenuPanel().focusPlaySnake(new PlaySnake());
+                        screen.getMainMenuPanel().getPlaySnake().focusThis();
+                        //screen.getMainMenuPanel().focusPlaySnake(new PlaySnake());
                     }
                     break;
             }
