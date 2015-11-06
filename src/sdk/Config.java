@@ -40,6 +40,7 @@ public class Config {
     private static String mainMenuScreen;
     private static String replaySnakeScreen;
     private static String playSnakeScreen;
+    private static String createNewGameScreen;
 
     private static String logoutMessage;
     private static String logoutTitle;
@@ -50,6 +51,7 @@ public class Config {
 
     private static String [] columnNamesGameTable;
     private static String [] columnNamesUserTable = new String[3];;
+    private static String gameChooserScreen;
 
 
     public static void init () {
@@ -109,11 +111,12 @@ public class Config {
             setCreateUserScreen((String) jsonObject.get("createuserscreen"));
             setReplaySnakeScreen((String) jsonObject.get("replaysnakescreen"));
             setPlaySnakeScreen((String) jsonObject.get("playsnakescreen"));
+            setCreateNewGameScreen((String) jsonObject.get("gamewizardscreen"));
+            setGameChooserScreen((String) jsonObject.get("createnewgamescreen"));
 
             setLogoutMessage((String) jsonObject.get("logoutmessage"));
             setLogoutTitle((String) jsonObject.get("logouttitle"));
 
-            //setColumnNamesGameTable((String[]) jsonObject.get("columnnamesgametable"));
             getColumnNamesUserTable()[0] = ((String) jsonObject.get("firstname"));
             getColumnNamesUserTable()[1] = ((String) jsonObject.get("lastname"));
             getColumnNamesUserTable()[2] = ((String) jsonObject.get("username"));
@@ -342,6 +345,14 @@ public class Config {
         Config.playSnakeScreen = playSnakeScreen;
     }
 
+    public static String getCreateNewGameScreen() {
+        return createNewGameScreen;
+    }
+
+    public static void setCreateNewGameScreen(String createNewGameScreen) {
+        Config.createNewGameScreen = createNewGameScreen;
+    }
+
     public static String getLogoutMessage() {
         return logoutMessage;
     }
@@ -396,5 +407,13 @@ public class Config {
 
     public static void setColumnNamesUserTable(String[] columnNamesUserTable) {
         Config.columnNamesUserTable = columnNamesUserTable;
+    }
+
+    public static String getGameChooserScreen() {
+        return gameChooserScreen;
+    }
+
+    public static void setGameChooserScreen(String gameChooserScreen) {
+        Config.gameChooserScreen = gameChooserScreen;
     }
 }

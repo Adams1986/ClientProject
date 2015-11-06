@@ -20,8 +20,9 @@ public class GameTableModel extends AbstractTableModel {
     public GameTableModel (ArrayList<Game> games){
 
         gameList = games;
-        //columns = new String []{"Host", "Opponent", "Game name", "Game status", "Created", "Winner", "Map size"};
-        columns = Config.getColumnNamesGameTable();
+        //Winner and opponent redundant in the case of join game
+        columns = new String []{"Challenger", "Opponent", "Game name", "Game status", "Created", "Winner", "Map size"};
+        //columns = Config.getColumnNamesGameTable();
         fireTableStructureChanged();
     }
 

@@ -1,12 +1,11 @@
 package gui;
 
 import sdk.Config;
-import sdk.Gamer;
+import sdk.Game;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.util.LinkedList;
 
 /**
  * The Main menu. Is a customised panel which contains the view of the clients main menu
@@ -21,9 +20,11 @@ public class MainMenuPanel extends JPanel{
     private JButton btnLogOut;
     private JPanel sidePanel;
     private JPanel centerPanel;
-    private JPanel snakePanel;
     private CardLayout cl;
-    private PlaySnake playSnake;
+    private SnakeGameEngine snakeGameEngine;
+    private ReplaySnake replaySnake;
+    private CreateNewGame createNewGame;
+    private GameChooser gameChooser;
 
 
     public MainMenuPanel(){
@@ -37,8 +38,8 @@ public class MainMenuPanel extends JPanel{
         btnLogOut = new JButton("Log out");
         sidePanel = new JPanel();
         centerPanel = new JPanel();
-        snakePanel = new JPanel();
-        //playSnake = new PlaySnake();
+        createNewGame = new CreateNewGame();
+        gameChooser = new GameChooser();
         cl = new CardLayout();
 
         sidePanel.setBounds(0, 0, 320, 500);
@@ -64,6 +65,9 @@ public class MainMenuPanel extends JPanel{
         sidePanel.add(btnDeleteGame);
         sidePanel.add(btnLogOut);
 
+        centerPanel.add(createNewGame, Config.getCreateNewGameScreen());
+        centerPanel.add(gameChooser, Config.getGameChooserScreen());
+
 
         add(sidePanel);
         add(centerPanel);
@@ -72,52 +76,56 @@ public class MainMenuPanel extends JPanel{
     }
 
     /**
+     * For controller to use to enable/disable sidepanel with menu buttons to help user not to get distracted and focus
+     * on the game and more importantly to avoid the unreliable nature of pressing menu button while game is currently
+     * being played.
+     * Also avoids cheating if not doing so well TODO: (can close the client app though)
+     * @param b boolean to determine if sidepanels components should be enabled
+     */
+    public void setSidePanelState(boolean b) {
+
+        Component[] components = sidePanel.getComponents();
+
+        for (Component c : components)
+            c.setEnabled(b);
+    }
+
+    /**
      * Dynamically shows a replay of a game. To be used in the logic
      */
-    public void replayGame(Gamer gamer){
+    public void addReplaySnakeToPanel(Game game, ActionListener l){
 
-        //TODO: will probably take two gamer objects as parameter, for dynamic creating or just a game object!!
-//        Gamer gamer = new Gamer();
-        Gamer opponent = new Gamer();
-
-        gamer.setSnakeColor(Color.BLUE);
-        gamer.setSnake(new LinkedList<Point>());
-        gamer.getSnake().add(new Point((Config.getBoardWidth()-2)/2, (Config.getBoardHeight()-2)/2));
-
-        opponent.setSnakeColor(Color.RED);
-        opponent.setSnake(new LinkedList<Point>());
-        opponent.getSnake().add(new Point((Config.getBoardWidth()+2)/2, (Config.getBoardHeight()+2)/2));
-        opponent.setControls("ddddddssssssaaaaaaaaawwwwddd");
-
-        ReplaySnake replaySnake = new ReplaySnake(gamer, opponent);
-        replaySnake.setBounds(0, 80, Config.getReplayWidth()*2, Config.getAppHeight());
-
+        replaySnake = new ReplaySnake(game, l);
         centerPanel.add(replaySnake);
         cl.addLayoutComponent(replaySnake, Config.getReplaySnakeScreen());
         cl.show(centerPanel, Config.getReplaySnakeScreen());
 
     }
 
-    /**
-     * Creates a new instance of the PlaySnake JPanel,
-     * to be started everytime an event happens (e.g. button-click)
-     */
-    public void addPlaySnake(ActionListener l){
+    public ReplaySnake getReplaySnake(){
 
-        playSnake = new PlaySnake();
-        playSnake.setBounds(0, 80, Config.getReplayWidth()*2, Config.getReplayHeight()*2);
+        //makes sure that addReplaySnakeToPanel is called first
+        if (replaySnake != null)
+            return replaySnake;
 
-        centerPanel.add(playSnake);
-        cl.addLayoutComponent(playSnake, Config.getPlaySnakeScreen());
-        cl.show(centerPanel, Config.getPlaySnakeScreen());
-
-        //focusPlaySnake(playSnake);
-        playSnake.addActionListener(l);
+        return null;
     }
 
-    public PlaySnake getPlaySnake(){
+    /**
+     * Creates a new instance of the SnakeGameEngine JPanel,
+     * to be started everytime an event happens (e.g. button-click)
+     */
+    public void addPlaySnake(ActionListener l, Game newGame){
 
-        return playSnake;
+        snakeGameEngine = new SnakeGameEngine(l, newGame);
+        centerPanel.add(snakeGameEngine);
+        cl.addLayoutComponent(snakeGameEngine, Config.getPlaySnakeScreen());
+        cl.show(centerPanel, Config.getPlaySnakeScreen());
+    }
+
+    public SnakeGameEngine getSnakeGameEngine(){
+
+        return snakeGameEngine;
     }
     /**
      * Method to be used by logic to inject an actionlistener,
@@ -137,18 +145,17 @@ public class MainMenuPanel extends JPanel{
         cl.show(centerPanel, card);
     }
 
-    /**
-     * Gives fokus to PlaySnake panel. Important for the keylistener!
-     * Also important to initialize after JFrame has loaded
-     * @param playSnake
-     */
-    public void focusPlaySnake(PlaySnake playSnake){
-        playSnake.setFocusable(true);
-        playSnake.requestFocus();
-        playSnake.requestFocusInWindow();
-    }
-
     public void setWelcomeMessage(String welcomeMessage) {
         welcomeLabel.setText(welcomeMessage);
     }
+
+    public CreateNewGame getCreateNewGamePanel() {
+        return createNewGame;
+    }
+
+    public GameChooser getGameChooserPanel(){
+
+        return gameChooser;
+    }
+
 }

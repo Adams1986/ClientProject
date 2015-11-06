@@ -1,6 +1,7 @@
 package gui;
 
 import sdk.Config;
+import sdk.Game;
 import sdk.Gamer;
 
 import javax.swing.*;
@@ -11,7 +12,7 @@ import java.awt.event.ActionListener;
 /**
  * Class contains the logic for drawing one or two snakes to the canvas from a finished game
  */
-public class ReplaySnake extends JPanel implements ActionListener{
+public class ReplaySnake extends JPanel {
 
     private Gamer user;
     private Gamer opponent;
@@ -19,36 +20,29 @@ public class ReplaySnake extends JPanel implements ActionListener{
     //Timer instead of Thread.sleep. Important in a JPanel
     private Timer tm;
     private int counter;
+    private Game game;
     ;
 
     /**
      * Constructor for completed game.
      * Two gamer objects, for a completed game with two moving snakes.
-     * @param host
-     * @param opponent
+     * @param game
+     * @param l
      */
-    public ReplaySnake(Gamer host, Gamer opponent){
+    //TODO: Maybe use a Score object instead and make som graphics for winner/loser points etc.
+    public ReplaySnake(Game game, ActionListener l){
 
-        this.user = host;
-        this.opponent = opponent;
-        tm = new Timer(Config.getDelay(), this);
+        this.game = game;
+        user = game.getHost();
+        if (game.getOpponent() != null)
+            opponent = game.getOpponent();
+
+        tm = new Timer(Config.getDelay(), l);
+        System.out.println(Config.getDelay());
         counter = Config.getCount();
 
-        setBounds(0, 80, 320, 500);
+        setBounds(0, 80, Config.getReplayWidth()*2, Config.getAppHeight());
 
-    }
-
-    /**
-     * Constructor for a single users game, so he can watch his own movement.
-     * @param user
-     */
-    public ReplaySnake(Gamer user){
-
-        this.user = user;
-        tm = new Timer(Config.getDelay(), this);
-        counter = Config.getCount();
-
-        setBounds(0, 80, 320, 500);
     }
 
     /**
@@ -64,14 +58,14 @@ public class ReplaySnake extends JPanel implements ActionListener{
         drawSnake(g, user);
 
         //makes it possible to replay runs with single user
-        if (opponent != null) {
+        if (opponent.getControls() != null) {
             drawSnake(g, opponent);
         }
         tm.start();
     }
 
     /**
-     * Draws the gamer objects linked list to the canvas. Uses the move method to populate the list.
+     * Draws the gamer object's linked list to the canvas. Uses the move method to populate the list.
      * @param g takes a graphics object as parameter
      * @param gamer takes a gamer object as a parameter (see gamer class for more info)
      */
@@ -99,10 +93,11 @@ public class ReplaySnake extends JPanel implements ActionListener{
      * @param user
      * @param ch
      */
-    private void move(Gamer user, char ch){
+    public void move(Gamer user, char ch){
 
         Point head = user.getSnake().peekFirst();
         Point newPoint = head;
+        Point addPoint = (Point) newPoint.clone();
 
         //hardcoded chars and Points
         switch (ch) {
@@ -124,39 +119,56 @@ public class ReplaySnake extends JPanel implements ActionListener{
                 newPoint = new Point(head.x + 1, head.y);
                 break;
         }
+        user.getSnake().push(addPoint);
+
+        if (newPoint.x < 0 || newPoint.x > game.getMapSize() - 1){
+
+            return;
+        }
+        else if (newPoint.y < 0 || newPoint.y > game.getMapSize() - 1){
+
+            return;
+        }
+        else if (user.getSnake().contains(newPoint)){
+
+            return;
+        }
+        else if (user.getSnake().size() == game.getMapSize() * game.getMapSize()){
+
+            return;
+        }
         user.getSnake().push(newPoint);
-
     }
 
-
-    /**
-     * uses movemethod to make the 'incremental' changes of the snake to make animation materialize
-     * @param e
-     */
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
-        //populates snake by taking the string controls and checking whether up, down, left or right (w,s,a,d).
-        if (counter < user.getControls().length()) {
-            move(user, user.getControls().charAt(counter));
-        }
-        //checking theres an opponent and populates the snake with points
-        if (opponent != null) {
-            if (counter < opponent.getControls().length()){
-                move(opponent, opponent.getControls().charAt(counter));
-            }
-        }
-        //repaints as long as there are usercontrols and opponentcontrols
-        if(counter > user.getControls().length() &&
-                (opponent != null && counter > opponent.getControls().length())){
-
-            tm.stop();
-        }
-        else {
-            counter++;
-            repaint();
-        }
-    }
+//TODO: remove? and have in Controller instead
+//    /**
+//     * Uses move method to make the 'incremental' changes of the snake to make animation materialize
+//     * @param e
+//     */
+//    @Override
+//    public void actionPerformed(ActionEvent e) {
+//
+//        //populates snake by taking the string controls and checking whether up, down, left or right (w,s,a,d).
+//        if (counter < user.getControls().length()) {
+//            move(user, user.getControls().charAt(counter));
+//        }
+//        //checking theres an opponent and populates the snake with points
+//        if (opponent.getControls() != null) {
+//            if (counter < opponent.getControls().length()){
+//                move(opponent, opponent.getControls().charAt(counter));
+//            }
+//        }
+//        //repaints as long as there are usercontrols and opponentcontrols
+//        if(counter > user.getControls().length() &&
+//                (opponent.getControls() != null && counter > opponent.getControls().length())){
+//
+//            tm.stop();
+//        }
+//        else {
+//            counter++;
+//            repaint();
+//        }
+//    }
 
 
     /**
@@ -167,24 +179,24 @@ public class ReplaySnake extends JPanel implements ActionListener{
     private void drawBoard(Graphics g){
 
         //draw outer frame
-        g.drawRect(Config.getBoardStartXY(), Config.getBoardStartXY(), Config.getFieldWidth() * Config.getBoardWidth(),
-                Config.getFieldHeight() * Config.getBoardHeight());
+        g.drawRect(Config.getBoardStartXY(), Config.getBoardStartXY(), Config.getFieldWidth() * game.getMapSize(),
+                Config.getFieldHeight() * game.getMapSize());
 
 
-        //draw vertical lines
-        for (int x = Config.getFieldWidth(); x < Config.getFieldWidth() * Config.getBoardWidth() ; x+= Config.getFieldWidth()) {
+        //vertical lines
+        for (int x = Config.getFieldWidth(); x < Config.getFieldWidth() * game.getMapSize() ; x+= Config.getFieldWidth()) {
 
-            g.drawLine(x, Config.getBoardStartXY(), x, Config.getFieldHeight() * Config.getBoardHeight());
+            g.drawLine(x, Config.getBoardStartXY(), x, Config.getFieldHeight() * game.getMapSize());
         }
+        //horizontal lines
+        for (int y = Config.getFieldHeight(); y < Config.getFieldHeight() * game.getMapSize() ; y+= Config.getFieldHeight()) {
 
-        //draw horizontal lines
-        for (int y = Config.getFieldHeight(); y < Config.getFieldHeight() * Config.getBoardHeight() ; y+= Config.getFieldHeight()) {
-
-            g.drawLine(Config.getBoardStartXY(), y, Config.getFieldWidth() * Config.getBoardWidth(), y);
+            g.drawLine(Config.getBoardStartXY(), y, Config.getFieldWidth() * game.getMapSize(), y);
         }
-        for (int y = Config.getFieldHeight(); y < Config.getFieldHeight() * Config.getBoardHeight() ; y+= Config.getFieldHeight()) {
+    }
 
-            g.drawLine(Config.getBoardStartXY(), y, Config.getFieldWidth() * Config.getBoardWidth(), y);
-        }
+    public void stopTimer() {
+
+        tm.stop();
     }
 }

@@ -1,23 +1,19 @@
 package sdk;
 
-/**
- * Created by nicolaiostergaard on 12/10/15.
- */
-
 
 // Creates class Score
 public class Score {
 
     // Declare highScore
     private int id;
-    private User user;
-    private int opponent;
+    private Gamer user;
+    private Gamer opponent;
     private Game game;
     private int score;
 
     //TODO: Kan slettes?! Bruges ikke i wrapper længere.
     // Creates constructor
-    public Score(int id, User user, Game game, int opponent, int score)
+    public Score(int id, Gamer user, Game game, Gamer opponent, int score)
     {
         this.id = id;
         this.user = user;
@@ -30,9 +26,9 @@ public class Score {
 
     // Creates get method which returns the highScore
 
-    public int getOpponent() { return opponent; }
+    public Gamer getOpponent() { return opponent; }
 
-    public void setOpponent(int opponent) { this.opponent = opponent;  }
+    public void setOpponent(Gamer opponent) { this.opponent = opponent;  }
 
     public int getId() {
         return id;
@@ -42,11 +38,11 @@ public class Score {
         this.id = id;
     }
 
-    public User getUser() {
+    public Gamer getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Gamer user) {
         this.user = user;
     }
 

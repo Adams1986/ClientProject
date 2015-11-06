@@ -41,10 +41,6 @@ public class Api {
                     new Gson().toJson(user));
 
             if(response != null) {
-//                if (response.getStatus() != 200) {
-//
-//                    throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-//                }
 
                 message = response.getEntity(String.class);
 
@@ -84,10 +80,6 @@ public class Api {
             ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
 
             if (response != null) {
-//                if (response.getStatus() != 200) {
-//
-//                    throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-//                }
 
                 message = response.getEntity(String.class);
 
@@ -114,10 +106,6 @@ public class Api {
             ClientResponse response = webResource.accept("application/json").delete(ClientResponse.class);
 
             if (response != null) {
-//                if (response.getStatus() != 200) {
-//
-//                    throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-//                }
 
                 message = response.getEntity(String.class);
 
@@ -172,8 +160,38 @@ public class Api {
 
 
         try {
-            //TODO:wtf altså...
             WebResource webResource = client.resource("http://" + Config.getIpAdresse() + ":9998/api/game/");
+
+            ClientResponse response = webResource.accept("application/json").post(ClientResponse.class, new Gson().toJson(game));
+
+            message = response.getEntity(String.class);
+            //Initialize Object class as json, parsed by jsonParsed.
+            Object obj = jsonParser.parse(message);
+
+            //Instantiate JSONObject class as jsonObject equal to obj object.
+            JSONObject jsonObject = (JSONObject) obj;
+
+            //Use set-methods for defifing static variables from json-file.
+            message = ((String) jsonObject.get("message"));
+
+        } catch (ParseException p){
+            p.printStackTrace();
+        }
+        catch (ClientHandlerException e){
+            e.printStackTrace();
+        }
+        return message;
+    }
+
+    public static String updateGame(Game game){
+
+        JSONParser jsonParser = new JSONParser();
+        String message = "";
+        Client client = Client.create();
+
+
+        try {
+            WebResource webResource = client.resource("http://" + Config.getIpAdresse() + ":9998/api/game/update/");
 
             ClientResponse response = webResource.accept("application/json").post(ClientResponse.class, new Gson().toJson(game));
 
@@ -238,103 +256,80 @@ public class Api {
 
     }
 
+    public static Game getGame(int gameId){
 
-
-
-
-
-
-
-
-    public User getUserObject(){
-
-        User user = null;
+        String message = "";
+        Client client = Client.create();
+        Game game = null;
 
         try {
-            webResource = client.resource("http://" + Config.getIpAdresse() + ":9998/api/user1");
+            WebResource webResource = client.resource("http://" + Config.getIpAdresse() + ":9998/api/game/" + gameId);
 
+            ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
 
-            response = webResource.accept("application/json").get(ClientResponse.class);
+            message = response.getEntity(String.class);
 
-        } catch (ClientHandlerException e) {
+            game = new Gson().fromJson(message, Game.class);
+            System.out.println(message);
 
-            System.out.println("Test");
+        } catch (ClientHandlerException e){
+            e.printStackTrace();
         }
 
-        if(response != null) {
-            if (response.getStatus() != 200) {
-
-                throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-            }
-
-            Security security = new Security();
-
-            String encryptedUser = response.getEntity(String.class);
-
-            String decryptedUser = security.decrypt(encryptedUser, "1");
-
-            user = new Gson().fromJson(decryptedUser, User.class);
-
-            System.out.println(user.getUsername());
-        }
-        return user;
+        return game;
     }
 
-    public String getAuthenticatedUser(User user){
+    public static ArrayList<Game> getGamesInvitedByID(int userId){
 
-        try {
-            webResource = client.resource("http://" + Config.getIpAdresse() + ":9998/api/login/");
+        String response = Client
+                .create()
+                .resource("http://" + Config.getIpAdresse() + ":9998/api/games/guest/" + userId)
+                .accept("application/json")
+                .get(ClientResponse.class)
+                .getEntity(String.class);
 
-            response = webResource.accept("application/json")
-                    .post(ClientResponse.class, new Gson().toJson(user));
-            System.out.println(new Gson().toJson(user));
-//                    .post(ClientResponse.class, Security.encrypt(new Gson().toJson(user), encryptionKey));
-        } catch (ClientHandlerException e) {
-
-            System.out.println("Test");
-        }
-
-        if(response != null) {
-            if (response.getStatus() != 200) {
-
-                throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-            }
-
-            Security security = new Security();
-
-            String encryptedUser = response.getEntity(String.class);
-
-            String decryptedUser = security.decrypt(encryptedUser, "1");
-
-
-            return encryptedUser;
-
-        }
-
-        return null;
+        return new Gson().fromJson(response, new TypeToken<ArrayList<Game>>(){}.getType());
     }
 
-    public String createUserEncryption(User user) {
+    public static ArrayList<Game> getGamesByUserID(int userId){
 
-        try {
-            webResource = client.resource("http://" + Config.getIpAdresse() + ":9998/api/createuser/");
+        String response = Client
+                .create()
+                .resource("http://" + Config.getIpAdresse() + ":9998/api/games/" + userId)
+                .accept("application/json")
+                .get(ClientResponse.class)
+                .getEntity(String.class);
 
-            response = webResource.type("application/json").post(
-                    ClientResponse.class, Security.decrypt(new Gson().toJson(user), Config.getEncryptionkey()));
+        return new Gson().fromJson(response, new TypeToken<ArrayList<Game>>(){}.getType());
+    }
 
-        } catch (ClientHandlerException e) {
+    /**
+     * Looks better than the others right :)
+     * @return
+     */
+    public static ArrayList<Score> getHighScore(){
 
-            System.out.println("Test");
-        }
-        if(response != null) {
-            if (response.getStatus() != 200) {
+        //TODO: change to this format
+        String response = Client
+                .create()
+                .resource("http://" + Config.getIpAdresse() + ":9998/api/scores")
+                .accept("application/json")
+                .get(ClientResponse.class)
+                .getEntity(String.class);
 
-                throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-            }
+       return new Gson().fromJson(response,  new TypeToken<ArrayList<Score>>(){}.getType());
 
-            return response.getEntity(String.class);
-        }
-        return "";
+    }
 
+    public static ArrayList<Score> getScores(int userId){
+
+        String response = Client
+                .create()
+                .resource("http://" + Config.getIpAdresse() + ":9998/api/scores/" + userId)
+                .accept("application/json")
+                .get(ClientResponse.class)
+                .getEntity(String.class);
+
+        return new Gson().fromJson(response, new TypeToken<ArrayList<Score>>(){}.getType());
     }
 }

@@ -1,6 +1,7 @@
 package gui;
 
 import sdk.Config;
+import sdk.Game;
 import sdk.Gamer;
 import sdk.User;
 
@@ -17,57 +18,31 @@ import java.util.LinkedList;
  * Play a game of snake. Draws the movements of a user to a JPanel
  */
 //TODO: remove actionlistener from here and instead add them in controller somehow
-public class PlaySnake extends JPanel implements ActionListener{
+public class SnakeGameEngine extends JPanel {
 
     private LinkedList<Point> snake;
     //TODO: flytte move over i controller
     private char direction;
     private StringBuilder sb;
-    private String moves;
     private Timer tm;
     private boolean gameEnded;
 
-    private JButton btnSend;
-    private JTable opponentTable;
-    private JTextField gameNameField;
-    private JScrollPane scrollPane;
-    private UserTableModel tableModel;
+    private Game game;
 
-    public PlaySnake(){
 
-        setLayout(null);
-        //addKeyListener(this);
-        //addActionListener(l);
+    //TODO: change to int mapSize at some point?!
+    public SnakeGameEngine(ActionListener l, Game game){
 
-        gameNameField = new JTextField();
-        btnSend = new JButton("Send challenge");
-        //btnSend.addActionListener(l);
-
-        opponentTable = new JTable();
-        scrollPane = new JScrollPane(opponentTable);
-
-        gameNameField.setBounds(40, 840, 150, 30);
-        btnSend.setBounds(40, 900, 150, 30);
-        //opponentTable.setBounds(40, 720, 220, 30);
-        scrollPane.setBounds(0, 540, 500, 260);
-
-        gameNameField.setToolTipText("Give your game a name");
-        gameNameField.setEnabled(false);
-        btnSend.setEnabled(false);
-
-        add(gameNameField);
-        add(btnSend);
-        add(scrollPane);
-        //add(opponentList);
 
         //TODO: move to paintComponent if trouble restarting game?
+        this.game = game;
         snake = new LinkedList<>();
         sb = new StringBuilder();
-        tm = new Timer(Config.getDelay(), this);
+        tm = new Timer(Config.getDelay(), l);
         tm.start();
 
         generateDefaultSnake();
-        setFocusable(true);
+
         gameEnded = false;
 
         keyBindings();
@@ -76,8 +51,9 @@ public class PlaySnake extends JPanel implements ActionListener{
         focusThis();
     }
 
+
     /**
-     * Gives focus to PlaySnake panel. Important for the key listener!
+     * Gives focus to SnakeGameEngine panel. Important for the key listener!
      *
      */
     public void focusThis(){
@@ -87,16 +63,6 @@ public class PlaySnake extends JPanel implements ActionListener{
         requestFocusInWindow();
     }
 
-    public String getGameNameText(){
-
-        return gameNameField.getText();
-    }
-
-    public void setOpponentTableModel(ArrayList<User> users){
-
-        tableModel = new UserTableModel(users);
-        opponentTable.setModel(tableModel);
-    }
     public void keyBindings() {
 
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), Config.getUP());
@@ -115,21 +81,16 @@ public class PlaySnake extends JPanel implements ActionListener{
 //        });
     }
 
-    public User getOpponent(){
-
-        return tableModel.getUserFromTable(opponentTable.getSelectedRow());
-    }
-
-    public void addActionListener(ActionListener l){
-
-        btnSend.addActionListener(l);
-    }
 
     private void generateDefaultSnake() {
 
         //TODO: When playing a game from challenge, change to +2 instead
         snake.clear();
-        snake.add(new Point((Config.getBoardWidth()-2)/2,(Config.getBoardHeight()-2)/2));
+        if(game.getHostControls() == null)
+            snake.add(new Point((game.getMapSize()-2)/2,(game.getMapSize()-2)/2));
+        else
+            snake.add(new Point((game.getMapSize()+2)/2,(game.getMapSize()+2)/2));
+
         direction = Config.getAwaiting();
     }
 
@@ -140,25 +101,37 @@ public class PlaySnake extends JPanel implements ActionListener{
         drawBoard(g);
         drawSnake(g);
 
+        if (gameEnded) {
+
+            drawMessage(g);
+        }
+
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
+    private void drawMessage(Graphics g) {
 
-        if(!gameEnded) {
-            move(direction);
-            btnSend.setEnabled(false);
-            gameNameField.setEnabled(false);
-            gameNameField.setText("Type game name here..");
-        }
-        else{
-            moves = sb.toString();
-            btnSend.setEnabled(true);
-            gameNameField.setEnabled(true);
-            gameNameField.setText("");
-        }
-        repaint();
+        g.setColor(Color.CYAN);
+        g.setFont(new Font("Sans Serif", Font.BOLD, 20));
+        g.drawString("Hello there", 40, 500);
     }
+
+//    @Override
+//    public void actionPerformed(ActionEvent e) {
+//
+//        if(!gameEnded) {
+//            move(direction);
+//            btnSend.setEnabled(false);
+//            gameNameField.setEnabled(false);
+//            gameNameField.setText("Type game name here..");
+//        }
+//        else{
+//            moves = sb.toString();
+//            btnSend.setEnabled(true);
+//            gameNameField.setEnabled(true);
+//            gameNameField.setText("");
+//        }
+//        repaint();
+//    }
 
 
 
@@ -174,23 +147,20 @@ public class PlaySnake extends JPanel implements ActionListener{
 
     private void drawBoard(Graphics g){
 
-        g.drawRect(Config.getBoardStartXY(), Config.getBoardStartXY(), Config.getFieldWidth() * Config.getBoardWidth(), Config.getFieldHeight() * Config.getBoardHeight());
+        //draw outer frame
+        g.drawRect(Config.getBoardStartXY(), Config.getBoardStartXY(), Config.getFieldWidth() * game.getMapSize(),
+                Config.getFieldHeight() * game.getMapSize());
 
 
-        //TODO: horizontal lines or is it
-        for (int x = Config.getFieldWidth(); x < Config.getFieldWidth() * Config.getBoardWidth() ; x+= Config.getFieldWidth()) {
+        //vertical lines
+        for (int x = Config.getFieldWidth(); x < Config.getFieldWidth() * game.getMapSize() ; x+= Config.getFieldWidth()) {
 
-            g.drawLine(x, Config.getBoardStartXY(), x, Config.getFieldHeight() * Config.getBoardHeight());
+            g.drawLine(x, Config.getBoardStartXY(), x, Config.getFieldHeight() * game.getMapSize());
         }
+        //horizontal lines
+        for (int y = Config.getFieldHeight(); y < Config.getFieldHeight() * game.getMapSize() ; y+= Config.getFieldHeight()) {
 
-        //TODO: vertical lines
-        for (int y = Config.getFieldHeight(); y < Config.getFieldHeight() * Config.getBoardHeight() ; y+= Config.getFieldHeight()) {
-
-            g.drawLine(Config.getBoardStartXY(), y, Config.getFieldWidth() * Config.getBoardWidth(), y);
-        }
-        for (int y = Config.getFieldHeight(); y < Config.getFieldHeight() * Config.getBoardHeight() ; y+= Config.getFieldHeight()) {
-
-            g.drawLine(Config.getBoardStartXY(), y, Config.getFieldWidth() * Config.getBoardWidth(), y);
+            g.drawLine(Config.getBoardStartXY(), y, Config.getFieldWidth() * game.getMapSize(), y);
         }
     }
 
@@ -229,13 +199,13 @@ public class PlaySnake extends JPanel implements ActionListener{
         //add head to front
         snake.push(addPoint);
 
-        if (newPoint.x < 0 || newPoint.x > Config.getBoardWidth() - 1){
+        if (newPoint.x < 0 || newPoint.x > game.getMapSize() - 1){
 
             //out of board/bounds horizontally - end
             gameEnded = true;
             return;
         }
-        else if (newPoint.y < 0 || newPoint.y > Config.getBoardHeight() - 1){
+        else if (newPoint.y < 0 || newPoint.y > game.getMapSize() - 1){
 
             //out of bounds vertically
             gameEnded = true;
@@ -247,7 +217,7 @@ public class PlaySnake extends JPanel implements ActionListener{
             gameEnded = true;
             return;
         }
-        else if (snake.size() == Config.getBoardHeight() * Config.getBoardWidth()){
+        else if (snake.size() == game.getMapSize() * game.getMapSize()){
 
             //filled the whole board -end
             gameEnded = true;
@@ -255,10 +225,6 @@ public class PlaySnake extends JPanel implements ActionListener{
         }
         //add head again
         snake.push(newPoint);
-    }
-
-    public String getMoves() {
-        return moves;
     }
 
     public boolean isGameEnded() {
@@ -273,21 +239,11 @@ public class PlaySnake extends JPanel implements ActionListener{
         this.direction = direction;
     }
 
-    public void setGameNameField(String text) {
-        gameNameField.setText(text);
-    }
-
-    public void componentsSetEnabled(boolean b) {
-
-        btnSend.setEnabled(b);
-        gameNameField.setEnabled(b);
-    }
-
     public String getSbToString() {
         return sb.toString();
     }
 
-    public void setMoves(String moves) {
-        this.moves = moves;
+    public void stopTimer() {
+        tm.stop();
     }
 }
