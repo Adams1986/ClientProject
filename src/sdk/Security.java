@@ -81,6 +81,32 @@ public class Security {
         }
     }
 
+    public static String encrypt(int number, String key){
+        try {
+            String message = String.valueOf(number);
+            if (message==null || key==null ) return null;
+
+            char[] keys=key.toCharArray();
+            char[] mesg=message.toCharArray();
+            BASE64Encoder encoder = new BASE64Encoder();
+
+            int ml=mesg.length;
+            int kl=keys.length;
+            char[] newmsg=new char[ml];
+
+            for (int i=0; i<ml; i++){
+                newmsg[i]=(char)(mesg[i]^keys[i%kl]);
+            }
+            mesg=null;
+            keys=null;
+            String temp = new String(newmsg);
+            return new String(new BASE64Encoder().encodeBuffer(temp.getBytes()));
+        }
+        catch ( Exception e ) {
+            return null;
+        }
+    }
+
     /**
      * This method returns a decrypted (XOR) String
      * Source: http://stackoverflow.com/questions/13641563/xor-cipher-in-java-php-different-results
@@ -109,5 +135,31 @@ public class Security {
         catch ( Exception e ) {
             return null;
         }
-    }}
+    }
+
+    public static int decrypt(int number, String key){
+        try {
+            String message = String.valueOf(number);
+
+            if (message==null || key==null ) return -1;
+            BASE64Decoder decoder = new BASE64Decoder();
+            char[] keys=key.toCharArray();
+            message = new String(decoder.decodeBuffer(message));
+            char[] mesg=message.toCharArray();
+
+            int ml=mesg.length;
+            int kl=keys.length;
+            char[] newmsg=new char[ml];
+
+            for (int i=0; i<ml; i++){
+                newmsg[i]=(char)(mesg[i]^keys[i%kl]);
+            }
+            mesg=null; keys=null;
+            return Integer.parseInt(new String(newmsg));
+        }
+        catch ( Exception e ) {
+            return -1;
+        }
+    }
+}
 
