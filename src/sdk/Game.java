@@ -1,5 +1,6 @@
 package sdk;
 
+import sdk.Gamer;
 
 import java.sql.Date;
 
@@ -12,27 +13,11 @@ public class Game {
     private int gameId;
     private Gamer winner;
     private String name;
-    private String hostControls;
     private Gamer host;
     private Gamer opponent;
-    private String opponentControls;
     private String status;
     private Date created;
     private int mapSize;
-
-    //Creating the constructor and initiating the variables
-    public Game(int gameId, Gamer winner, String hostControls, Date created, String name, Gamer host, Gamer
-            opponent, String status, int mapSize){
-        this.mapSize = mapSize;
-        this.gameId = gameId;
-        this.winner = winner;
-        this.created = created;
-        this.hostControls = hostControls;
-        this.name = name;
-        this.host = host;
-        this.opponent = opponent;
-        this.status = status;
-    }
 
     public Game(){}
 
@@ -60,21 +45,6 @@ public class Game {
         this.name = name;
     }
 
-    //methods that the API can use
-    public User getResultForGame(){
-        return winner;
-    }
-
-    public User getWinner() {
-        return winner;
-    }
-
-    public void setWinner(Gamer winner) {
-        this.winner = winner;
-    }
-
-    public void validate(){    }
-
     //Creating get/set method for all the variables, so they can be used by other classes
     public int getGameId(){
         return gameId;
@@ -82,14 +52,6 @@ public class Game {
 
     public void setGameId(int gameId){
         this.gameId = gameId;
-    }
-
-    public String getHostControls() {
-        return hostControls;
-    }
-
-    public void setHostControls(String controls) {
-        this.hostControls = controls;
     }
 
     public Gamer getHost(){
@@ -116,11 +78,11 @@ public class Game {
         this.status = status;
     }
 
-    public String getOpponentControls() {
-        return opponentControls;
+    public Gamer getWinner() {
+        return winner;
     }
 
-    public void setOpponentControls(String opponentControls) {
-        this.opponentControls = opponentControls;
+    public void setWinner(Gamer winner) {
+        this.winner = winner;
     }
 } //end of class

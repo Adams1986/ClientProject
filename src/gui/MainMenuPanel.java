@@ -31,7 +31,7 @@ public class MainMenuPanel extends JPanel{
         setLayout(null);
 
         welcomeLabel = new JLabel("welcomelabel...");
-        btnPlay = new JButton("Play a game");
+        btnPlay = new JButton(Config.getBtnPlayText());
         btnWatchReplay = new JButton("Watch a replay");
         btnShowHighScore = new JButton("High scores");
         btnDeleteGame = new JButton("Delete a game");

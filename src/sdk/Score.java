@@ -1,5 +1,9 @@
 package sdk;
 
+/**
+ * Created by nicolaiostergaard on 12/10/15.
+ */
+
 
 // Creates class Score
 public class Score {
@@ -11,7 +15,7 @@ public class Score {
     private Game game;
     private int score;
 
-    //TODO: Kan slettes?! Bruges ikke i wrapper længere.
+    //TODO: Kan slettes?! Bruges ikke i wrapper lÃ¦ngere.
     // Creates constructor
     public Score(int id, Gamer user, Game game, Gamer opponent, int score)
     {

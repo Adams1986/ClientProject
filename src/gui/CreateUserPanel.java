@@ -1,5 +1,7 @@
 package gui;
 
+import sdk.Config;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -24,42 +26,67 @@ public class CreateUserPanel extends JPanel {
     private JButton btnBack;
 
     public CreateUserPanel(){
+
         setLayout(null);
-        setBounds(0, 0, 640, 500);
 
-        infoLabel = new JLabel("Create an account");
-        firstNameLabel = new JLabel("First name: ");
-        lastNameLabel = new JLabel("Last name: ");
-        emailLabel = new JLabel("Email: ");
-        usernameLabel = new JLabel("Username: ");
-        passwordLabel = new JLabel("Password: ");
+        infoLabel = new JLabel(Config.getInfoLabelText());
+        firstNameLabel = new JLabel(Config.getFirstNameLabelText());
+        lastNameLabel = new JLabel(Config.getLastNameLabelText());
+        emailLabel = new JLabel(Config.getEmailLabelText());
+        usernameLabel = new JLabel(Config.getUsernameLabelText());
+        passwordLabel = new JLabel(Config.getPasswordLabelText());
 
-        firstNameField = new JTextField(20);
-        lastNameField = new JTextField(20);
-        emailField = new JTextField(20);
-        usernameField = new JTextField(20);
-        passwordField = new JPasswordField(20);
+        firstNameField = new JTextField();
+        lastNameField = new JTextField();
+        emailField = new JTextField();
+        usernameField = new JTextField();
+        passwordField = new JPasswordField();
 
-        btnCreate = new JButton("Create user");
-        btnBack = new JButton("To Login");
+        btnCreate = new JButton(Config.getBtnCreateUserText());
+        btnBack = new JButton(Config.getBtnBackToLoginText());
 
-        infoLabel.setBounds(40, 40, 220, 30);
-        infoLabel.setFont(new Font("Verdana", Font.BOLD, 16));
+        infoLabel.setBounds(Config.getDefaultXPosJComponent(), Config.getY1PosJComponent(),
+                Config.getWidth1JComponent(), Config.getDefaultHeightJComponent());
+        infoLabel.setFont(new Font(Config.getHeaderFont(), Font.BOLD, Config.getHeaderTextSize()));
 
-        firstNameLabel.setBounds(40, 180, 220, 20);
-        lastNameLabel.setBounds(40, 230, 220, 20);
-        emailLabel.setBounds(40, 280, 220, 20);
-        usernameLabel.setBounds(40, 330, 220, 20);
-        passwordLabel.setBounds(40, 380, 220, 20);
+        firstNameLabel.setBounds(Config.getDefaultXPosJComponent(), Config.getY3PosJComponent(),
+                Config.getLblWidth(), Config.getDefaultHeightJComponent());
 
-        firstNameField.setBounds(200, 180, 220, 30);
-        lastNameField.setBounds(200, 230, 220, 30);
-        emailField.setBounds(200, 280, 220, 30);
-        usernameField.setBounds(200, 330, 220, 30);
-        passwordField.setBounds(200, 380, 220, 30);
+        lastNameLabel.setBounds(Config.getDefaultXPosJComponent(), Config.getY4PosJComponent(),
+                Config.getLblWidth(), Config.getDefaultHeightJComponent());
 
-        btnBack.setBounds(40, 430, 150, 30);
-        btnCreate.setBounds(200, 430, 150, 30);
+        emailLabel.setBounds(Config.getDefaultXPosJComponent(), Config.getY5PosJComponent(),
+                Config.getLblWidth(), Config.getDefaultHeightJComponent());
+
+        usernameLabel.setBounds(Config.getDefaultXPosJComponent(), Config.getY6PosJComponent(),
+                Config.getLblWidth(), Config.getDefaultHeightJComponent());
+
+        passwordLabel.setBounds(Config.getDefaultXPosJComponent(), Config.getY7PosJComponent(),
+                Config.getLblWidth(), Config.getDefaultHeightJComponent());
+
+
+        firstNameField.setBounds(Config.getX1PosJComponent(), Config.getY3PosJComponent(),
+                Config.getWidth1JComponent(), Config.getDefaultHeightJComponent());
+
+        lastNameField.setBounds(Config.getX1PosJComponent(), Config.getY4PosJComponent(),
+                Config.getWidth1JComponent(), Config.getDefaultHeightJComponent());
+
+        emailField.setBounds(Config.getX1PosJComponent(), Config.getY5PosJComponent(),
+                Config.getWidth1JComponent(), Config.getDefaultHeightJComponent());
+
+        usernameField.setBounds(Config.getX1PosJComponent(), Config.getY6PosJComponent(),
+                Config.getWidth1JComponent(), Config.getDefaultHeightJComponent());
+
+        passwordField.setBounds(Config.getX1PosJComponent(), Config.getY7PosJComponent(),
+                Config.getWidth1JComponent(), Config.getDefaultHeightJComponent());
+
+
+        btnBack.setBounds(Config.getDefaultXPosJComponent(), Config.getY8PosJComponent(),
+                Config.getDefaultWidthJComponent(), Config.getDefaultHeightJComponent());
+
+        btnCreate.setBounds(Config.getX1PosJComponent(), Config.getY8PosJComponent(),
+                Config.getDefaultWidthJComponent(), Config.getDefaultHeightJComponent());
+
 
         add(infoLabel);
         add(firstNameLabel);
@@ -109,10 +136,10 @@ public class CreateUserPanel extends JPanel {
 
     public void clearFields() {
 
-        firstNameField.setText("");
-        lastNameField.setText("");
-        emailField.setText("");
-        usernameField.setText("");
-        passwordField.setText("");
+        firstNameField.setText(Config.getClearField());
+        lastNameField.setText(Config.getClearField());
+        emailField.setText(Config.getClearField());
+        usernameField.setText(Config.getClearField());
+        passwordField.setText(Config.getClearField());
     }
 }

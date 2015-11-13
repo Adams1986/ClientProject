@@ -1,8 +1,13 @@
 package sdk;
 
 import java.sql.Date;
+import java.util.Scanner;
 
 
+/**
+ * Created by Oscar on 12-10-2015.
+ */
+//
 public class User {
 
     //creating variables
@@ -14,20 +19,8 @@ public class User {
     private Date created;
     private String status;
     private String email;
-    private String type;
+    private int type;
 
-    //TODO: Kan slettes?! Bruges ikke i wrapperen længere
-    public User (int id, String firstName, String lastName, String email, String username, String password, Date created, String status, String type ) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.username = username;
-        this.password = password;
-        this.created = created;
-        this.status = status;
-        this.type = type;
-    }
 
     public User () {}
 
@@ -98,11 +91,11 @@ public class User {
         this.email = email;
     }
 
-    public String getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
     }
 }

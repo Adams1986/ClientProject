@@ -42,6 +42,7 @@ public class Controller {
 
         screen.getMainMenuPanel().getCreateNewGamePanel().addActionListeners(new CreateNewGameHandlerClass());
         screen.getMainMenuPanel().getGameChooserPanel().addActionListeners(new GameChooserHandlerClass());
+
     }
 
     /**
@@ -81,7 +82,9 @@ public class Controller {
                             }
 
                         }
-                        screen.getMainMenuPanel().getGameChooserPanel().setGameTableModel(games);
+                        String[] columns = new String []{"Challenger", "Opponent", "Game name", "Game status", "Created", "Winner", "Map size"};
+                        //String[] columns = Config.getColumnNamesGameTable();
+                        screen.getMainMenuPanel().getGameChooserPanel().setGameTableModel(games, columns);
                         //TODO: move?
                         screen.getMainMenuPanel().getCreateNewGamePanel().setOpponentTableModel(Api.getUsers());
 
@@ -129,15 +132,15 @@ public class Controller {
                     replayGame.getOpponent().getSnake().add(new Point((replayGame.getMapSize()+2)/2, (replayGame.getMapSize()+2)/2));
 
                     //adding controls to gamer objects instead of game object.
-                    replayGame.getHost().setControls(replayGame.getHostControls());
-                    replayGame.getOpponent().setControls(replayGame.getOpponentControls());
+//                    replayGame.getHost().setControls(replayGame.getHostControls());
+//                    replayGame.getOpponent().setControls(replayGame.getOpponentControls());
 
                     screen.getMainMenuPanel().addReplaySnakeToPanel(replayGame, replaySnakeHandler);
                     break;
 
                 case "High scores":
-                    System.out.println(Api.getHighScore().get(0).getScore() + " " + Api.getHighScore().get(0).getGame().getWinner());
-                    System.out.println(Api.getScores(2).size());
+                    System.out.println(Api.getHighScores().get(0).getScore() + " " + Api.getHighScores().get(0).getGame().getWinner());
+                    System.out.println(Api.getScoresByUserId(2).size());
                     break;
 
                 case "Delete a game":
@@ -201,21 +204,21 @@ public class Controller {
 
             String cmd = e.getActionCommand();
 
-            if(cmd.equals(Character.toString(Config.getUP()))){
-                if(screen.getMainMenuPanel().getSnakeGameEngine().getDirection()!= Config.getDOWN())
-                    screen.getMainMenuPanel().getSnakeGameEngine().setDirection(Config.getUP());
+            if(cmd.equals(Character.toString(Config.getUp()))){
+                if(screen.getMainMenuPanel().getSnakeGameEngine().getDirection()!= Config.getDown())
+                    screen.getMainMenuPanel().getSnakeGameEngine().setDirection(Config.getUp());
             }
-            else if (cmd.equals(Character.toString(Config.getDOWN()))){
-                if(screen.getMainMenuPanel().getSnakeGameEngine().getDirection()!= Config.getUP())
-                    screen.getMainMenuPanel().getSnakeGameEngine().setDirection(Config.getDOWN());
+            else if (cmd.equals(Character.toString(Config.getDown()))){
+                if(screen.getMainMenuPanel().getSnakeGameEngine().getDirection()!= Config.getUp())
+                    screen.getMainMenuPanel().getSnakeGameEngine().setDirection(Config.getDown());
             }
-            else if (cmd.equals(Character.toString(Config.getLEFT()))){
-                if(screen.getMainMenuPanel().getSnakeGameEngine().getDirection()!= Config.getRIGHT())
-                    screen.getMainMenuPanel().getSnakeGameEngine().setDirection(Config.getLEFT());
+            else if (cmd.equals(Character.toString(Config.getLeft()))){
+                if(screen.getMainMenuPanel().getSnakeGameEngine().getDirection()!= Config.getRight())
+                    screen.getMainMenuPanel().getSnakeGameEngine().setDirection(Config.getLeft());
             }
-            else if (cmd.equals(Character.toString(Config.getRIGHT()))){
-                if(screen.getMainMenuPanel().getSnakeGameEngine().getDirection()!= Config.getLEFT())
-                    screen.getMainMenuPanel().getSnakeGameEngine().setDirection(Config.getRIGHT());
+            else if (cmd.equals(Character.toString(Config.getRight()))){
+                if(screen.getMainMenuPanel().getSnakeGameEngine().getDirection()!= Config.getLeft())
+                    screen.getMainMenuPanel().getSnakeGameEngine().setDirection(Config.getRight());
             }
         }
     }
@@ -235,22 +238,18 @@ public class Controller {
 
             } else {
 
-                if(newGame.getHostControls() == null) {
-                    //get gameconrols and set it to both the host object and the hostcontrols of newGame object. A little redundant..
-                    newGame.setHostControls(screen.getMainMenuPanel().getSnakeGameEngine().getSbToString());
-                    newGame.getHost().setControls(newGame.getHostControls());
-
+                if(newGame.getHost().getControls() == null) {
+                    newGame.getHost().setControls(screen.getMainMenuPanel().getSnakeGameEngine().getSbToString());
                     //Attempt to create the game and show response from server
-                    DialogMessage.showMessage(screen, Api.createGame(newGame));
+                    DialogMessage.showMessage(screen, Api.createGame(newGame).getName());//TODO:...
                 }
                 else {
 
-                    newGame.setOpponentControls(screen.getMainMenuPanel().getSnakeGameEngine().getSbToString());
-                    newGame.getOpponent().setControls(newGame.getOpponentControls());
+                    newGame.getOpponent().setControls(screen.getMainMenuPanel().getSnakeGameEngine().getSbToString());
 
                     newGame.setStatus("finished");
 
-                    DialogMessage.showMessage(screen, Api.updateGame(newGame));
+                    DialogMessage.showMessage(screen, Api.joinGame(newGame));
                 }
 
                 //stops animation
@@ -303,14 +302,14 @@ public class Controller {
                             screen.getMainMenuPanel().addPlaySnake(snakeEngineDrawClass, newGame);
 
                             //TODO: put this somewhere else and call method here. Used it twice now
-                            screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getUP(),
-                                    new SnakeEngineKeyBindingHandlerClass(Character.toString(Config.getUP())));
-                            screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getDOWN(),
-                                    new SnakeEngineKeyBindingHandlerClass(Character.toString(Config.getDOWN())));
-                            screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getLEFT(),
-                                    new SnakeEngineKeyBindingHandlerClass(Character.toString(Config.getLEFT())));
-                            screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getRIGHT(),
-                                    new SnakeEngineKeyBindingHandlerClass(Character.toString(Config.getRIGHT())));
+                            screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getUp(),
+                                    new SnakeEngineKeyBindingHandlerClass(Character.toString(Config.getUp())));
+                            screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getDown(),
+                                    new SnakeEngineKeyBindingHandlerClass(Character.toString(Config.getDown())));
+                            screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getLeft(),
+                                    new SnakeEngineKeyBindingHandlerClass(Character.toString(Config.getLeft())));
+                            screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getRight(),
+                                    new SnakeEngineKeyBindingHandlerClass(Character.toString(Config.getRight())));
 
                             screen.getMainMenuPanel().setSidePanelState(false);
                         }
@@ -337,18 +336,20 @@ public class Controller {
         public void actionPerformed(ActionEvent e) {
             //TODO: what to do? :D Hver gang den kører laver den en ny instans af replaySnake, men der sker ingen nye actions.. NEEDS WORK DONE
             //populates snake by taking the string controls and checking whether up, down, left or right (w,s,a,d).
-            if (counter < replayGame.getHostControls().length()) {
-                screen.getMainMenuPanel().getReplaySnake().move(replayGame.getHost(), replayGame.getHostControls().charAt(counter));
+            if (counter < replayGame.getHost().getControls().length()) {
+                screen.getMainMenuPanel().getReplaySnake().move(replayGame.getHost(), replayGame.getHost().getControls().charAt(counter));
             }
             //checking theres an opponent and populates the snake with points
-            if (replayGame.getOpponentControls() != null) {
-                if (counter < replayGame.getOpponentControls().length()){
-                    screen.getMainMenuPanel().getReplaySnake().move(replayGame.getOpponent(), replayGame.getOpponentControls().charAt(counter));
+            if (replayGame.getOpponent().getControls() != null) {
+                if (counter < replayGame.getOpponent().getControls().length()){
+                    screen.getMainMenuPanel().getReplaySnake().move(replayGame.getOpponent(), replayGame.getOpponent().getControls().charAt(counter));
                 }
             }
             //repaints as long as there are usercontrols and opponentcontrols
-            if(counter > replayGame.getHostControls().length() &&
-                    ((replayGame.getOpponentControls() != null && counter > replayGame.getOpponentControls().length()) || replayGame.getOpponentControls() == null)){
+            if(counter > replayGame.getHost().getControls().length() &&
+                    ((replayGame.getOpponent().getControls() != null
+                            && counter > replayGame.getOpponent().getControls().length()) ||
+                            replayGame.getOpponent().getControls() == null)){
 
                 screen.getMainMenuPanel().getReplaySnake().stopTimer();
                 counter = 0;
@@ -374,16 +375,17 @@ public class Controller {
                             newGame);
 
                     //TODO: put this somewhere else and call method here. Used it twice now
-                    screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getUP(),
-                            new SnakeEngineKeyBindingHandlerClass(Character.toString(Config.getUP())));
-                    screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getDOWN(),
-                            new SnakeEngineKeyBindingHandlerClass(Character.toString(Config.getDOWN())));
-                    screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getLEFT(),
-                            new SnakeEngineKeyBindingHandlerClass(Character.toString(Config.getLEFT())));
-                    screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getRIGHT(),
-                            new SnakeEngineKeyBindingHandlerClass(Character.toString(Config.getRIGHT())));
+                    screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getUp(),
+                            new SnakeEngineKeyBindingHandlerClass(Character.toString(Config.getUp())));
+                    screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getDown(),
+                            new SnakeEngineKeyBindingHandlerClass(Character.toString(Config.getDown())));
+                    screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getLeft(),
+                            new SnakeEngineKeyBindingHandlerClass(Character.toString(Config.getLeft())));
+                    screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getRight(),
+                            new SnakeEngineKeyBindingHandlerClass(Character.toString(Config.getRight())));
+
                 } catch (IndexOutOfBoundsException e1) {
-                    e1.printStackTrace();
+
                     DialogMessage.showMessage(screen, "Please select a game to join");
                 }
             }

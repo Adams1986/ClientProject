@@ -12,6 +12,7 @@ import java.util.ArrayList;
  */
 public class CreateNewGame extends JPanel {
 
+    private JLabel headerLabel;
     private JButton btnSend;
     private JTable opponentTable;
     private JTextField gameNameField;
@@ -19,31 +20,51 @@ public class CreateNewGame extends JPanel {
     private UserTableModel tableModel;
     private JComboBox<Integer>mapSizeChooser;
     private JCheckBox openGame;
-    private int[] mapSizes = {9, 15, 25};
+    private JLabel lblOpenGame;
+    private int[] mapSizes;
+    //TODO: label for the table
 
 
     public CreateNewGame(){
 
         setLayout(null);
 
+        //headerLabel = new JLabel(Config.getCreateNewGameHeaderText());
         gameNameField = new JTextField();
-        btnSend = new JButton("Send challenge");
+        btnSend = new JButton(Config.getBtnSendText());
         mapSizeChooser = new JComboBox<>();
-        openGame = new JCheckBox("Open game");
+        openGame = new JCheckBox();
+        lblOpenGame = new JLabel(Config.getLblOpenGameText());
 
         opponentTable = new JTable();
         scrollPane = new JScrollPane(opponentTable);
+        mapSizes = Config.getMapSizes();
 
-        gameNameField.setBounds(40, 340, 150, 30);
-        btnSend.setBounds(40, 400, 150, 30);
-        scrollPane.setBounds(40, 40, 500, 260);
-        mapSizeChooser.setBounds(40, 460, 150, 30);
-        openGame.setBounds(40, 520, 150, 30);
+        //headerLabel.setBounds(Config.getDefaultXPosJComponent(), Config.getY1PosJComponent(),
+          //      Config.getDefaultWidthJComponent(), Config.getDefaultHeightJComponent());
+
+        gameNameField.setBounds(Config.getDefaultXPosJComponent(), Config.getY8PosJComponent(),
+                Config.getDefaultWidthJComponent(), Config.getDefaultHeightJComponent());
+
+        btnSend.setBounds(Config.getDefaultXPosJComponent(), Config.getY9PosJComponent(),
+                Config.getDefaultWidthJComponent(), Config.getDefaultHeightJComponent());
+
+        scrollPane.setBounds(Config.getDefaultXPosJComponent(), Config.getY3PosJComponent(),
+                Config.getWidth2JComponent(), Config.getY5PosJComponent());
+
+        mapSizeChooser.setBounds(Config.getDefaultXPosJComponent(), Config.getY10PosJComponent(),
+                Config.getDefaultWidthJComponent(), Config.getDefaultHeightJComponent());
+
+        openGame.setBounds(Config.getX1PosJComponent(), Config.getY11PosJComponent(),
+                Config.getDefaultWidthJComponent(), Config.getDefaultHeightJComponent());
+
+        lblOpenGame.setBounds(Config.getDefaultXPosJComponent(), Config.getY11PosJComponent(),
+                Config.getDefaultWidthJComponent(), Config.getDefaultHeightJComponent());
 
         for (int i = 0; i < mapSizes.length; i++){
             mapSizeChooser.addItem(mapSizes[i]);
         }
-        gameNameField.setToolTipText("Give your game a name");
+        gameNameField.setToolTipText(Config.getGameNameFieldTtt());
         openGame.setSelected(true);
         setOpponentTableState(false);
 
@@ -52,6 +73,7 @@ public class CreateNewGame extends JPanel {
         add(scrollPane);
         add(mapSizeChooser);
         add(openGame);
+        add(lblOpenGame);
     }
 
     public void setOpponentTableState(boolean b) {
@@ -100,10 +122,11 @@ public class CreateNewGame extends JPanel {
         gameNameField.requestFocus();
     }
 
+    //TODO: hardcoding?
     public void resetFields() {
 
-        gameNameField.setText("");
-        mapSizeChooser.setSelectedIndex(0);
+        gameNameField.setText(Config.getClearField());
+        mapSizeChooser.setSelectedIndex(Config.getIndexOne());
         openGame.setSelected(true);
         setOpponentTableState(false);
     }

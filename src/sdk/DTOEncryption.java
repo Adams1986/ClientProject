@@ -12,9 +12,7 @@ public class DTOEncryption {
 
         game.setHost(encryptGamer(game.getHost()));
         game.setStatus(Security.encrypt(game.getStatus(), Config.getEncryptionkey()));
-        game.setOpponentControls(Security.encrypt(game.getOpponentControls(), Config.getEncryptionkey()));
         game.setOpponent(encryptGamer(game.getHost()));
-        game.setHostControls(Security.encrypt(game.getHostControls(), Config.getEncryptionkey()));
 //        game.setCreated((Date) Security.encrypt(game.getCreated().toString(), Config.getEncryptionkey())); //TODO issues with encrypting a date
 //        game.setGameId(Integer.parseInt(Security.encrypt(game.getGameId()+"", Config.getEncryptionkey())));//TODO also issue
 //        game.setMapSize();
@@ -26,9 +24,7 @@ public class DTOEncryption {
 
         game.setHost(encryptGamer(game.getHost()));
         game.setStatus(Security.decrypt(game.getStatus(), Config.getEncryptionkey()));
-        game.setOpponentControls(Security.decrypt(game.getOpponentControls(), Config.getEncryptionkey()));
         game.setOpponent(encryptGamer(game.getHost()));
-        game.setHostControls(Security.decrypt(game.getHostControls(), Config.getEncryptionkey()));
 //        game.setCreated((Date) Security.decrypt(game.getCreated().toString(), Config.getEncryptionkey())); //TODO issues with encrypting a date
 //        game.setGameId(Integer.parseInt(Security.decrypt(game.getGameId()+"", Config.getEncryptionkey())));//TODO also issue
 //        game.setMapSize();

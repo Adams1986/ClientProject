@@ -1,5 +1,7 @@
 package gui;
 
+import sdk.Config;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -26,20 +28,33 @@ public class LoginPanel extends JPanel{
 
         setLayout(null);
 
-        infoLabel = new JLabel("Enter user details below");
-        usernameField = new JTextField(20);
-        passwordField = new JPasswordField(20);
-        btnLogin = new JButton("Login");
-        btnCreateNewUser = new JButton("Don't have a user? Create a new one");
-        depardieu = new ImageIcon("src/depardieu.png");
+        infoLabel = new JLabel(Config.getLoginInfoLabelText());
+        usernameField = new JTextField();
+        passwordField = new JPasswordField();
+        btnLogin = new JButton(Config.getBtnLoginText());
+        btnCreateNewUser = new JButton(Config.getBtnCreateNewUserText());
+        depardieu = new ImageIcon(Config.getDepardieuImagePath());
         iconLabel = new JLabel(depardieu);
 
-        infoLabel.setBounds(40, 140, 220, 20);
-        usernameField.setBounds(40, 180, 220 ,30);
-        passwordField.setBounds(40, 230, 220, 30);
-        btnLogin.setBounds(40, 280, 150, 30);
-        btnCreateNewUser.setBounds(40, 370, 300, 30);
-        iconLabel.setBounds(340, 100, 320, 240);
+        infoLabel.setBounds(Config.getDefaultXPosJComponent(), Config.getY1PosJComponent(),
+                Config.getLblWidth(), Config.getDefaultHeightJComponent());
+
+        infoLabel.setFont(new Font(Config.getHeaderFont(), Font.BOLD, Config.getHeaderTextSize()));
+
+        usernameField.setBounds(Config.getDefaultXPosJComponent(), Config.getY3PosJComponent(),
+                Config.getLblWidth(), Config.getDefaultHeightJComponent());
+
+        passwordField.setBounds(Config.getDefaultXPosJComponent(), Config.getY4PosJComponent(),
+                Config.getLblWidth(), Config.getDefaultHeightJComponent());
+
+        btnLogin.setBounds(Config.getDefaultXPosJComponent(), Config.getY5PosJComponent(),
+                Config.getDefaultWidthJComponent(), Config.getDefaultHeightJComponent());
+
+        btnCreateNewUser.setBounds(Config.getDefaultXPosJComponent(), Config.getY7PosJComponent(),
+                Config.getWidth3JComponent(), Config.getDefaultHeightJComponent());
+
+        iconLabel.setBounds(Config.getX2PosJComponent(), Config.getY3PosJComponent(),
+                Config.getDepardieuWidth(), Config.getDepardieuHeight());
 
         add(infoLabel);
         add(usernameField);
@@ -57,8 +72,8 @@ public class LoginPanel extends JPanel{
 
     public void clearFields(){
 
-        usernameField.setText("");
-        passwordField.setText("");
+        usernameField.setText(Config.getClearField());
+        passwordField.setText(Config.getClearField());
     }
 
     public String getUsernameInput() {

@@ -21,7 +21,7 @@ public class Screen extends JFrame {
 
     public Screen(){
 
-        super("Snake");
+        super(Config.getAppName());
 
         //TODO:remove later
         Config.init();
@@ -58,12 +58,6 @@ public class Screen extends JFrame {
         setSize(Config.getAppWidth(), Config.getAppHeight());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
-    }
-
-    //TODO: remove later
-    public static void main(String[] args) {
-
-        Screen screen = new Screen();
     }
 
     /**

@@ -3,34 +3,31 @@ package sdk;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.FileReader;
 import java.io.IOException;
 
 public class Config {
 
-    private static String host;
-    private static String port;
-    private static String username;
-    private static String password;
-    private static String dbname;
     private static String hashingSalt;
     private static String encryptionkey;
 
-    private static int FIELD_HEIGHT;
-    private static int FIELD_WIDTH;
-    private static int BOARD_HEIGHT;
-    private static int BOARD_WIDTH;
+    private static int fieldHeight;
+    private static int fieldWidth;
+    private static int boardHeight;
+    private static int boardWidth;
 
     private static int count;
     private static int delay;
     private static int boardStartXY;
 
     //TODO: is this neccesary? when using in switch values have to be static. Seems like a stupid workaround?
-    private static String UP;
-    private static String DOWN;
-    private static String LEFT;
-    private static String RIGHT;
-    private static String AWAITING;
+    private static String up;
+    private static String down;
+    private static String left;
+    private static String right;
+    private static String awaiting;
 
     private static int replayWidth;
     private static int replayHeight;
@@ -45,13 +42,69 @@ public class Config {
     private static String logoutMessage;
     private static String logoutTitle;
     private static String createUserScreen;
-    private static String ipAdresse;
+    private static String ipAddress;
+    private static int serverPort;
     private static int appHeight;
     private static int appWidth;
 
     private static String [] columnNamesGameTable;
     private static String [] columnNamesUserTable = new String[3];;
     private static String gameChooserScreen;
+    private static String serverPathUsers;
+    private static String serverPathLogin;
+    private static String serverPathGames;
+    private static String serverPathGame;
+    private static String serverPathScores;
+    private static String btnPlayText;
+    private static String btnSendText;
+    private static String lblOpenGameText;
+    private static String gameNameFieldTtt;
+    private static int[] mapSizes = new int[3];
+
+    private static int defaultXPosJComponent;
+    private static int defaultWidthJComponent;
+    private static int defaultHeightJComponent;
+    private static int y1PosJComponent;
+    private static int y6PosJComponent;
+    private static int y7PosJComponent;
+    private static int y8PosJComponent;
+    private static int y10PosJComponent;
+    private static int y9PosJComponent;
+    private static int y5PosJComponent;
+    private static int y3PosJComponent;
+    private static int lblWidth;
+    private static int y4PosJComponent;
+    private static int x1PosJComponent;
+    private static int width1JComponent;
+
+    private static String infoLabelText;
+    private static String firstNameLabelText;
+    private static String lastNameLabelText;
+    private static String emailLabelText;
+    private static String usernameLabelText;
+    private static String passwordLabelText;
+    private static String btnCreateUserText;
+    private static String btnBackToLoginText;
+
+    private static String headerFont;
+    private static int headerTextSize;
+
+    private static String clearField;
+    private static int width2JComponent;
+    private static int y2PosJComponent;
+    private static int indexOne;
+    private static String appName;
+    private static String btnJoinSelectedGameText;
+    private static String btnCreateNewGameText;
+    private static int y11PosJComponent;
+    private static int depardieuWidth;
+    private static int depardieuHeight;
+    private static int x2PosJComponent;
+    private static int width3JComponent;
+    private static String loginInfoLabelText;
+    private static String btnLoginText;
+    private static String btnCreateNewUserText;
+    private static String depardieuImagePath;
 
 
     public static void init () {
@@ -71,27 +124,22 @@ public class Config {
             JSONObject jsonObject = (JSONObject) obj;
 
             //Use set-methods for defining static variables from json-file.
-            setHost((String) jsonObject.get("host"));
-            setPort((String) jsonObject.get("port"));
-            setUsername((String) jsonObject.get("username"));
-            setIpAdresse((String) jsonObject.get("ipadresse"));
 
-            //setUsername("root");
+            setIpAddress((String) jsonObject.get("ipaddress"));
+            setServerPort((int) (long) jsonObject.get("serverport"));
 
-            setDbname((String) jsonObject.get("dbname"));
-
-            setPassword((String) jsonObject.get("password"));
             setEncryptionkey((String) jsonObject.get("encryptionkey"));
             setHashingSalt((String) jsonObject.get("hashingSalt"));
 
-            setUP((String) jsonObject.get("up"));
-            setDOWN((String) jsonObject.get("down"));
-            setLEFT((String) jsonObject.get("left"));
-            setRIGHT((String) jsonObject.get("right"));
-            setAWAITING((String) jsonObject.get("awaiting"));
+            setUp((String) jsonObject.get("up"));
+            setDown((String) jsonObject.get("down"));
+            setLeft((String) jsonObject.get("left"));
+            setRight((String) jsonObject.get("right"));
+            setAwaiting((String) jsonObject.get("awaiting"));
 
             setAppHeight((int) (long) jsonObject.get("appheight"));
             setAppWidth((int) (long) jsonObject.get("appwidth"));
+            setAppName((String) jsonObject.get("appname"));
             setFieldHeight((int) (long) jsonObject.get("fieldheight"));
             setFieldWidth((int) (long) jsonObject.get("fieldwidth"));
             setBoardHeight((int) (long) jsonObject.get("boardheight"));
@@ -117,9 +165,69 @@ public class Config {
             setLogoutMessage((String) jsonObject.get("logoutmessage"));
             setLogoutTitle((String) jsonObject.get("logouttitle"));
 
-            getColumnNamesUserTable()[0] = ((String) jsonObject.get("firstname"));
-            getColumnNamesUserTable()[1] = ((String) jsonObject.get("lastname"));
-            getColumnNamesUserTable()[2] = ((String) jsonObject.get("username"));
+            getColumnNamesUserTable()[0] = (String) jsonObject.get("firstname");
+            getColumnNamesUserTable()[1] = (String) jsonObject.get("lastname");
+            getColumnNamesUserTable()[2] = (String) jsonObject.get("username");
+
+            getMapSizes()[0] = (int)(long) jsonObject.get("smallmap");
+            getMapSizes()[1] = (int)(long) jsonObject.get("mediummap");
+            getMapSizes()[2] = (int)(long) jsonObject.get("largemap");
+
+            setServerPathLogin((String) jsonObject.get("serverpathlogin"));
+            setServerPathUsers((String) jsonObject.get("serverpathusers"));
+            setServerPathGames((String) jsonObject.get("serverpathgames"));
+            setServerPathGame((String) jsonObject.get("serverpathgame"));
+            setServerPathScores((String) jsonObject.get("serverpathscores"));
+
+            setBtnPlayText((String) jsonObject.get("btnplaytext"));
+            setBtnSendText((String) jsonObject.get("btnsendtext"));
+            setLblOpenGameText((String) jsonObject.get("lblopengametext"));
+            setGameNameFieldTtt((String) jsonObject.get("gamenamefieldttt"));
+
+            setDefaultXPosJComponent((int)(long) jsonObject.get("defaultxpositionjcomponent"));
+            setDefaultWidthJComponent((int)(long) jsonObject.get("defaultwidthjcomponent"));
+            setDefaultHeightJComponent((int)(long) jsonObject.get("defaultheightjcomponent"));
+            setLblWidth((int)(long) jsonObject.get("labelwidth"));
+
+            setWidth1JComponent((int)(long) jsonObject.get("width1jcomponent"));
+            setWidth2JComponent((int)(long) jsonObject.get("width2jcomponent"));
+            setWidth3JComponent((int)(long) jsonObject.get("width3jcomponent"));
+
+            setX1PosJComponent((int)(long) jsonObject.get("x1positionjcomponent"));
+            setX2PosJComponent((int)(long) jsonObject.get("x2positionjcomponent"));
+
+            setY1PosJComponent((int)(long) jsonObject.get("y1positionjcomponent"));
+            setY2PosJComponent((int)(long) jsonObject.get("y2positionjcomponent"));
+            setY3PosJComponent((int)(long) jsonObject.get("y3positionjcomponent"));
+            setY4PosJComponent((int)(long) jsonObject.get("y4positionjcomponent"));
+            setY5PosJComponent((int)(long) jsonObject.get("y5positionjcomponent"));
+            setY6PosJComponent((int)(long) jsonObject.get("y6positionjcomponent"));
+            setY7PosJComponent((int)(long) jsonObject.get("y7positionjcomponent"));
+            setY8PosJComponent((int)(long) jsonObject.get("y8positionjcomponent"));
+            setY9PosJComponent((int)(long) jsonObject.get("y9positionjcomponent"));
+            setY10PosJComponent((int)(long) jsonObject.get("y10positionjcomponent"));
+            setY11PosJComponent((int)(long) jsonObject.get("y11positionjcomponent"));
+
+            setInfoLabelText((String) jsonObject.get("infolabeltext"));
+            setFirstNameLabelText((String) jsonObject.get("firstnamelabeltext"));
+            setLastNameLabelText((String) jsonObject.get("lastnamelabeltext"));
+            setEmailLabelText((String) jsonObject.get("emaillabeltext"));
+            setUsernameLabelText((String) jsonObject.get("usernamelabeltext"));
+            setPasswordLabelText((String) jsonObject.get("passwordlabeltext"));
+            setBtnCreateUserText((String) jsonObject.get("btncreateusertext"));
+            setBtnBackToLoginText((String) jsonObject.get("btnbacktologintext"));
+            setHeaderFont((String) jsonObject.get("headerfont"));
+            setHeaderTextSize((int)(long) jsonObject.get("headertextsize"));
+            setClearField((String) jsonObject.get("clearfield"));
+            setIndexOne((int)(long) jsonObject.get("indexone"));
+            setBtnJoinSelectedGameText((String) jsonObject.get("btnjoinselectedgametext"));
+            setBtnCreateNewGameText((String) jsonObject.get("btncreatenewgametext"));
+            setDepardieuWidth((int)(long) jsonObject.get("depardieuwidth"));
+            setDepardieuHeight((int)(long) jsonObject.get("depardieuheight"));
+            setLoginInfoLabelText((String) jsonObject.get("logininfolabeltext"));
+            setBtnLoginText((String) jsonObject.get("btnlogintext"));
+            setBtnCreateNewUserText((String) jsonObject.get("btncreatenewusertext"));
+            setDepardieuImagePath((String) jsonObject.get("depardieuimagepath"));
 
 
         } catch (org.json.simple.parser.ParseException e) {
@@ -127,46 +235,6 @@ public class Config {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public static String getHost() {
-        return host;
-    }
-
-    public static void setHost(String host) {
-        Config.host = host;
-    }
-
-    public static String getPort() {
-        return port;
-    }
-
-    public static void setPort(String port) {
-        Config.port = port;
-    }
-
-    public static String getUsername() {
-        return username;
-    }
-
-    public static void setUsername(String username) {
-        Config.username = username;
-    }
-
-    public static String getPassword() {
-        return password;
-    }
-
-    public static void setPassword(String password) {
-        Config.password = password;
-    }
-
-    public static String getDbname() {
-        return dbname;
-    }
-
-    public static void setDbname(String dbname) {
-        Config.dbname = dbname;
     }
 
     public static String getHashingSalt() {
@@ -185,76 +253,76 @@ public class Config {
         Config.encryptionkey = encryptionkey;
     }
 
-    public static final char getUP() {
-        return UP.charAt(0);
+    public static char getUp() {
+        return up.charAt(0);
     }
 
-    public static void setUP(String UP) {
-        Config.UP = UP;
+    public static void setUp(String up) {
+        Config.up = up;
     }
 
-    public static char getDOWN() {
-        return DOWN.charAt(0);
+    public static char getDown() {
+        return down.charAt(0);
     }
 
-    public static void setDOWN(String DOWN) {
-        Config.DOWN = DOWN;
+    public static void setDown(String down) {
+        Config.down = down;
     }
 
-    public static char getLEFT() {
-        return LEFT.charAt(0);
+    public static char getLeft() {
+        return left.charAt(0);
     }
 
-    public static void setLEFT(String LEFT) {
-        Config.LEFT = LEFT;
+    public static void setLeft(String left) {
+        Config.left = left;
     }
 
-    public static char getRIGHT() {
-        return RIGHT.charAt(0);
+    public static char getRight() {
+        return right.charAt(0);
     }
 
-    public static void setRIGHT(String RIGHT) {
-        Config.RIGHT = RIGHT;
+    public static void setRight(String right) {
+        Config.right = right;
     }
 
     public static char getAwaiting() {
-        return AWAITING.charAt(0);
+        return awaiting.charAt(0);
     }
 
-    public static void setAWAITING(String AWAITING) {
-        Config.AWAITING = AWAITING;
+    public static void setAwaiting(String awaiting) {
+        Config.awaiting = awaiting;
     }
 
     public static int getFieldHeight() {
-        return FIELD_HEIGHT;
+        return fieldHeight;
     }
 
     public static void setFieldHeight(int fieldHeight) {
-        FIELD_HEIGHT = fieldHeight;
+        Config.fieldHeight = fieldHeight;
     }
 
     public static int getFieldWidth() {
-        return FIELD_WIDTH;
+        return fieldWidth;
     }
 
     public static void setFieldWidth(int fieldWidth) {
-        FIELD_WIDTH = fieldWidth;
+        Config.fieldWidth = fieldWidth;
     }
 
     public static int getBoardHeight() {
-        return BOARD_HEIGHT;
+        return boardHeight;
     }
 
     public static void setBoardHeight(int boardHeight) {
-        BOARD_HEIGHT = boardHeight;
+        Config.boardHeight = boardHeight;
     }
 
     public static int getBoardWidth() {
-        return BOARD_WIDTH;
+        return boardWidth;
     }
 
     public static void setBoardWidth(int boardWidth) {
-        BOARD_WIDTH = boardWidth;
+        Config.boardWidth = boardWidth;
     }
 
     public static int getCount() {
@@ -369,12 +437,12 @@ public class Config {
         Config.logoutTitle = logoutTitle;
     }
 
-    public static String getIpAdresse() {
-        return ipAdresse;
+    public static String getIpAddress() {
+        return ipAddress;
     }
 
-    public static void setIpAdresse(String ipAdresse) {
-        Config.ipAdresse = ipAdresse;
+    public static void setIpAddress(String ipAddress) {
+        Config.ipAddress = ipAddress;
     }
 
     public static int getAppHeight() {
@@ -415,5 +483,425 @@ public class Config {
 
     public static void setGameChooserScreen(String gameChooserScreen) {
         Config.gameChooserScreen = gameChooserScreen;
+    }
+
+    public static int getServerPort() {
+        return serverPort;
+    }
+
+    public static void setServerPort(int serverPort) {
+        Config.serverPort = serverPort;
+    }
+
+    public static String getServerPathUsers() {
+        return serverPathUsers;
+    }
+
+    public static void setServerPathUsers(String serverPathUsers) {
+        Config.serverPathUsers = serverPathUsers;
+    }
+
+    public static String getServerPathLogin() {
+        return serverPathLogin;
+    }
+
+    public static void setServerPathLogin(String serverPathLogin) {
+        Config.serverPathLogin = serverPathLogin;
+    }
+
+    public static String getServerPathGames() {
+        return serverPathGames;
+    }
+
+    public static void setServerPathGames(String serverPathGames) {
+        Config.serverPathGames = serverPathGames;
+    }
+
+    public static String getServerPathGame() {
+        return serverPathGame;
+    }
+
+    public static void setServerPathGame(String serverPathGame) {
+        Config.serverPathGame = serverPathGame;
+    }
+
+    public static String getServerPathScores() {
+        return serverPathScores;
+    }
+
+    public static void setServerPathScores(String serverPathScores) {
+        Config.serverPathScores = serverPathScores;
+    }
+
+    public static String getBtnPlayText() {
+        return btnPlayText;
+    }
+
+    public static void setBtnPlayText(String btnPlayText) {
+        Config.btnPlayText = btnPlayText;
+    }
+
+    public static String getBtnSendText() {
+        return btnSendText;
+    }
+
+    public static void setBtnSendText(String btnSendText) {
+        Config.btnSendText = btnSendText;
+    }
+
+    public static String getLblOpenGameText() {
+        return lblOpenGameText;
+    }
+
+    public static void setLblOpenGameText(String lblOpenGameText) {
+        Config.lblOpenGameText = lblOpenGameText;
+    }
+
+    public static String getGameNameFieldTtt() {
+        return gameNameFieldTtt;
+    }
+
+    public static void setGameNameFieldTtt(String gameNameFieldTtt) {
+        Config.gameNameFieldTtt = gameNameFieldTtt;
+    }
+
+    public static void setMapSizes(int[] mapSizes) {
+        Config.mapSizes = mapSizes;
+    }
+
+    public static int[] getMapSizes() {
+        return mapSizes;
+    }
+
+    public static void setDefaultXPosJComponent(int xPosJComponent) {
+        Config.defaultXPosJComponent = xPosJComponent;
+    }
+
+    public static int getDefaultXPosJComponent() {
+        return defaultXPosJComponent;
+    }
+
+    public static int getDefaultWidthJComponent() {
+        return defaultWidthJComponent;
+    }
+
+    public static void setDefaultWidthJComponent(int defaultWidthJComponent) {
+        Config.defaultWidthJComponent = defaultWidthJComponent;
+    }
+
+    public static int getDefaultHeightJComponent() {
+        return defaultHeightJComponent;
+    }
+
+    public static void setDefaultHeightJComponent(int defaultHeightJComponent) {
+        Config.defaultHeightJComponent = defaultHeightJComponent;
+    }
+
+    public static int getY1PosJComponent() {
+        return y1PosJComponent;
+    }
+
+    public static void setY1PosJComponent(int y1PosJComponent) {
+        Config.y1PosJComponent = y1PosJComponent;
+    }
+
+    public static int getY6PosJComponent() {
+        return y6PosJComponent;
+    }
+
+    public static void setY6PosJComponent(int y6PosJComponent) {
+        Config.y6PosJComponent = y6PosJComponent;
+    }
+
+    public static int getY7PosJComponent() {
+        return y7PosJComponent;
+    }
+
+    public static void setY7PosJComponent(int y7PosJComponent) {
+        Config.y7PosJComponent = y7PosJComponent;
+    }
+
+    public static int getY8PosJComponent() {
+        return y8PosJComponent;
+    }
+
+    public static void setY8PosJComponent(int y8PosJComponent) {
+        Config.y8PosJComponent = y8PosJComponent;
+    }
+
+    public static int getY10PosJComponent() {
+        return y10PosJComponent;
+    }
+
+    public static void setY10PosJComponent(int y10PosJComponent) {
+        Config.y10PosJComponent = y10PosJComponent;
+    }
+
+    public static int getY9PosJComponent() {
+        return y9PosJComponent;
+    }
+
+    public static void setY9PosJComponent(int y9PosJComponent) {
+        Config.y9PosJComponent = y9PosJComponent;
+    }
+
+    public static int getY5PosJComponent() {
+        return y5PosJComponent;
+    }
+
+    public static void setY5PosJComponent(int y5PosJComponent) {
+        Config.y5PosJComponent = y5PosJComponent;
+    }
+
+    public static int getY3PosJComponent() {
+        return y3PosJComponent;
+    }
+
+    public static void setY3PosJComponent(int y3PosJComponent) {
+        Config.y3PosJComponent = y3PosJComponent;
+    }
+
+    public static int getLblWidth() {
+        return lblWidth;
+    }
+
+    public static void setLblWidth(int lblWidth) {
+        Config.lblWidth = lblWidth;
+    }
+
+    public static int getY4PosJComponent() {
+        return y4PosJComponent;
+    }
+
+    public static void setY4PosJComponent(int y4PosJComponent) {
+        Config.y4PosJComponent = y4PosJComponent;
+    }
+
+    public static int getX1PosJComponent() {
+        return x1PosJComponent;
+    }
+
+    public static void setX1PosJComponent(int x1PosJComponent) {
+        Config.x1PosJComponent = x1PosJComponent;
+    }
+
+    public static int getWidth1JComponent() {
+        return width1JComponent;
+    }
+
+    public static void setWidth1JComponent(int width1JComponent) {
+        Config.width1JComponent = width1JComponent;
+    }
+
+    public static String getInfoLabelText() {
+        return infoLabelText;
+    }
+
+    public static void setInfoLabelText(String infoLabelText) {
+        Config.infoLabelText = infoLabelText;
+    }
+
+
+    public static String getFirstNameLabelText() {
+        return firstNameLabelText;
+    }
+
+    public static void setFirstNameLabelText(String firstNameLabelText) {
+        Config.firstNameLabelText = firstNameLabelText;
+    }
+
+    public static String getLastNameLabelText() {
+        return lastNameLabelText;
+    }
+
+    public static void setLastNameLabelText(String lastNameLabelText) {
+        Config.lastNameLabelText = lastNameLabelText;
+    }
+
+
+    public static String getEmailLabelText() {
+        return emailLabelText;
+    }
+
+    public static void setEmailLabelText(String emailLabelText) {
+        Config.emailLabelText = emailLabelText;
+    }
+
+    public static String getUsernameLabelText() {
+        return usernameLabelText;
+    }
+
+    public static void setUsernameLabelText(String usernameLabelText) {
+        Config.usernameLabelText = usernameLabelText;
+    }
+
+
+    public static String getPasswordLabelText() {
+        return passwordLabelText;
+    }
+
+    public static void setPasswordLabelText(String passwordLabelText) {
+        Config.passwordLabelText = passwordLabelText;
+    }
+
+    public static String getBtnCreateUserText() {
+        return btnCreateUserText;
+    }
+
+    public static void setBtnCreateUserText(String btnCreateUserText) {
+        Config.btnCreateUserText = btnCreateUserText;
+    }
+
+    public static String getBtnBackToLoginText() {
+        return btnBackToLoginText;
+    }
+
+    public static void setBtnBackToLoginText(String btnBackToLoginText) {
+        Config.btnBackToLoginText = btnBackToLoginText;
+    }
+
+    public static String getHeaderFont() {
+        return headerFont;
+    }
+
+    public static void setHeaderFont(String headerFont) {
+        Config.headerFont = headerFont;
+    }
+
+    public static int getHeaderTextSize() {
+        return headerTextSize;
+    }
+
+    public static void setHeaderTextSize(int headerTextSize) {
+        Config.headerTextSize = headerTextSize;
+    }
+
+    public static String getClearField() {
+        return clearField;
+    }
+
+    public static void setClearField(String clearField) {
+        Config.clearField = clearField;
+    }
+
+    public static int getWidth2JComponent() {
+        return width2JComponent;
+    }
+
+    public static void setWidth2JComponent(int width2JComponent) {
+        Config.width2JComponent = width2JComponent;
+    }
+
+    public static int getY2PosJComponent() {
+        return y2PosJComponent;
+    }
+
+    public static void setY2PosJComponent(int y2PosJComponent) {
+        Config.y2PosJComponent = y2PosJComponent;
+    }
+
+    public static int getIndexOne() {
+        return indexOne;
+    }
+
+    public static void setIndexOne(int indexOne) {
+        Config.indexOne = indexOne;
+    }
+
+    public static String getAppName() {
+        return appName;
+    }
+
+    public static void setAppName(String appName) {
+        Config.appName = appName;
+    }
+
+
+    public static String getBtnJoinSelectedGameText() {
+        return btnJoinSelectedGameText;
+    }
+
+    public static void setBtnJoinSelectedGameText(String btnJoinSelectedGameText) {
+        Config.btnJoinSelectedGameText = btnJoinSelectedGameText;
+    }
+
+    public static String getBtnCreateNewGameText() {
+        return btnCreateNewGameText;
+    }
+
+    public static void setBtnCreateNewGameText(String btnCreateNewGameText) {
+        Config.btnCreateNewGameText = btnCreateNewGameText;
+    }
+
+    public static int getY11PosJComponent() {
+        return y11PosJComponent;
+    }
+
+    public static void setY11PosJComponent(int y11PosJComponent) {
+        Config.y11PosJComponent = y11PosJComponent;
+    }
+
+    public static int getDepardieuWidth() {
+        return depardieuWidth;
+    }
+
+    public static void setDepardieuWidth(int depardieuWidth) {
+        Config.depardieuWidth = depardieuWidth;
+    }
+
+    public static int getDepardieuHeight() {
+        return depardieuHeight;
+    }
+
+    public static void setDepardieuHeight(int depardieuHeight) {
+        Config.depardieuHeight = depardieuHeight;
+    }
+
+    public static int getX2PosJComponent() {
+        return x2PosJComponent;
+    }
+
+    public static void setX2PosJComponent(int x2PosJComponent) {
+        Config.x2PosJComponent = x2PosJComponent;
+    }
+
+    public static int getWidth3JComponent() {
+        return width3JComponent;
+    }
+
+    public static void setWidth3JComponent(int width3JComponent) {
+        Config.width3JComponent = width3JComponent;
+    }
+
+    public static String getLoginInfoLabelText() {
+        return loginInfoLabelText;
+    }
+
+    public static void setLoginInfoLabelText(String loginInfoLabelText) {
+        Config.loginInfoLabelText = loginInfoLabelText;
+    }
+
+    public static String getBtnLoginText() {
+        return btnLoginText;
+    }
+
+    public static void setBtnLoginText(String btnLoginText) {
+        Config.btnLoginText = btnLoginText;
+    }
+
+    public static String getBtnCreateNewUserText() {
+        return btnCreateNewUserText;
+    }
+
+    public static void setBtnCreateNewUserText(String btnCreateNewUserText) {
+        Config.btnCreateNewUserText = btnCreateNewUserText;
+    }
+
+    public static String getDepardieuImagePath() {
+        return depardieuImagePath;
+    }
+
+    public static void setDepardieuImagePath(String depardieuImagePath) {
+        Config.depardieuImagePath = depardieuImagePath;
     }
 }

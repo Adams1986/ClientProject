@@ -2,16 +2,11 @@ package gui;
 
 import sdk.Config;
 import sdk.Game;
-import sdk.Gamer;
-import sdk.User;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -46,8 +41,6 @@ public class SnakeGameEngine extends JPanel {
         gameEnded = false;
 
         keyBindings();
-        //getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), Config.getUP());
-
         focusThis();
     }
 
@@ -65,20 +58,11 @@ public class SnakeGameEngine extends JPanel {
 
     public void keyBindings() {
 
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), Config.getUP());
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), Config.getDOWN());
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), Config.getLEFT());
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), Config.getRIGHT());
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), Config.getUp());
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), Config.getDown());
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), Config.getLeft());
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), Config.getRight());
 
-        //TODO: Done in controller
-//        getActionMap().put(Config.getUP(), new AbstractAction() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//
-//                if(direction != Config.getDOWN())
-//                    direction = Config.getUP();
-//            }
-//        });
     }
 
 
@@ -86,7 +70,7 @@ public class SnakeGameEngine extends JPanel {
 
         //TODO: When playing a game from challenge, change to +2 instead
         snake.clear();
-        if(game.getHostControls() == null)
+        if(game.getHost().getControls() == null)
             snake.add(new Point((game.getMapSize()-2)/2,(game.getMapSize()-2)/2));
         else
             snake.add(new Point((game.getMapSize()+2)/2,(game.getMapSize()+2)/2));

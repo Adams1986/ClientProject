@@ -1,5 +1,6 @@
 package gui;
 
+import sdk.Config;
 import sdk.Game;
 import sdk.User;
 
@@ -23,14 +24,19 @@ public class GameChooser extends JPanel {
         setLayout(null);
 
         gamesToJoinTable = new JTable();
-        btnJoinSelectedGame = new JButton("Join selected game");
-        btnCreateNewGame = new JButton("Create a new game");
+        btnJoinSelectedGame = new JButton(Config.getBtnJoinSelectedGameText());
+        btnCreateNewGame = new JButton(Config.getBtnCreateNewGameText());
 
         scrollPane = new JScrollPane(gamesToJoinTable);
 
-        btnCreateNewGame.setBounds(40, 40, 150, 30);
-        scrollPane.setBounds(40, 100, 550, 260);
-        btnJoinSelectedGame.setBounds(40, 400, 150, 30);
+        btnCreateNewGame.setBounds(Config.getDefaultXPosJComponent(), Config.getY1PosJComponent(),
+                Config.getDefaultWidthJComponent(), Config.getDefaultHeightJComponent());
+
+        scrollPane.setBounds(Config.getDefaultXPosJComponent(), Config.getY2PosJComponent(),
+                Config.getWidth2JComponent(), Config.getY5PosJComponent());
+
+        btnJoinSelectedGame.setBounds(Config.getDefaultXPosJComponent(), Config.getY7PosJComponent(),
+                Config.getDefaultWidthJComponent(), Config.getDefaultHeightJComponent());
 
         add(btnCreateNewGame);
         add(scrollPane);
@@ -39,9 +45,9 @@ public class GameChooser extends JPanel {
 
     }
 
-    public void setGameTableModel(ArrayList<Game> games){
+    public void setGameTableModel(ArrayList<Game> games, String[] columns){
 
-        tableModel = new GameTableModel(games);
+        tableModel = new GameTableModel(games, columns);
         gamesToJoinTable.setModel(tableModel);
     }
 

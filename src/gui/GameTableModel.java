@@ -17,12 +17,11 @@ public class GameTableModel extends AbstractTableModel {
     private int numberOfRows;
     private String [] columns;
 
-    public GameTableModel (ArrayList<Game> games){
+    public GameTableModel (ArrayList<Game> games, String[] columns){
 
         gameList = games;
         //Winner and opponent redundant in the case of join game
-        columns = new String []{"Challenger", "Opponent", "Game name", "Game status", "Created", "Winner", "Map size"};
-        //columns = Config.getColumnNamesGameTable();
+        this.columns = columns;
         fireTableStructureChanged();
     }
 
@@ -56,6 +55,7 @@ public class GameTableModel extends AbstractTableModel {
 
         Game game = gameList.get(row);
 
+        //TODO: change for better scaling?
         switch (column){
 
             case 0:
