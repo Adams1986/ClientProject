@@ -36,6 +36,7 @@ public class Api {
         return ServerConnection.get(Config.getServerPathGames() + userId);
     }
 
+    //TODO: handle toJson in controller instead, so only sends and receives Strings
     public static String createUser(User user){
 
         return ServerConnection.post(Config.getServerPathUsers(), new Gson().toJson(user));
