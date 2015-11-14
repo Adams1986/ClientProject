@@ -3,8 +3,6 @@ package sdk;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import javax.swing.*;
-import java.awt.*;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -20,7 +18,7 @@ public class Config {
 
     private static int count;
     private static int delay;
-    private static int boardStartXY;
+    private static int zeroXY;
 
     //TODO: is this neccesary? when using in switch values have to be static. Seems like a stupid workaround?
     private static String up;
@@ -47,8 +45,8 @@ public class Config {
     private static int appHeight;
     private static int appWidth;
 
-    private static String [] columnNamesGameTable;
-    private static String [] columnNamesUserTable = new String[3];;
+    private static String [] columnNamesGameTable = new String[7];
+    private static String [] columnNamesUserTable = new String[3];
     private static String gameChooserScreen;
     private static String serverPathUsers;
     private static String serverPathLogin;
@@ -105,6 +103,27 @@ public class Config {
     private static String btnLoginText;
     private static String btnCreateNewUserText;
     private static String depardieuImagePath;
+    private static int appBorderSize;
+    private static String btnWatchReplayText;
+    private static String btnShowHighScoreText;
+    private static String btnDeleteGameText;
+    private static String btnLogoutText;
+    private static String missingGameNameText;
+    private static String missingOpponentText;
+    private static String missingGameSelectionText;
+    private static String confirmedUserCreationText;
+    private static String serverPathGamesInvitedById;
+    private static String serverPathGamesHostedById;
+    private static String serverPathOpenGames;
+    private static String serverPathStartGames;
+    private static String serverPathJoinGames;
+    private static int moveOne;
+    private static int numberForSnakePlacement;
+    private static int keyStrokeModifier;
+    private static String btnRefreshText;
+    private static String btnDeleteText;
+    private static String deleteGameScreen;
+    private static String serverPathDeleteGames;
 
 
     public static void init () {
@@ -140,6 +159,7 @@ public class Config {
             setAppHeight((int) (long) jsonObject.get("appheight"));
             setAppWidth((int) (long) jsonObject.get("appwidth"));
             setAppName((String) jsonObject.get("appname"));
+            setAppBorderSize((int)(long) jsonObject.get("appbordersize"));
             setFieldHeight((int) (long) jsonObject.get("fieldheight"));
             setFieldWidth((int) (long) jsonObject.get("fieldwidth"));
             setBoardHeight((int) (long) jsonObject.get("boardheight"));
@@ -148,7 +168,7 @@ public class Config {
             setCount((int) (long) jsonObject.get("count"));
             setDelay((int) (long) jsonObject.get("delay"));
 
-            setBoardStartXY((int) (long) jsonObject.get("boardstartxy"));
+            setZeroXY((int) (long) jsonObject.get("zeroxy"));
 
             setReplayWidth((int) (long) jsonObject.get("replaywidth"));
             setReplayHeight((int) (long) jsonObject.get("replayheight"));
@@ -168,6 +188,14 @@ public class Config {
             getColumnNamesUserTable()[0] = (String) jsonObject.get("firstname");
             getColumnNamesUserTable()[1] = (String) jsonObject.get("lastname");
             getColumnNamesUserTable()[2] = (String) jsonObject.get("username");
+
+            getColumnNamesGameTable()[0] = (String) jsonObject.get("challenger");
+            getColumnNamesGameTable()[1] = (String) jsonObject.get("opponent");
+            getColumnNamesGameTable()[2] = (String) jsonObject.get("gamename");
+            getColumnNamesGameTable()[3] = (String) jsonObject.get("gamestatus");
+            getColumnNamesGameTable()[4] = (String) jsonObject.get("created");
+            getColumnNamesGameTable()[5] = (String) jsonObject.get("winner");
+            getColumnNamesGameTable()[6] = (String) jsonObject.get("mapsize");
 
             getMapSizes()[0] = (int)(long) jsonObject.get("smallmap");
             getMapSizes()[1] = (int)(long) jsonObject.get("mediummap");
@@ -228,6 +256,31 @@ public class Config {
             setBtnLoginText((String) jsonObject.get("btnlogintext"));
             setBtnCreateNewUserText((String) jsonObject.get("btncreatenewusertext"));
             setDepardieuImagePath((String) jsonObject.get("depardieuimagepath"));
+            setBtnWatchReplayText((String) jsonObject.get("btnwatchreplaytext"));
+            setBtnShowHighScoreText((String) jsonObject.get("btnshowhighscoretext"));
+            setBtnDeleteGameText((String) jsonObject.get("btndeletegametext"));
+            setBtnLogoutText((String) jsonObject.get("btnlogouttext"));
+            setBtnRefreshText(((String) jsonObject.get("btnrefreshtext")));
+
+            setMissingGameNameText((String) jsonObject.get("missinggamenametext"));
+            setMissingOpponentText((String) jsonObject.get("missingopponenttext"));
+            setMissingGameSelectionText((String) jsonObject.get("missinggameselectiontext"));
+
+            setConfirmedUserCreationText((String) jsonObject.get("confirmedusercreationtext"));
+
+            setServerPathJoinGames((String) jsonObject.get("serverpathjoingames"));
+            setServerPathStartGames((String) jsonObject.get("serverpathstartgames"));
+            setServerPathGamesInvitedById((String) jsonObject.get("serverpathgamesinvitedbyid"));
+            setServerPathGamesHostedById((String) jsonObject.get("serverpathgameshostedbyid"));
+            setServerPathOpenGames((String) jsonObject.get("serverpathopengames"));
+            setServerPathDeleteGames((String) jsonObject.get("serverpathdeletegames"));
+
+            setMoveOne((int)(long) jsonObject.get("moveone"));
+            setNumberForSnakePlacement((int)(long) jsonObject.get("numberforsnakeplacement"));
+            setKeyStrokeModifier((int)(long) jsonObject.get("keystrokemodifier"));
+
+            setBtnDeleteText((String) jsonObject.get("delete"));
+            setDeleteGameScreen((String) jsonObject.get("deletegamescreen"));
 
 
         } catch (org.json.simple.parser.ParseException e) {
@@ -254,7 +307,7 @@ public class Config {
     }
 
     public static char getUp() {
-        return up.charAt(0);
+        return up.charAt(Config.getIndexOne());
     }
 
     public static void setUp(String up) {
@@ -262,7 +315,7 @@ public class Config {
     }
 
     public static char getDown() {
-        return down.charAt(0);
+        return down.charAt(Config.getIndexOne());
     }
 
     public static void setDown(String down) {
@@ -270,7 +323,7 @@ public class Config {
     }
 
     public static char getLeft() {
-        return left.charAt(0);
+        return left.charAt(Config.getIndexOne());
     }
 
     public static void setLeft(String left) {
@@ -278,7 +331,7 @@ public class Config {
     }
 
     public static char getRight() {
-        return right.charAt(0);
+        return right.charAt(Config.getIndexOne());
     }
 
     public static void setRight(String right) {
@@ -286,7 +339,7 @@ public class Config {
     }
 
     public static char getAwaiting() {
-        return awaiting.charAt(0);
+        return awaiting.charAt(Config.getIndexOne());
     }
 
     public static void setAwaiting(String awaiting) {
@@ -341,12 +394,12 @@ public class Config {
         Config.delay = delay;
     }
 
-    public static int getBoardStartXY() {
-        return boardStartXY;
+    public static int getZeroXY() {
+        return zeroXY;
     }
 
-    public static void setBoardStartXY(int boardStartXY) {
-        Config.boardStartXY = boardStartXY;
+    public static void setZeroXY(int zeroXY) {
+        Config.zeroXY = zeroXY;
     }
 
     public static int getReplayWidth() {
@@ -903,5 +956,173 @@ public class Config {
 
     public static void setDepardieuImagePath(String depardieuImagePath) {
         Config.depardieuImagePath = depardieuImagePath;
+    }
+
+    public static int getAppBorderSize() {
+        return appBorderSize;
+    }
+
+    public static void setAppBorderSize(int appBorderSize) {
+        Config.appBorderSize = appBorderSize;
+    }
+
+    public static String getBtnWatchReplayText() {
+        return btnWatchReplayText;
+    }
+
+    public static void setBtnWatchReplayText(String btnWatchReplayText) {
+        Config.btnWatchReplayText = btnWatchReplayText;
+    }
+
+    public static String getBtnShowHighScoreText() {
+        return btnShowHighScoreText;
+    }
+
+    public static void setBtnShowHighScoreText(String btnShowHighScoreText) {
+        Config.btnShowHighScoreText = btnShowHighScoreText;
+    }
+
+    public static String getBtnDeleteGameText() {
+        return btnDeleteGameText;
+    }
+
+    public static void setBtnDeleteGameText(String btnDeleteGameText) {
+        Config.btnDeleteGameText = btnDeleteGameText;
+    }
+
+    public static String getBtnLogoutText() {
+        return btnLogoutText;
+    }
+
+    public static void setBtnLogoutText(String btnLogoutText) {
+        Config.btnLogoutText = btnLogoutText;
+    }
+
+    public static String getMissingGameNameText() {
+        return missingGameNameText;
+    }
+
+    public static void setMissingGameNameText(String missingGameNameText) {
+        Config.missingGameNameText = missingGameNameText;
+    }
+
+    public static String getMissingOpponentText() {
+        return missingOpponentText;
+    }
+
+    public static void setMissingOpponentText(String missingOpponentText) {
+        Config.missingOpponentText = missingOpponentText;
+    }
+
+    public static String getMissingGameSelectionText() {
+        return missingGameSelectionText;
+    }
+
+    public static void setMissingGameSelectionText(String missingGameSelectionText) {
+        Config.missingGameSelectionText = missingGameSelectionText;
+    }
+
+    public static String getConfirmedUserCreationText() {
+        return confirmedUserCreationText;
+    }
+
+    public static void setConfirmedUserCreationText(String confirmedUserCreationText) {
+        Config.confirmedUserCreationText = confirmedUserCreationText;
+    }
+
+    public static String getServerPathGamesInvitedById() {
+        return serverPathGamesInvitedById;
+    }
+
+    public static void setServerPathGamesInvitedById(String serverPathGamesInvitedById) {
+        Config.serverPathGamesInvitedById = serverPathGamesInvitedById;
+    }
+
+    public static String getServerPathGamesHostedById() {
+        return serverPathGamesHostedById;
+    }
+
+    public static void setServerPathGamesHostedById(String serverPathGamesHostedById) {
+        Config.serverPathGamesHostedById = serverPathGamesHostedById;
+    }
+
+    public static String getServerPathOpenGames() {
+        return serverPathOpenGames;
+    }
+
+    public static void setServerPathOpenGames(String serverPathOpenGames) {
+        Config.serverPathOpenGames = serverPathOpenGames;
+    }
+
+    public static String getServerPathStartGames() {
+        return serverPathStartGames;
+    }
+
+    public static void setServerPathStartGames(String serverPathStartGames) {
+        Config.serverPathStartGames = serverPathStartGames;
+    }
+
+    public static String getServerPathJoinGames() {
+        return serverPathJoinGames;
+    }
+
+    public static void setServerPathJoinGames(String serverPathJoinGames) {
+        Config.serverPathJoinGames = serverPathJoinGames;
+    }
+
+    public static int getMoveOne() {
+        return moveOne;
+    }
+
+    public static void setMoveOne(int moveOne) {
+        Config.moveOne = moveOne;
+    }
+
+    public static int getNumberForSnakePlacement() {
+        return numberForSnakePlacement;
+    }
+
+    public static void setNumberForSnakePlacement(int numberForSnakePlacement) {
+        Config.numberForSnakePlacement = numberForSnakePlacement;
+    }
+
+    public static int getKeyStrokeModifier() {
+        return keyStrokeModifier;
+    }
+
+    public static void setKeyStrokeModifier(int keyStrokeModifier) {
+        Config.keyStrokeModifier = keyStrokeModifier;
+    }
+
+    public static String getBtnRefreshText() {
+        return btnRefreshText;
+    }
+
+    public static void setBtnRefreshText(String btnRefreshText) {
+        Config.btnRefreshText = btnRefreshText;
+    }
+
+    public static String getBtnDeleteText() {
+        return btnDeleteText;
+    }
+
+    public static void setBtnDeleteText(String btnDeleteText) {
+        Config.btnDeleteText = btnDeleteText;
+    }
+
+    public static String getDeleteGameScreen() {
+        return deleteGameScreen;
+    }
+
+    public static void setDeleteGameScreen(String deleteGameScreen) {
+        Config.deleteGameScreen = deleteGameScreen;
+    }
+
+    public static String getServerPathDeleteGames() {
+        return serverPathDeleteGames;
+    }
+
+    public static void setServerPathDeleteGames(String serverPathDeleteGames) {
+        Config.serverPathDeleteGames = serverPathDeleteGames;
     }
 }

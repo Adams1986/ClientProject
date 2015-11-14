@@ -23,13 +23,11 @@ public class Screen extends JFrame {
 
         super(Config.getAppName());
 
-        //TODO:remove later
-        Config.init();
-
         contentPane = new JPanel();
-        //TODO: are these numbers OK to have?
-        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-        contentPane.setLayout(new BorderLayout(0,0));
+        contentPane.setBorder(new EmptyBorder(Config.getAppBorderSize(), Config.getAppBorderSize(),
+                Config.getAppBorderSize(), Config.getAppBorderSize()));
+
+        contentPane.setLayout(new BorderLayout(Config.getZeroXY(), Config.getZeroXY()));
         setContentPane(contentPane);
 
         loginPanel = new LoginPanel();
@@ -49,15 +47,20 @@ public class Screen extends JFrame {
         cl.addLayoutComponent(mainMenuPanel, Config.getMainMenuScreen());
         cl.addLayoutComponent(createUserPanel, Config.getCreateUserScreen());
         cl.show(clPanel, Config.getLoginScreen());
-        //TODO: remove again, but use to see layout
-        //cl.show(clPanel, Config.getMainMenuScreen());
 
-//        setResizable(false);
+        setFonts(new Font(Config.getHeaderFont(), Font.BOLD, Config.getHeaderTextSize()));
 
-        //TODO: change,
         setSize(Config.getAppWidth(), Config.getAppHeight());
+        setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+    }
+
+    public void setFonts(Font f){
+
+        mainMenuPanel.setFonts(f);
+        createUserPanel.setFonts(f);
+        loginPanel.setFonts(f);
     }
 
     /**

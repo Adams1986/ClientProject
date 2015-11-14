@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Created by ADI on 05-11-2015.
  */
-public class CreateNewGame extends JPanel {
+public class CreateNewGamePanel extends JPanel {
 
     private JLabel headerLabel;
     private JButton btnSend;
@@ -25,7 +25,7 @@ public class CreateNewGame extends JPanel {
     //TODO: label for the table
 
 
-    public CreateNewGame(){
+    public CreateNewGamePanel(){
 
         setLayout(null);
 

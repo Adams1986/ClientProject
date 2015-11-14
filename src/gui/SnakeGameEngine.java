@@ -12,11 +12,9 @@ import java.util.LinkedList;
 /**
  * Play a game of snake. Draws the movements of a user to a JPanel
  */
-//TODO: remove actionlistener from here and instead add them in controller somehow
 public class SnakeGameEngine extends JPanel {
 
     private LinkedList<Point> snake;
-    //TODO: flytte move over i controller
     private char direction;
     private StringBuilder sb;
     private Timer tm;
@@ -28,8 +26,6 @@ public class SnakeGameEngine extends JPanel {
     //TODO: change to int mapSize at some point?!
     public SnakeGameEngine(ActionListener l, Game game){
 
-
-        //TODO: move to paintComponent if trouble restarting game?
         this.game = game;
         snake = new LinkedList<>();
         sb = new StringBuilder();
@@ -58,22 +54,27 @@ public class SnakeGameEngine extends JPanel {
 
     public void keyBindings() {
 
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), Config.getUp());
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), Config.getDown());
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), Config.getLeft());
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), Config.getRight());
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, Config.getKeyStrokeModifier()),
+                Config.getUp());
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, Config.getKeyStrokeModifier()),
+                Config.getDown());
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, Config.getKeyStrokeModifier()),
+                Config.getLeft());
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, Config.getKeyStrokeModifier()),
+                Config.getRight());
 
     }
 
 
     private void generateDefaultSnake() {
 
-        //TODO: When playing a game from challenge, change to +2 instead
         snake.clear();
         if(game.getHost().getControls() == null)
-            snake.add(new Point((game.getMapSize()-2)/2,(game.getMapSize()-2)/2));
+            snake.add(new Point((game.getMapSize()-Config.getNumberForSnakePlacement())/Config.getNumberForSnakePlacement(),
+                    (game.getMapSize()-Config.getNumberForSnakePlacement())/Config.getNumberForSnakePlacement()));
         else
-            snake.add(new Point((game.getMapSize()+2)/2,(game.getMapSize()+2)/2));
+            snake.add(new Point((game.getMapSize()+Config.getNumberForSnakePlacement())/Config.getNumberForSnakePlacement(),
+                    (game.getMapSize()+Config.getNumberForSnakePlacement())/Config.getNumberForSnakePlacement()));
 
         direction = Config.getAwaiting();
     }
@@ -132,64 +133,61 @@ public class SnakeGameEngine extends JPanel {
     private void drawBoard(Graphics g){
 
         //draw outer frame
-        g.drawRect(Config.getBoardStartXY(), Config.getBoardStartXY(), Config.getFieldWidth() * game.getMapSize(),
+        g.drawRect(Config.getZeroXY(), Config.getZeroXY(), Config.getFieldWidth() * game.getMapSize(),
                 Config.getFieldHeight() * game.getMapSize());
 
 
         //vertical lines
         for (int x = Config.getFieldWidth(); x < Config.getFieldWidth() * game.getMapSize() ; x+= Config.getFieldWidth()) {
 
-            g.drawLine(x, Config.getBoardStartXY(), x, Config.getFieldHeight() * game.getMapSize());
+            g.drawLine(x, Config.getZeroXY(), x, Config.getFieldHeight() * game.getMapSize());
         }
         //horizontal lines
         for (int y = Config.getFieldHeight(); y < Config.getFieldHeight() * game.getMapSize() ; y+= Config.getFieldHeight()) {
 
-            g.drawLine(Config.getBoardStartXY(), y, Config.getFieldWidth() * game.getMapSize(), y);
+            g.drawLine(Config.getZeroXY(), y, Config.getFieldWidth() * game.getMapSize(), y);
         }
     }
 
 
-    public void move(char ch){
+    public void move(char ch) {
 
-        if(direction == Config.getAwaiting()) return;
+        if (direction == Config.getAwaiting()) return;
 
         Point head = snake.peekFirst();
         Point newPoint = head;
         Point addPoint = (Point) newPoint.clone();
 
         //hardcoded chars and Points
-        switch (ch) {
+        if (ch == Config.getUp()) {
 
-            case 'w':
-                newPoint = new Point(head.x, head.y - 1);
-                sb.append(ch);
-                break;
+            newPoint = new Point(head.x, head.y - Config.getMoveOne());
+            sb.append(ch);
+        }
+        else if (ch == Config.getDown()) {
 
-            case 's':
-                newPoint = new Point(head.x, head.y + 1);
-                sb.append(ch);
-                break;
+            newPoint = new Point(head.x, head.y + Config.getMoveOne());
+            sb.append(ch);
+        }
+        else if (ch == Config.getLeft()) {
 
-            case 'a':
-                newPoint = new Point(head.x - 1, head.y);
-                sb.append(ch);
-                break;
-
-            case 'd':
-                newPoint = new Point(head.x + 1, head.y);
-                sb.append(ch);
-                break;
+            newPoint = new Point(head.x - Config.getMoveOne(), head.y);
+            sb.append(ch);
+        }
+        else if (ch == Config.getRight()) {
+            newPoint = new Point(head.x + Config.getMoveOne(), head.y);
+            sb.append(ch);
         }
         //add head to front
         snake.push(addPoint);
 
-        if (newPoint.x < 0 || newPoint.x > game.getMapSize() - 1){
+        if (newPoint.x < Config.getZeroXY() || newPoint.x > game.getMapSize() - Config.getMoveOne()){
 
             //out of board/bounds horizontally - end
             gameEnded = true;
             return;
         }
-        else if (newPoint.y < 0 || newPoint.y > game.getMapSize() - 1){
+        else if (newPoint.y < Config.getZeroXY() || newPoint.y > game.getMapSize() - Config.getMoveOne()){
 
             //out of bounds vertically
             gameEnded = true;

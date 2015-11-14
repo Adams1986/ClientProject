@@ -1,7 +1,12 @@
 package logic;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import gui.DialogMessage;
 import gui.Screen;
+import logic.subcontroller.DeleteGameLogic;
+import logic.subcontroller.LoginLogic;
+import logic.subcontroller.TableLogic;
 import sdk.*;
 
 import javax.swing.*;
@@ -21,14 +26,22 @@ public class Controller {
     private User currentUser;
     private Game replayGame;
     private Game newGame;
+    private ArrayList<Game> games;
     private boolean isAuthenticated;
     private SnakeEngineDrawClass snakeEngineDrawClass = new SnakeEngineDrawClass();
     private ReplaySnakeHandlerClass replaySnakeHandler = new ReplaySnakeHandlerClass();
+    private LoginLogic loginLogic;
+    private TableLogic tableLogic;
+    private DeleteGameLogic deleteGameLogic;
 
     public Controller(){
 
         isAuthenticated = false;
         screen = new Screen();
+        loginLogic = new LoginLogic(screen);
+        tableLogic = new TableLogic(screen);
+        deleteGameLogic = new DeleteGameLogic(screen);
+        currentUser = new User();
     }
 
     /**
@@ -42,6 +55,7 @@ public class Controller {
 
         screen.getMainMenuPanel().getCreateNewGamePanel().addActionListeners(new CreateNewGameHandlerClass());
         screen.getMainMenuPanel().getGameChooserPanel().addActionListeners(new GameChooserHandlerClass());
+        screen.getMainMenuPanel().getDeleteGamePanel().addActionListeners(new DeleteGameHandlerClass());
 
     }
 
@@ -53,52 +67,27 @@ public class Controller {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            switch (e.getActionCommand()) {
+            if (e.getActionCommand().equals(Config.getBtnLoginText())) {
 
-                //TODO: lad v�re med at bruge switch og i stedet bruge if-else for brug af Config filen
-                case "Login":
-                    currentUser = new User();
-                    currentUser.setUsername(screen.getLoginPanel().getUsernameInput());
-                    currentUser.setPassword(screen.getLoginPanel().getPasswordInput());
+                String message = loginLogic.authenticated(currentUser);
+                isAuthenticated = message.equals(Config.getLoginAuthentication());
 
-                    String message = Api.authenticateLogin(currentUser);
-                    isAuthenticated = message.equals(Config.getLoginAuthentication());
+                if (isAuthenticated) {
 
-                    if (isAuthenticated) {
+                    screen.show(Config.getMainMenuScreen());
+                    screen.getMainMenuPanel().show(Config.getGameChooserScreen());
+                    screen.getMainMenuPanel().setWelcomeMessage(message);
+                    tableLogic.setGamesTableModel(currentUser);
 
-                        screen.show(Config.getMainMenuScreen());
-                        screen.getMainMenuPanel().show(Config.getGameChooserScreen());
+                }
+                else {
+                    screen.getLoginPanel().setFailedLoginAttempt(message);
+                }
+                screen.getLoginPanel().clearFields();
+            }
+            else if (e.getActionCommand().equals(Config.getBtnCreateNewUserText())) {
 
-                        ArrayList<User>users = Api.getUsers();
-                        ArrayList<Game>games = Api.getGamesInvitedByID(currentUser.getId());
-
-                        for (int i = 0; i < users.size(); i++){
-
-                            for (int j = 0; j < games.size(); j++){
-                                if (users.get(i).getId() == games.get(j).getHost().getId()){
-
-                                    games.get(j).getHost().setUsername(users.get(i).getUsername());
-                                }
-                            }
-
-                        }
-                        String[] columns = new String []{"Challenger", "Opponent", "Game name", "Game status", "Created", "Winner", "Map size"};
-                        //String[] columns = Config.getColumnNamesGameTable();
-                        screen.getMainMenuPanel().getGameChooserPanel().setGameTableModel(games, columns);
-                        //TODO: move?
-                        screen.getMainMenuPanel().getCreateNewGamePanel().setOpponentTableModel(Api.getUsers());
-
-                        //TODO: change ^this^ to some start menu or something, works like crap
-                        screen.getMainMenuPanel().setWelcomeMessage(message);
-                    } else {
-                        screen.getLoginPanel().setFailedLoginAttempt(message);
-                    }
-                    screen.getLoginPanel().clearFields();
-                    break;
-
-                case "Don't have a user? Create a new one":
-                    screen.show(Config.getCreateUserScreen());
-                    break;
+                screen.show(Config.getCreateUserScreen());
             }
         }
     }
@@ -111,49 +100,48 @@ public class Controller {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            switch (e.getActionCommand()){
+            if (e.getActionCommand().equals(Config.getBtnPlayText())) {
 
-                //TODO: bigish workaround to not hard code these
-                case "Play a game":
-                    screen.getMainMenuPanel().show(Config.getGameChooserScreen());
-                    break;
+                screen.getMainMenuPanel().show(Config.getGameChooserScreen());
+            }
+            else if (e.getActionCommand().equals(Config.getBtnWatchReplayText())) {
 
                 //f�r et map retur fra API, kan m�ske bruges til at tegne spillet?
-                case "Watch a replay":
-                    //TODO: clean up, some of set stuff can be added in gamer class.
-                    replayGame = Api.getGame(51);
+                //TODO: clean up, some of set stuff can be added in gamer class.
+                replayGame = new Gson().fromJson(MessageParser.parseMessage(Api.getGame(51)), Game.class);
 
-                    //TODO: maybe move to replaysnake class instead! modeling host and opponent to create graphics
-                    replayGame.getHost().setSnakeColor(Color.BLUE);
-                    replayGame.getHost().setSnake(new LinkedList<Point>());
-                    replayGame.getHost().getSnake().add(new Point((replayGame.getMapSize()-2)/2, (replayGame.getMapSize()-2)/2));
-                    replayGame.getOpponent().setSnakeColor(Color.RED);
-                    replayGame.getOpponent().setSnake(new LinkedList<Point>());
-                    replayGame.getOpponent().getSnake().add(new Point((replayGame.getMapSize()+2)/2, (replayGame.getMapSize()+2)/2));
+                //TODO: maybe move to replaysnake class instead! modeling host and opponent to create graphics
+                replayGame.getHost().setSnakeColor(Color.BLUE);
+                replayGame.getHost().setSnake(new LinkedList<Point>());
+                replayGame.getHost().getSnake().add(new Point((replayGame.getMapSize() - 2) / 2, (replayGame.getMapSize() - 2) / 2));
+                replayGame.getOpponent().setSnakeColor(Color.RED);
+                replayGame.getOpponent().setSnake(new LinkedList<Point>());
+                replayGame.getOpponent().getSnake().add(new Point((replayGame.getMapSize() + 2) / 2, (replayGame.getMapSize() + 2) / 2));
 
-                    //adding controls to gamer objects instead of game object.
+                //adding controls to gamer objects instead of game object.
 //                    replayGame.getHost().setControls(replayGame.getHostControls());
 //                    replayGame.getOpponent().setControls(replayGame.getOpponentControls());
 
-                    screen.getMainMenuPanel().addReplaySnakeToPanel(replayGame, replaySnakeHandler);
-                    break;
+                screen.getMainMenuPanel().addReplaySnakeToPanel(replayGame, replaySnakeHandler);
+            }
+            else if (e.getActionCommand().equals(Config.getBtnShowHighScoreText())) {
+                    ArrayList<Score> scores = new Gson().fromJson(Api.getHighScores(), new TypeToken<ArrayList<Score>>(){}.getType());
+                    System.out.println(scores.get(0).getScore() + " " + scores.get(0).getGame().getWinner());
 
-                case "High scores":
-                    System.out.println(Api.getHighScores().get(0).getScore() + " " + Api.getHighScores().get(0).getGame().getWinner());
-                    System.out.println(Api.getScoresByUserId(2).size());
-                    break;
+                    ArrayList<Score> scores1 = new Gson().fromJson(Api.getScoresByUserId(2), new TypeToken<ArrayList<Score>>(){}.getType());
+                    System.out.println(scores1.size());
+            }
+            else if (e.getActionCommand().equals(Config.getBtnDeleteGameText())) {
+                screen.getMainMenuPanel().show(Config.getDeleteGameScreen());
+                tableLogic.setGamesToDeleteTableModel(currentUser);
 
-                case "Delete a game":
-                    Api.deleteGame(23);
-                    break;
-
+            }
+            else if (e.getActionCommand().equals(Config.getBtnLogoutText())) {
                 //TODO: for some reason when pressing log out after a replay is done running, part of board disappears. Also if in play screen, game cannot regain focus
-                case "Log out":
-                    if(DialogMessage.showConfirmMessage(screen, Config.getLogoutMessage(), Config.getLogoutTitle())) {
-                        screen.show(Config.getLoginScreen());
-                        currentUser = null;
-                    }
-                    break;
+                if (DialogMessage.showConfirmMessage(screen, Config.getLogoutMessage(), Config.getLogoutTitle())) {
+                    screen.show(Config.getLoginScreen());
+                    currentUser = null;
+                }
             }
         }
     }
@@ -162,32 +150,28 @@ public class Controller {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            switch (e.getActionCommand()){
+            if (e.getActionCommand().equals(Config.getBtnCreateUserText())) {
 
-                case "Create user":
-                    User createNewUser = new User();
-                    createNewUser.setFirstName(screen.getCreateUserPanel().getFirstNameField());
-                    createNewUser.setLastName(screen.getCreateUserPanel().getLastNameField());
-                    createNewUser.setEmail(screen.getCreateUserPanel().getEmailField());
-                    createNewUser.setUsername(screen.getCreateUserPanel().getUsernameField());
-                    createNewUser.setPassword(screen.getCreateUserPanel().getPasswordField());
+                User createNewUser = new User();
 
-                    //TODO: default setting of this in some way
-                    createNewUser.setStatus("active");
-                    String message = Api.createUser(createNewUser);
+                createNewUser.setFirstName(screen.getCreateUserPanel().getFirstNameField());
+                createNewUser.setLastName(screen.getCreateUserPanel().getLastNameField());
+                createNewUser.setEmail(screen.getCreateUserPanel().getEmailField());
+                createNewUser.setUsername(screen.getCreateUserPanel().getUsernameField());
+                createNewUser.setPassword(screen.getCreateUserPanel().getPasswordField());
 
-                    DialogMessage.showMessage(screen, message);
+                String jsonData = Api.createUser(createNewUser);
+                String message = MessageParser.parseMessage(jsonData);
 
-                    if(!message.equals("User was created")){
+                DialogMessage.showMessage(screen, message);
 
-                    }
-                    else
-                        screen.getCreateUserPanel().clearFields();
-                    break;
+                if (!message.equals(Config.getConfirmedUserCreationText())) {
 
-                case "To Login":
-                    screen.show(Config.getLoginScreen());
-                    break;
+                } else
+                    screen.getCreateUserPanel().clearFields();
+            }
+            else if (e.getActionCommand().equals(Config.getBtnBackToLoginText())) {
+                screen.show(Config.getLoginScreen());
             }
         }
     }
@@ -202,21 +186,19 @@ public class Controller {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            String cmd = e.getActionCommand();
-
-            if(cmd.equals(Character.toString(Config.getUp()))){
+            if(e.getActionCommand().equals(Character.toString(Config.getUp()))){
                 if(screen.getMainMenuPanel().getSnakeGameEngine().getDirection()!= Config.getDown())
                     screen.getMainMenuPanel().getSnakeGameEngine().setDirection(Config.getUp());
             }
-            else if (cmd.equals(Character.toString(Config.getDown()))){
+            else if (e.getActionCommand().equals(Character.toString(Config.getDown()))){
                 if(screen.getMainMenuPanel().getSnakeGameEngine().getDirection()!= Config.getUp())
                     screen.getMainMenuPanel().getSnakeGameEngine().setDirection(Config.getDown());
             }
-            else if (cmd.equals(Character.toString(Config.getLeft()))){
+            else if (e.getActionCommand().equals(Character.toString(Config.getLeft()))){
                 if(screen.getMainMenuPanel().getSnakeGameEngine().getDirection()!= Config.getRight())
                     screen.getMainMenuPanel().getSnakeGameEngine().setDirection(Config.getLeft());
             }
-            else if (cmd.equals(Character.toString(Config.getRight()))){
+            else if (e.getActionCommand().equals(Character.toString(Config.getRight()))){
                 if(screen.getMainMenuPanel().getSnakeGameEngine().getDirection()!= Config.getLeft())
                     screen.getMainMenuPanel().getSnakeGameEngine().setDirection(Config.getRight());
             }
@@ -231,6 +213,8 @@ public class Controller {
         @Override
         public void actionPerformed(ActionEvent e) {
 
+            String message;
+
             //if game has not ended yet, move snake according to the direction and repaint
             if (!screen.getMainMenuPanel().getSnakeGameEngine().isGameEnded()) {
                 screen.getMainMenuPanel().getSnakeGameEngine().move(screen.getMainMenuPanel().getSnakeGameEngine().getDirection());
@@ -241,15 +225,15 @@ public class Controller {
                 if(newGame.getHost().getControls() == null) {
                     newGame.getHost().setControls(screen.getMainMenuPanel().getSnakeGameEngine().getSbToString());
                     //Attempt to create the game and show response from server
-                    DialogMessage.showMessage(screen, Api.createGame(newGame).getName());//TODO:...
+                    message = MessageParser.parseMessage(Api.createGame(newGame));
+                    DialogMessage.showMessage(screen, message);
                 }
                 else {
 
                     newGame.getOpponent().setControls(screen.getMainMenuPanel().getSnakeGameEngine().getSbToString());
 
-                    newGame.setStatus("finished");
-
-                    DialogMessage.showMessage(screen, Api.joinGame(newGame));
+                    message = Api.joinGame(newGame);
+                    DialogMessage.showMessage(screen, MessageParser.parseMessage(message));
                 }
 
                 //stops animation
@@ -263,7 +247,7 @@ public class Controller {
     }
 
     /**
-     * Inner class, uses CreateNewGame to setup a new game
+     * Inner class, uses CreateNewGamePanel to setup a new game
      */
     private class CreateNewGameHandlerClass implements ActionListener {
 
@@ -274,63 +258,58 @@ public class Controller {
             screen.getMainMenuPanel().getCreateNewGamePanel().setOpponentTableState(
                     !screen.getMainMenuPanel().getCreateNewGamePanel().getOpenGameChoice());
 
-            switch (e.getActionCommand()) {
+            if (e.getActionCommand().equals(Config.getBtnSendText())) {
 
-                case "Send challenge":
+                //TODO: move shit to subcontroller
+                try {
+                    newGame = new Game();
 
-                    //TODO: move shit to subcontroller
-                    try {
-                        newGame = new Game();
+                    if (!screen.getMainMenuPanel().getCreateNewGamePanel().getGameNameText().equals(Config.getClearField())) {
+                        newGame.setName(screen.getMainMenuPanel().getCreateNewGamePanel().getGameNameText());
 
-                        if (!screen.getMainMenuPanel().getCreateNewGamePanel().getGameNameText().equals("")) {
-                            newGame.setName(screen.getMainMenuPanel().getCreateNewGamePanel().getGameNameText());
+                        Gamer host = new Gamer();
+                        Gamer opponent = new Gamer();
 
-                            Gamer host = new Gamer();
-                            Gamer opponent = new Gamer();
+                        host.setId(currentUser.getId());
 
-                            host.setId(currentUser.getId());
-
-                            //only sets opponent if open game is not checked. Api makes sure to create game accordingly
-                            if (!screen.getMainMenuPanel().getCreateNewGamePanel().getOpenGameChoice()) {
-                                opponent.setId(screen.getMainMenuPanel().getCreateNewGamePanel().getOpponent().getId());
-                                newGame.setOpponent(opponent);
-                            }
-                            newGame.setHost(host);
-                            newGame.setMapSize(screen.getMainMenuPanel().getCreateNewGamePanel().getMapSize());
-
-                            //takes an actionlistener as parameter for a dynamic injection of listener
-                            screen.getMainMenuPanel().addPlaySnake(snakeEngineDrawClass, newGame);
-
-                            //TODO: put this somewhere else and call method here. Used it twice now
-                            screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getUp(),
-                                    new SnakeEngineKeyBindingHandlerClass(Character.toString(Config.getUp())));
-                            screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getDown(),
-                                    new SnakeEngineKeyBindingHandlerClass(Character.toString(Config.getDown())));
-                            screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getLeft(),
-                                    new SnakeEngineKeyBindingHandlerClass(Character.toString(Config.getLeft())));
-                            screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getRight(),
-                                    new SnakeEngineKeyBindingHandlerClass(Character.toString(Config.getRight())));
-
-                            screen.getMainMenuPanel().setSidePanelState(false);
+                        //only sets opponent if open game is not checked. Api makes sure to create game accordingly
+                        if (!screen.getMainMenuPanel().getCreateNewGamePanel().getOpenGameChoice()) {
+                            opponent.setId(screen.getMainMenuPanel().getCreateNewGamePanel().getOpponent().getId());
+                            newGame.setOpponent(opponent);
                         }
-                        else {
-                            JOptionPane.showMessageDialog(screen, "Please give the game a name!");
-                            screen.getMainMenuPanel().getCreateNewGamePanel().requestFocusGameNameField();
-                        }
+                        newGame.setHost(host);
+                        newGame.setMapSize(screen.getMainMenuPanel().getCreateNewGamePanel().getMapSize());
 
-                    } catch (ArrayIndexOutOfBoundsException e2) {
-                        e2.printStackTrace();
-                        JOptionPane.showMessageDialog(screen, "You must select an opponent!");
+                        //takes an actionlistener as parameter for a dynamic injection of listener
+                        screen.getMainMenuPanel().addPlaySnake(snakeEngineDrawClass, newGame);
+
+                        //TODO: put this somewhere else and call method here. Used it twice now
+                        screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getUp(),
+                                new SnakeEngineKeyBindingHandlerClass(Character.toString(Config.getUp())));
+                        screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getDown(),
+                                new SnakeEngineKeyBindingHandlerClass(Character.toString(Config.getDown())));
+                        screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getLeft(),
+                                new SnakeEngineKeyBindingHandlerClass(Character.toString(Config.getLeft())));
+                        screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getRight(),
+                                new SnakeEngineKeyBindingHandlerClass(Character.toString(Config.getRight())));
+
+                        screen.getMainMenuPanel().setSidePanelState(false);
+                    } else {
+                        JOptionPane.showMessageDialog(screen, Config.getMissingGameNameText());
+                        screen.getMainMenuPanel().getCreateNewGamePanel().requestFocusGameNameField();
                     }
 
-                    break;
+                } catch (ArrayIndexOutOfBoundsException e2) {
+                    e2.printStackTrace();
+                    JOptionPane.showMessageDialog(screen, Config.getMissingOpponentText());
+                }
             }
         }
     }
 
     private class ReplaySnakeHandlerClass implements ActionListener {
 
-        int counter = 0;
+        int counter = Config.getCount();
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -352,7 +331,7 @@ public class Controller {
                             replayGame.getOpponent().getControls() == null)){
 
                 screen.getMainMenuPanel().getReplaySnake().stopTimer();
-                counter = 0;
+                counter = Config.getCount();
             }
             else {
                 counter++;
@@ -365,7 +344,7 @@ public class Controller {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            if (e.getActionCommand().equals("Join selected game")){
+            if (e.getActionCommand().equals(Config.getBtnJoinSelectedGameText())){
 
 
                 try {
@@ -386,12 +365,49 @@ public class Controller {
 
                 } catch (IndexOutOfBoundsException e1) {
 
-                    DialogMessage.showMessage(screen, "Please select a game to join");
+                    DialogMessage.showMessage(screen, Config.getMissingGameSelectionText());
                 }
             }
-            else if (e.getActionCommand().equals("Create a new game")){
+            else if (e.getActionCommand().equals(Config.getBtnCreateNewGameText())){
 
                 screen.getMainMenuPanel().show(Config.getCreateNewGameScreen());
+            }
+            else if (e.getActionCommand().equals(Config.getBtnRefreshText())){
+
+                ArrayList<User> users = new Gson().fromJson(Api.getUsers(), new TypeToken<ArrayList<User>>(){}.getType());
+
+                games = new Gson().fromJson(Api.getGamesInvitedByID(currentUser.getId()), new TypeToken<ArrayList<Game>>(){}.getType());
+                games = new Gson().fromJson(Api.getGamesByStatusAndUserId("open", currentUser.getId()), new TypeToken<ArrayList<Game>>(){}.getType());
+
+                for (int i = Config.getCount(); i < users.size(); i++) {
+
+                    for (int j = Config.getCount(); j < games.size(); j++) {
+                        if (users.get(i).getId() == games.get(j).getHost().getId()) {
+
+                            games.get(j).getHost().setUsername(users.get(i).getUsername());
+                        }
+                    }
+
+                }
+                screen.getMainMenuPanel().getGameChooserPanel().setGameTableModel(games);
+            }
+        }
+    }
+
+    private class DeleteGameHandlerClass implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            if (DialogMessage.showConfirmMessage(screen, Config.getBtnDeleteText(), Config.getBtnDeleteGameText())) {
+
+                try {
+                    DialogMessage.showMessage(screen, deleteGameLogic.deleteGame());
+
+                    tableLogic.setGamesToDeleteTableModel(currentUser);
+                } catch (ArrayIndexOutOfBoundsException e2) {
+                    DialogMessage.showMessage(screen, Config.getMissingGameSelectionText());
+                }
             }
         }
     }

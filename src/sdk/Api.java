@@ -14,140 +14,101 @@ public class Api {
 
     /**
      * Authenticates a user passed in the parameter to see if user exists with username and password
-     * @param user
+     * @param userJson
      * @return String jsonData with info regarding success of login attempt
      */
-    public static String authenticateLogin(User user) {
+    public static String authenticateLogin(String userJson) {
 
-        String jsonData = ServerConnection.post(Config.getServerPathLogin(), new Gson().toJson(user));
-
-        return MessageParser.parseMessage(jsonData, user);
+        return ServerConnection.post(Config.getServerPathLogin(), userJson);
     }
 
     /**
      * Retrieves all users from the server and saves them in an arraylist
      * @return Arraylist of all users/gamers
      */
-    public static ArrayList<User> getUsers() {
+    public static String getUsers() {
 
-        ArrayList<User> users;
-        String jsonData = ServerConnection.get(Config.getServerPathUsers());
-
-        users = new Gson().fromJson(jsonData, new TypeToken<ArrayList<User>>(){}.getType());
-
-        return users;
+        return ServerConnection.get(Config.getServerPathUsers());
     }
 
-    public static User getUser(int userId){
+    public static String getUser(int userId){
 
-        String jsonData = ServerConnection.get(Config.getServerPathGames() + userId);
-
-        return new Gson().fromJson(jsonData, User.class);
+        return ServerConnection.get(Config.getServerPathGames() + userId);
     }
 
     public static String createUser(User user){
 
-        String jsonData = ServerConnection.post(Config.getServerPathUsers(), new Gson().toJson(user));
-
-        return MessageParser.parseMessage(jsonData);
+        return ServerConnection.post(Config.getServerPathUsers(), new Gson().toJson(user));
     }
 
-    public static Game createGame(Game game){
+    public static String createGame(Game game){
 
-        String jsonData = ServerConnection.post(Config.getServerPathGames(), new Gson().toJson(game));
-
-        return new Gson().fromJson(jsonData, Game.class);
-        //return MessageParser.parseMessage(jsonData);
+        return ServerConnection.post(Config.getServerPathGames(), new Gson().toJson(game));
     }
 
     public static String joinGame(Game game){
 
-        String jsonData = ServerConnection.put("games/join/", new Gson().toJson(game));
-
-        return MessageParser.parseMessage(jsonData);
+        return ServerConnection.put(Config.getServerPathJoinGames(), new Gson().toJson(game));
     }
 
 
     //TODO: skal vi overhovedet bruge dette game? hvordan skal error jsonDatas håndteres? Måske bare returnere string og så håndtere hvorvidt det skal parses eller laves om til json et andet sted
-    public static Game startGame(int gameId) {
+    public static String startGame(int gameId) {
 
-        String jsonData = ServerConnection.get(Config.getServerPathGames()+ "/start/" + gameId);
-
-        return new Gson().fromJson(jsonData, Game.class);
-
+        return ServerConnection.get(Config.getServerPathStartGames() + gameId);
     }
 
     public static String deleteGame(int gameId) {
 
         return ServerConnection.delete(Config.getServerPathGames() + gameId);
-
     }
 
-    public static Game getGame(int gameId){
+    public static String getGame(int gameId){
 
-        String jsonData = ServerConnection.get(Config.getServerPathGame() + gameId);
-
-        return new Gson().fromJson(jsonData, Game.class);
+        return ServerConnection.get(Config.getServerPathGame() + gameId);
     }
 
-    public static ArrayList<Score> getHighScores(){
+    public static String getHighScores(){
 
-        String jsonData = ServerConnection.get(Config.getServerPathScores());
-
-        return new Gson().fromJson(jsonData, new TypeToken<ArrayList<Score>>(){}.getType());
+        return ServerConnection.get(Config.getServerPathScores());
     }
 
 
-    public static ArrayList<Game> getGamesByUserID(int userId){
+    public static String getGamesByUserID(int userId){
 
-        String response = Client
-                .create()
-                .resource("http://" + Config.getIpAddress() + ":" + Config.getServerPort() + "/api/games/" + userId)
-                .accept("application/json")
-                .get(ClientResponse.class)
-                .getEntity(String.class);
+        return ServerConnection.get(Config.getServerPathGames());
 
-        return new Gson().fromJson(response, new TypeToken<ArrayList<Game>>(){}.getType());
+        //return new Gson().fromJson(jsonData, new TypeToken<ArrayList<Game>>(){}.getType());
     }
 
 
-    public static ArrayList<Game> getGamesByStatusAndUserId(String status, int userId){
+    public static String getGamesByStatusAndUserId(String status, int userId){
 
-        String jsonData = ServerConnection.get(Config.getServerPathGames() + status + "/" + userId);
-
-        return new Gson().fromJson(jsonData, new TypeToken<ArrayList<Game>>(){}.getType());
+        //TODO: forwardslash...
+        return ServerConnection.get(Config.getServerPathGames() + status + "/" + userId);
     }
 
-    public static ArrayList<Game> getGamesInvitedByID(int userId){
+    public static String getGamesInvitedByID(int userId){
 
-        String response = Client
-                .create()
-                .resource("http://" + Config.getIpAddress() + ":" + Config.getServerPort() + "/api/games/opponent/" + userId)
-                .accept("application/json")
-                .get(ClientResponse.class)
-                .getEntity(String.class);
-
-        return new Gson().fromJson(response, new TypeToken<ArrayList<Game>>(){}.getType());
+        return ServerConnection.get(Config.getServerPathGamesInvitedById() + userId);
     }
 
-    public static ArrayList<Game> getGamesHostedById(int userId){
+    public static String getGamesHostedById(int userId){
 
-        String jsonData = ServerConnection.get(Config.getServerPathGames() + "host/" + userId);
+        return ServerConnection.get(Config.getServerPathGamesHostedById() + userId);
 
-        return new Gson().fromJson(jsonData, new TypeToken<ArrayList<Game>>(){}.getType());
+        //return new Gson().fromJson(jsonData, new TypeToken<ArrayList<Game>>(){}.getType());
     }
 
-    public static ArrayList<Game> getOpenGames(){
+    public static String getOpenGames(){
 
-        String jsonData = ServerConnection.get(Config.getServerPathGames() + "open/");
+        return ServerConnection.get(Config.getServerPathOpenGames());
 
-        return new Gson().fromJson(jsonData, new TypeToken<ArrayList<Game>>(){}.getType());
+        //return new Gson().fromJson(jsonData, new TypeToken<ArrayList<Game>>(){}.getType());
     }
 
-    public static ArrayList<Score> getScoresByUserId(int userId){
+    public static String getScoresByUserId(int userId){
 
-        String jsonData = ServerConnection.get(Config.getServerPathScores() + userId);
-
-        return new Gson().fromJson(jsonData, new TypeToken<ArrayList<Score>>(){}.getType());
+        return ServerConnection.get(Config.getServerPathScores() + userId);
     }
 }

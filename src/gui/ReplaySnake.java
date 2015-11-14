@@ -6,7 +6,6 @@ import sdk.Gamer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
@@ -104,28 +103,28 @@ public class ReplaySnake extends JPanel {
 
             case 'w':
                 //
-                newPoint = new Point(head.x, head.y - 1);
+                newPoint = new Point(head.x, head.y - Config.getMoveOne());
                 break;
 
             case 's':
-                newPoint = new Point(head.x, head.y + 1);
+                newPoint = new Point(head.x, head.y + Config.getMoveOne());
                 break;
 
             case 'a':
-                newPoint = new Point(head.x - 1, head.y);
+                newPoint = new Point(head.x - Config.getMoveOne(), head.y);
                 break;
 
             case 'd':
-                newPoint = new Point(head.x + 1, head.y);
+                newPoint = new Point(head.x + Config.getMoveOne(), head.y);
                 break;
         }
         user.getSnake().push(addPoint);
 
-        if (newPoint.x < 0 || newPoint.x > game.getMapSize() - 1){
+        if (newPoint.x < Config.getZeroXY() || newPoint.x > game.getMapSize() - Config.getMoveOne()){
 
             return;
         }
-        else if (newPoint.y < 0 || newPoint.y > game.getMapSize() - 1){
+        else if (newPoint.y < Config.getZeroXY() || newPoint.y > game.getMapSize() - Config.getMoveOne()){
 
             return;
         }
@@ -179,19 +178,19 @@ public class ReplaySnake extends JPanel {
     private void drawBoard(Graphics g){
 
         //draw outer frame
-        g.drawRect(Config.getBoardStartXY(), Config.getBoardStartXY(), Config.getFieldWidth() * game.getMapSize(),
+        g.drawRect(Config.getZeroXY(), Config.getZeroXY(), Config.getFieldWidth() * game.getMapSize(),
                 Config.getFieldHeight() * game.getMapSize());
 
 
         //vertical lines
         for (int x = Config.getFieldWidth(); x < Config.getFieldWidth() * game.getMapSize() ; x+= Config.getFieldWidth()) {
 
-            g.drawLine(x, Config.getBoardStartXY(), x, Config.getFieldHeight() * game.getMapSize());
+            g.drawLine(x, Config.getZeroXY(), x, Config.getFieldHeight() * game.getMapSize());
         }
         //horizontal lines
         for (int y = Config.getFieldHeight(); y < Config.getFieldHeight() * game.getMapSize() ; y+= Config.getFieldHeight()) {
 
-            g.drawLine(Config.getBoardStartXY(), y, Config.getFieldWidth() * game.getMapSize(), y);
+            g.drawLine(Config.getZeroXY(), y, Config.getFieldWidth() * game.getMapSize(), y);
         }
     }
 

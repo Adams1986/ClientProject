@@ -47,7 +47,6 @@ public class CreateUserPanel extends JPanel {
 
         infoLabel.setBounds(Config.getDefaultXPosJComponent(), Config.getY1PosJComponent(),
                 Config.getWidth1JComponent(), Config.getDefaultHeightJComponent());
-        infoLabel.setFont(new Font(Config.getHeaderFont(), Font.BOLD, Config.getHeaderTextSize()));
 
         firstNameLabel.setBounds(Config.getDefaultXPosJComponent(), Config.getY3PosJComponent(),
                 Config.getLblWidth(), Config.getDefaultHeightJComponent());
@@ -104,6 +103,11 @@ public class CreateUserPanel extends JPanel {
         add(btnCreate);
         add(btnBack);
 
+    }
+
+    public void setFonts(Font f){
+
+        infoLabel.setFont(f);
     }
 
     public String getFirstNameField() {

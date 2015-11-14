@@ -17,11 +17,11 @@ public class GameTableModel extends AbstractTableModel {
     private int numberOfRows;
     private String [] columns;
 
-    public GameTableModel (ArrayList<Game> games, String[] columns){
+    public GameTableModel (ArrayList<Game> games){
 
         gameList = games;
+        columns = Config.getColumnNamesGameTable();
         //Winner and opponent redundant in the case of join game
-        this.columns = columns;
         fireTableStructureChanged();
     }
 

@@ -39,8 +39,6 @@ public class LoginPanel extends JPanel{
         infoLabel.setBounds(Config.getDefaultXPosJComponent(), Config.getY1PosJComponent(),
                 Config.getLblWidth(), Config.getDefaultHeightJComponent());
 
-        infoLabel.setFont(new Font(Config.getHeaderFont(), Font.BOLD, Config.getHeaderTextSize()));
-
         usernameField.setBounds(Config.getDefaultXPosJComponent(), Config.getY3PosJComponent(),
                 Config.getLblWidth(), Config.getDefaultHeightJComponent());
 
@@ -62,6 +60,11 @@ public class LoginPanel extends JPanel{
         add(btnLogin);
         add(iconLabel);
         add(btnCreateNewUser);
+    }
+
+    public void setFonts(Font f){
+
+        infoLabel.setFont(f);
     }
 
     public void addActionListeners(ActionListener l) {

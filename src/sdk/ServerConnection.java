@@ -21,9 +21,7 @@ public class ServerConnection {
         try {
 
             WebResource webResource = client.resource("http://" + Config.getIpAddress() + ":" + Config.getServerPort() + "/api/" + path);
-            System.out.println("http://" + Config.getIpAddress() + ":" + Config.getServerPort() + "/api/" + path);
-            ClientResponse response = webResource.accept("application/json")
-                    .get(ClientResponse.class);
+            ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
 
             if (response != null) {
 
@@ -51,9 +49,8 @@ public class ServerConnection {
         try {
 
             WebResource webResource = client.resource("http://" + Config.getIpAddress() + ":" + Config.getServerPort() + "/api/" + path);
-
-            ClientResponse response = webResource.accept("application/json")
-                    .post(ClientResponse.class, data);
+            System.out.println("http://" + Config.getIpAddress() + ":" + Config.getServerPort() + "/api/" + path);
+            ClientResponse response = webResource.accept("application/json").post(ClientResponse.class, data);
 
             if (response != null) {
 
@@ -75,6 +72,7 @@ public class ServerConnection {
         try {
 
             WebResource webResource = client.resource("http://" + Config.getIpAddress() + ":" + Config.getServerPort() + "/api/" + path);
+
             ClientResponse response = webResource.accept("application/json").delete(ClientResponse.class);
 
             if (response != null) {
