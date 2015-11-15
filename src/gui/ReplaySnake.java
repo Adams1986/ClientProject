@@ -66,24 +66,21 @@ public class ReplaySnake extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
 
-        if (!gameHasEnded) {
-            super.paintComponent(g);
+        super.paintComponent(g);
 
-            drawBoard(g);
-            drawSnake(g, user);
-            drawGameInfo(g, game);
+        drawBoard(g);
+        drawSnake(g, user);
+        drawGameInfo(g, game);
+        tm.start();
 
-            //makes it possible to replay runs with single user
-            if (opponent.getControls() != null) {
-                drawSnake(g, opponent);
+        //makes it possible to replay runs with single user
+        if (opponent.getControls() != null) {
+            drawSnake(g, opponent);
 
 
-            }
-            tm.start();
-            //System.out.println(tm.isRunning());
         }
-        else {
 
+        if (gameHasEnded) {
             drawWinnerInfo(g, game);
             tm.stop();
         }
