@@ -38,14 +38,11 @@ public class Screen extends JFrame {
         cl = new CardLayout();
 
         clPanel.setLayout(cl);
-        clPanel.add(loginPanel);
-        clPanel.add(mainMenuPanel);
-        clPanel.add(createUserPanel);
+        clPanel.add(loginPanel, Config.getLoginScreen());
+        clPanel.add(mainMenuPanel, Config.getMainMenuScreen());
+        clPanel.add(createUserPanel, Config.getCreateUserScreen());
         contentPane.add(clPanel, BorderLayout.CENTER);
 
-        cl.addLayoutComponent(loginPanel,Config.getLoginScreen());
-        cl.addLayoutComponent(mainMenuPanel, Config.getMainMenuScreen());
-        cl.addLayoutComponent(createUserPanel, Config.getCreateUserScreen());
         cl.show(clPanel, Config.getLoginScreen());
 
         setFonts(new Font(Config.getHeaderFont(), Font.BOLD, Config.getHeaderTextSize()));

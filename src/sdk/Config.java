@@ -3,6 +3,7 @@ package sdk;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import javax.swing.*;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -124,6 +125,20 @@ public class Config {
     private static String btnDeleteText;
     private static String deleteGameScreen;
     private static String serverPathDeleteGames;
+    private static String mapSizeChooserTtt;
+    private static String lblCreateNewGameText;
+    private static String gameChooserHeaderText;
+    private static String[] typesOfGames = new String[2];
+    private static String gameOverviewerHeaderText;
+    private static String btnReplayText;
+    private static String[] typesOfGamesToReplay = new String[6];
+    private static String gameOverviewerScreen;
+    private static int indexTwo;
+    private static int indexThree;
+    private static int indexFour;
+    private static int indexFive;
+    private static int indexSix;
+    private static int indexSeven;
 
 
     public static void init () {
@@ -181,6 +196,7 @@ public class Config {
             setPlaySnakeScreen((String) jsonObject.get("playsnakescreen"));
             setCreateNewGameScreen((String) jsonObject.get("gamewizardscreen"));
             setGameChooserScreen((String) jsonObject.get("createnewgamescreen"));
+            setGameOverviewerScreen((String) jsonObject.get("gameoverviewerscreen"));
 
             setLogoutMessage((String) jsonObject.get("logoutmessage"));
             setLogoutTitle((String) jsonObject.get("logouttitle"));
@@ -201,6 +217,16 @@ public class Config {
             getMapSizes()[1] = (int)(long) jsonObject.get("mediummap");
             getMapSizes()[2] = (int)(long) jsonObject.get("largemap");
 
+            getTypesOfGames()[0] = (String) jsonObject.get("invitedgamestext");
+            getTypesOfGames()[1] = (String) jsonObject.get("opengamestext");
+
+            getTypesOfGamesToReplay()[0] = (String) jsonObject.get("invitedgamestext");
+            getTypesOfGamesToReplay()[1] = (String) jsonObject.get("opengamestext");
+            getTypesOfGamesToReplay()[2] = (String) jsonObject.get("pendinggamestext");
+            getTypesOfGamesToReplay()[3] = (String) jsonObject.get("hostedgamestext");
+            getTypesOfGamesToReplay()[4] = (String) jsonObject.get("openbyidgamestext");
+            getTypesOfGamesToReplay()[5] = (String) jsonObject.get("completedgamestext");
+
             setServerPathLogin((String) jsonObject.get("serverpathlogin"));
             setServerPathUsers((String) jsonObject.get("serverpathusers"));
             setServerPathGames((String) jsonObject.get("serverpathgames"));
@@ -210,7 +236,9 @@ public class Config {
             setBtnPlayText((String) jsonObject.get("btnplaytext"));
             setBtnSendText((String) jsonObject.get("btnsendtext"));
             setLblOpenGameText((String) jsonObject.get("lblopengametext"));
+            setLblCreateNewGameText((String) jsonObject.get("lblcreatenewgametext"));
             setGameNameFieldTtt((String) jsonObject.get("gamenamefieldttt"));
+            setMapSizeChooserTtt((String) jsonObject.get("mapsizechooserttt"));
 
             setDefaultXPosJComponent((int)(long) jsonObject.get("defaultxpositionjcomponent"));
             setDefaultWidthJComponent((int)(long) jsonObject.get("defaultwidthjcomponent"));
@@ -248,6 +276,12 @@ public class Config {
             setHeaderTextSize((int)(long) jsonObject.get("headertextsize"));
             setClearField((String) jsonObject.get("clearfield"));
             setIndexOne((int)(long) jsonObject.get("indexone"));
+            setIndexTwo((int) (long) jsonObject.get("indextwo"));
+            setIndexThree((int) (long) jsonObject.get("indexthree"));
+            setIndexFour((int) (long) jsonObject.get("indexfour"));
+            setIndexFive((int) (long) jsonObject.get("indexfive"));
+            setIndexSix((int) (long) jsonObject.get("indexsix"));
+            setIndexSeven((int) (long) jsonObject.get("indexseven"));
             setBtnJoinSelectedGameText((String) jsonObject.get("btnjoinselectedgametext"));
             setBtnCreateNewGameText((String) jsonObject.get("btncreatenewgametext"));
             setDepardieuWidth((int)(long) jsonObject.get("depardieuwidth"));
@@ -281,6 +315,9 @@ public class Config {
 
             setBtnDeleteText((String) jsonObject.get("delete"));
             setDeleteGameScreen((String) jsonObject.get("deletegamescreen"));
+            setGameChooserHeaderText((String) jsonObject.get("gamechooserheadertext"));
+            setGameOverviewerHeaderText((String) jsonObject.get("gameoverviewerheadertext"));
+            setBtnReplayText((String) jsonObject.get("btnreplaytext"));
 
 
         } catch (org.json.simple.parser.ParseException e) {
@@ -1124,5 +1161,117 @@ public class Config {
 
     public static void setServerPathDeleteGames(String serverPathDeleteGames) {
         Config.serverPathDeleteGames = serverPathDeleteGames;
+    }
+
+    public static String getMapSizeChooserTtt() {
+        return mapSizeChooserTtt;
+    }
+
+    public static void setMapSizeChooserTtt(String mapSizeChooserTtt) {
+        Config.mapSizeChooserTtt = mapSizeChooserTtt;
+    }
+
+    public static String getLblCreateNewGameText() {
+        return lblCreateNewGameText;
+    }
+
+    public static void setLblCreateNewGameText(String lblCreateNewGameText) {
+        Config.lblCreateNewGameText = lblCreateNewGameText;
+    }
+
+    public static String getGameChooserHeaderText() {
+        return gameChooserHeaderText;
+    }
+
+    public static void setGameChooserHeaderText(String gameChooserHeaderText) {
+        Config.gameChooserHeaderText = gameChooserHeaderText;
+    }
+
+    public static String[] getTypesOfGames() {
+        return typesOfGames;
+    }
+
+    public static void setTypesOfGames(String[] typesOfGames) {
+        Config.typesOfGames = typesOfGames;
+    }
+
+    public static String getGameOverviewerHeaderText() {
+        return gameOverviewerHeaderText;
+    }
+
+    public static void setGameOverviewerHeaderText(String gameOverviewerHeaderText) {
+        Config.gameOverviewerHeaderText = gameOverviewerHeaderText;
+    }
+
+    public static String getBtnReplayText() {
+        return btnReplayText;
+    }
+
+    public static void setBtnReplayText(String btnReplayText) {
+        Config.btnReplayText = btnReplayText;
+    }
+
+    public static String[] getTypesOfGamesToReplay() {
+        return typesOfGamesToReplay;
+    }
+
+    public static void setTypesOfGamesToReplay(String[] typesOfGamesToReplay) {
+        Config.typesOfGamesToReplay = typesOfGamesToReplay;
+    }
+
+    public static String getGameOverviewerScreen() {
+        return gameOverviewerScreen;
+    }
+
+    public static void setGameOverviewerScreen(String gameOverviewerScreen) {
+        Config.gameOverviewerScreen = gameOverviewerScreen;
+    }
+
+    public static int getIndexTwo() {
+        return indexTwo;
+    }
+
+    public static void setIndexTwo(int indexTwo) {
+        Config.indexTwo = indexTwo;
+    }
+
+    public static int getIndexThree() {
+        return indexThree;
+    }
+
+    public static void setIndexThree(int indexThree) {
+        Config.indexThree = indexThree;
+    }
+
+    public static int getIndexFour() {
+        return indexFour;
+    }
+
+    public static void setIndexFour(int indexFour) {
+        Config.indexFour = indexFour;
+    }
+
+    public static int getIndexFive() {
+        return indexFive;
+    }
+
+    public static void setIndexFive(int indexFive) {
+        Config.indexFive = indexFive;
+    }
+
+    public static int getIndexSix() {
+        return indexSix;
+    }
+
+    public static void setIndexSix(int indexSix) {
+        Config.indexSix = indexSix;
+    }
+
+    public static int getIndexSeven() {
+        return indexSeven;
+    }
+
+    public static void setIndexSeven(int indexSeven) {
+        Config.indexSeven = indexSeven;
     }
 }

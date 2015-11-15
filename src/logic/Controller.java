@@ -5,16 +5,15 @@ import com.google.gson.reflect.TypeToken;
 import gui.DialogMessage;
 import gui.Screen;
 import logic.subcontroller.DeleteGameLogic;
+import logic.subcontroller.GameOverviewerLogic;
 import logic.subcontroller.LoginLogic;
 import logic.subcontroller.TableLogic;
 import sdk.*;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 /**
  * Created by ADI on 24-10-2015.
@@ -33,6 +32,7 @@ public class Controller {
     private LoginLogic loginLogic;
     private TableLogic tableLogic;
     private DeleteGameLogic deleteGameLogic;
+    private GameOverviewerLogic gameOverviewerLogic;
 
     public Controller(){
 
@@ -41,6 +41,7 @@ public class Controller {
         loginLogic = new LoginLogic(screen);
         tableLogic = new TableLogic(screen);
         deleteGameLogic = new DeleteGameLogic(screen);
+        gameOverviewerLogic = new GameOverviewerLogic(screen);
         currentUser = new User();
     }
 
@@ -56,6 +57,7 @@ public class Controller {
         screen.getMainMenuPanel().getCreateNewGamePanel().addActionListeners(new CreateNewGameHandlerClass());
         screen.getMainMenuPanel().getGameChooserPanel().addActionListeners(new GameChooserHandlerClass());
         screen.getMainMenuPanel().getDeleteGamePanel().addActionListeners(new DeleteGameHandlerClass());
+        screen.getMainMenuPanel().getGameOverviewerPanelPanel().addActionListeners(new GameOverviewerHandlerClass());
 
     }
 
@@ -78,6 +80,7 @@ public class Controller {
                     screen.getMainMenuPanel().show(Config.getGameChooserScreen());
                     screen.getMainMenuPanel().setWelcomeMessage(message);
                     tableLogic.setGamesTableModel(currentUser);
+                    gameOverviewerLogic.refreshTable(currentUser);
 
                 }
                 else {
@@ -106,23 +109,7 @@ public class Controller {
             }
             else if (e.getActionCommand().equals(Config.getBtnWatchReplayText())) {
 
-                //f�r et map retur fra API, kan m�ske bruges til at tegne spillet?
-                //TODO: clean up, some of set stuff can be added in gamer class.
-                replayGame = new Gson().fromJson(MessageParser.parseMessage(Api.getGame(51)), Game.class);
-
-                //TODO: maybe move to replaysnake class instead! modeling host and opponent to create graphics
-                replayGame.getHost().setSnakeColor(Color.BLUE);
-                replayGame.getHost().setSnake(new LinkedList<Point>());
-                replayGame.getHost().getSnake().add(new Point((replayGame.getMapSize() - 2) / 2, (replayGame.getMapSize() - 2) / 2));
-                replayGame.getOpponent().setSnakeColor(Color.RED);
-                replayGame.getOpponent().setSnake(new LinkedList<Point>());
-                replayGame.getOpponent().getSnake().add(new Point((replayGame.getMapSize() + 2) / 2, (replayGame.getMapSize() + 2) / 2));
-
-                //adding controls to gamer objects instead of game object.
-//                    replayGame.getHost().setControls(replayGame.getHostControls());
-//                    replayGame.getOpponent().setControls(replayGame.getOpponentControls());
-
-                screen.getMainMenuPanel().addReplaySnakeToPanel(replayGame, replaySnakeHandler);
+                screen.getMainMenuPanel().show(Config.getGameOverviewerScreen());
             }
             else if (e.getActionCommand().equals(Config.getBtnShowHighScoreText())) {
                     ArrayList<Score> scores = new Gson().fromJson(Api.getHighScores(), new TypeToken<ArrayList<Score>>(){}.getType());
@@ -140,7 +127,7 @@ public class Controller {
                 //TODO: for some reason when pressing log out after a replay is done running, part of board disappears. Also if in play screen, game cannot regain focus
                 if (DialogMessage.showConfirmMessage(screen, Config.getLogoutMessage(), Config.getLogoutTitle())) {
                     screen.show(Config.getLoginScreen());
-                    currentUser = null;
+                    currentUser = new User();
                 }
             }
         }
@@ -220,7 +207,8 @@ public class Controller {
                 screen.getMainMenuPanel().getSnakeGameEngine().move(screen.getMainMenuPanel().getSnakeGameEngine().getDirection());
                 screen.getMainMenuPanel().getSnakeGameEngine().repaint();
 
-            } else {
+            }
+            else {
 
                 if(newGame.getHost().getControls() == null) {
                     newGame.getHost().setControls(screen.getMainMenuPanel().getSnakeGameEngine().getSbToString());
@@ -232,7 +220,9 @@ public class Controller {
 
                     newGame.getOpponent().setControls(screen.getMainMenuPanel().getSnakeGameEngine().getSbToString());
 
-                    message = Api.joinGame(newGame);
+                    String gameJson = new Gson().toJson(newGame);
+                    message = Api.joinGame(gameJson);
+                    Api.startGame(gameJson);
                     DialogMessage.showMessage(screen, MessageParser.parseMessage(message));
                 }
 
@@ -330,8 +320,10 @@ public class Controller {
                             && counter > replayGame.getOpponent().getControls().length()) ||
                             replayGame.getOpponent().getControls() == null)){
 
-                screen.getMainMenuPanel().getReplaySnake().stopTimer();
+                screen.getMainMenuPanel().getReplaySnake().setGameHasEnded(true);
+                //screen.getMainMenuPanel().getReplaySnake().stopTimer();
                 counter = Config.getCount();
+                //DialogMessage.showMessage(screen, replayGame.getWinner().getUsername() +" is the winner. Congratulations");
             }
             else {
                 counter++;
@@ -346,9 +338,10 @@ public class Controller {
 
             if (e.getActionCommand().equals(Config.getBtnJoinSelectedGameText())){
 
-
                 try {
                     newGame = screen.getMainMenuPanel().getGameChooserPanel().getGame();
+                    newGame.getOpponent().setId(currentUser.getId());
+
                     screen.getMainMenuPanel().addPlaySnake(
                             snakeEngineDrawClass,
                             newGame);
@@ -376,8 +369,11 @@ public class Controller {
 
                 ArrayList<User> users = new Gson().fromJson(Api.getUsers(), new TypeToken<ArrayList<User>>(){}.getType());
 
-                games = new Gson().fromJson(Api.getGamesInvitedByID(currentUser.getId()), new TypeToken<ArrayList<Game>>(){}.getType());
-                games = new Gson().fromJson(Api.getGamesByStatusAndUserId("open", currentUser.getId()), new TypeToken<ArrayList<Game>>(){}.getType());
+                if (screen.getMainMenuPanel().getGameChooserPanel().getTypeOfGameChoice().equals(Config.getTypesOfGames()[Config.getIndexOne()]))
+                    games = new Gson().fromJson(Api.getGamesInvitedByID(currentUser.getId()), new TypeToken<ArrayList<Game>>(){}.getType());
+                else
+                //TODO: you shouldn't see your own games!
+                    games = new Gson().fromJson(Api.getOpenGames(currentUser.getId()), new TypeToken<ArrayList<Game>>(){}.getType());
 
                 for (int i = Config.getCount(); i < users.size(); i++) {
 
@@ -408,6 +404,25 @@ public class Controller {
                 } catch (ArrayIndexOutOfBoundsException e2) {
                     DialogMessage.showMessage(screen, Config.getMissingGameSelectionText());
                 }
+            }
+        }
+    }
+
+    private class GameOverviewerHandlerClass implements ActionListener {
+
+        private ArrayList<Game> replayGames;
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            if (e.getActionCommand().equals(Config.getBtnReplayText())){
+
+                replayGame = gameOverviewerLogic.showReplay(currentUser, replaySnakeHandler);
+
+            }
+            else if (e.getActionCommand().equals(Config.getBtnRefreshText())){
+
+                replayGames = gameOverviewerLogic.refreshTable(currentUser);
+
             }
         }
     }

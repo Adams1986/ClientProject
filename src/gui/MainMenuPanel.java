@@ -24,8 +24,9 @@ public class MainMenuPanel extends JPanel{
     private SnakeGameEngine snakeGameEngine;
     private ReplaySnake replaySnake;
     private CreateNewGamePanel createNewGamePanel;
-    private GameChooser gameChooser;
+    private GameChooserPanel gameChooserPanel;
     private DeleteGamePanel deleteGamePanel;
+    private GameOverviewerPanel gameOverviewerPanelPanel;
 
 
     public MainMenuPanel(){
@@ -41,7 +42,8 @@ public class MainMenuPanel extends JPanel{
         centerPanel = new JPanel();
         createNewGamePanel = new CreateNewGamePanel();
         deleteGamePanel = new DeleteGamePanel();
-        gameChooser = new GameChooser();
+        gameChooserPanel = new GameChooserPanel();
+        gameOverviewerPanelPanel = new GameOverviewerPanel();
         cl = new CardLayout();
 
         sidePanel.setBounds(Config.getZeroXY(), Config.getZeroXY(), Config.getWidth3JComponent(), Config.getAppHeight());
@@ -71,8 +73,9 @@ public class MainMenuPanel extends JPanel{
         sidePanel.add(btnLogOut);
 
         centerPanel.add(createNewGamePanel, Config.getCreateNewGameScreen());
-        centerPanel.add(gameChooser, Config.getGameChooserScreen());
+        centerPanel.add(gameChooserPanel, Config.getGameChooserScreen());
         centerPanel.add(deleteGamePanel, Config.getDeleteGameScreen());
+        centerPanel.add(gameOverviewerPanelPanel, Config.getGameOverviewerScreen());
 
 
         add(sidePanel);
@@ -85,6 +88,9 @@ public class MainMenuPanel extends JPanel{
 
         welcomeLabel.setFont(f);
         deleteGamePanel.setFonts(f);
+        createNewGamePanel.setFonts(f);
+        gameChooserPanel.setFonts(f);
+        gameOverviewerPanelPanel.setFonts(f);
     }
 
     /**
@@ -165,12 +171,17 @@ public class MainMenuPanel extends JPanel{
         return createNewGamePanel;
     }
 
-    public GameChooser getGameChooserPanel(){
+    public GameChooserPanel getGameChooserPanel(){
 
-        return gameChooser;
+        return gameChooserPanel;
     }
 
     public DeleteGamePanel getDeleteGamePanel() {
         return deleteGamePanel;
+    }
+
+    public GameOverviewerPanel getGameOverviewerPanelPanel(){
+
+        return gameOverviewerPanelPanel;
     }
 }

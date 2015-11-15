@@ -4,6 +4,7 @@ import sdk.Config;
 import sdk.User;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
@@ -35,18 +36,19 @@ public class CreateNewGamePanel extends JPanel {
         mapSizeChooser = new JComboBox<>();
         openGame = new JCheckBox();
         lblOpenGame = new JLabel(Config.getLblOpenGameText());
+        headerLabel = new JLabel(Config.getLblCreateNewGameText());
 
         opponentTable = new JTable();
         scrollPane = new JScrollPane(opponentTable);
         mapSizes = Config.getMapSizes();
 
-        //headerLabel.setBounds(Config.getDefaultXPosJComponent(), Config.getY1PosJComponent(),
-          //      Config.getDefaultWidthJComponent(), Config.getDefaultHeightJComponent());
+        headerLabel.setBounds(Config.getDefaultXPosJComponent(), Config.getY1PosJComponent(),
+                Config.getWidth3JComponent(), Config.getDefaultHeightJComponent());
 
-        gameNameField.setBounds(Config.getDefaultXPosJComponent(), Config.getY8PosJComponent(),
+        gameNameField.setBounds(Config.getDefaultXPosJComponent(), Config.getY9PosJComponent(),
                 Config.getDefaultWidthJComponent(), Config.getDefaultHeightJComponent());
 
-        btnSend.setBounds(Config.getDefaultXPosJComponent(), Config.getY9PosJComponent(),
+        btnSend.setBounds(Config.getDefaultXPosJComponent(), Config.getY11PosJComponent(),
                 Config.getDefaultWidthJComponent(), Config.getDefaultHeightJComponent());
 
         scrollPane.setBounds(Config.getDefaultXPosJComponent(), Config.getY3PosJComponent(),
@@ -55,16 +57,17 @@ public class CreateNewGamePanel extends JPanel {
         mapSizeChooser.setBounds(Config.getDefaultXPosJComponent(), Config.getY10PosJComponent(),
                 Config.getDefaultWidthJComponent(), Config.getDefaultHeightJComponent());
 
-        openGame.setBounds(Config.getX1PosJComponent(), Config.getY11PosJComponent(),
+        openGame.setBounds(Config.getX1PosJComponent(), Config.getY8PosJComponent(),
                 Config.getDefaultWidthJComponent(), Config.getDefaultHeightJComponent());
 
-        lblOpenGame.setBounds(Config.getDefaultXPosJComponent(), Config.getY11PosJComponent(),
+        lblOpenGame.setBounds(Config.getDefaultXPosJComponent(), Config.getY8PosJComponent(),
                 Config.getDefaultWidthJComponent(), Config.getDefaultHeightJComponent());
 
         for (int i = 0; i < mapSizes.length; i++){
             mapSizeChooser.addItem(mapSizes[i]);
         }
         gameNameField.setToolTipText(Config.getGameNameFieldTtt());
+        mapSizeChooser.setToolTipText(Config.getMapSizeChooserTtt());
         openGame.setSelected(true);
         setOpponentTableState(false);
 
@@ -74,6 +77,12 @@ public class CreateNewGamePanel extends JPanel {
         add(mapSizeChooser);
         add(openGame);
         add(lblOpenGame);
+        add(headerLabel);
+    }
+
+    public void setFonts(Font f){
+
+        headerLabel.setFont(f);
     }
 
     public void setOpponentTableState(boolean b) {

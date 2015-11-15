@@ -7,6 +7,7 @@ import sdk.Gamer;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
 
 /**
  * Class contains the logic for drawing one or two snakes to the canvas from a finished game
@@ -20,6 +21,7 @@ public class ReplaySnake extends JPanel {
     private Timer tm;
     private int counter;
     private Game game;
+    private boolean gameHasEnded;
     ;
 
     /**
@@ -31,17 +33,30 @@ public class ReplaySnake extends JPanel {
     //TODO: Maybe use a Score object instead and make som graphics for winner/loser points etc.
     public ReplaySnake(Game game, ActionListener l){
 
+        game.getHost().setSnakeColor(Color.BLUE);
+        game.getHost().setSnake(new LinkedList<Point>());
+        game.getHost().getSnake().add(new Point((game.getMapSize() - 2) / 2, (game.getMapSize() - 2) / 2));
+
         this.game = game;
         user = game.getHost();
-        if (game.getOpponent() != null)
+        if (game.getOpponent() != null) {
+
+            game.getOpponent().setSnakeColor(Color.RED);
+            game.getOpponent().setSnake(new LinkedList<Point>());
+            game.getOpponent().getSnake().add(new Point((game.getMapSize() + 2) / 2, (game.getMapSize() + 2) / 2));
+
             opponent = game.getOpponent();
+        }
 
         tm = new Timer(Config.getDelay(), l);
         System.out.println(Config.getDelay());
         counter = Config.getCount();
+        gameHasEnded = false;
 
-        setBounds(0, 80, Config.getReplayWidth()*2, Config.getAppHeight());
+    }
 
+    public void setGameHasEnded(boolean gameHasEnded) {
+        this.gameHasEnded = gameHasEnded;
     }
 
     /**
@@ -51,16 +66,47 @@ public class ReplaySnake extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
 
-        super.paintComponent(g);
+        if (!gameHasEnded) {
+            super.paintComponent(g);
 
-        drawBoard(g);
-        drawSnake(g, user);
+            drawBoard(g);
+            drawSnake(g, user);
+            drawGameInfo(g, game);
 
-        //makes it possible to replay runs with single user
-        if (opponent.getControls() != null) {
-            drawSnake(g, opponent);
+            //makes it possible to replay runs with single user
+            if (opponent.getControls() != null) {
+                drawSnake(g, opponent);
+
+
+            }
+            tm.start();
+            //System.out.println(tm.isRunning());
         }
-        tm.start();
+        else {
+
+            drawWinnerInfo(g, game);
+            tm.stop();
+        }
+    }
+
+    private void drawWinnerInfo(Graphics g, Game game) {
+
+        if (game.getWinner() != null) {
+
+            if (game.getWinner().getId() == game.getHost().getId()) {
+                g.setColor(game.getHost().getSnakeColor());
+            }
+            else {
+                g.setColor(game.getOpponent().getSnakeColor());
+            }
+            g.setFont(new Font(Config.getHeaderFont(), Font.BOLD, Config.getHeaderTextSize()));
+            g.drawString(game.getWinner().getUsername() + " is the winner. Congratulations", Config.getDefaultXPosJComponent(), Config.getY10PosJComponent());
+        }
+    }
+
+    private void drawGameInfo(Graphics g, Game game) {
+
+        g.drawString("Replaying game: " + game.getName(), Config.getDefaultXPosJComponent(), Config.getY9PosJComponent());
     }
 
     /**
@@ -84,7 +130,7 @@ public class ReplaySnake extends JPanel {
         }
 
         //change back to black if we want to draw more.
-//        g.setColor(Color.BLACK);
+        g.setColor(Color.BLACK);
     }
 
     /**

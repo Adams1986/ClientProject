@@ -33,7 +33,7 @@ public class Api {
 
     public static String getUser(int userId){
 
-        return ServerConnection.get(Config.getServerPathGames() + userId);
+        return ServerConnection.get(Config.getServerPathUsers() + userId);
     }
 
     //TODO: handle toJson in controller instead, so only sends and receives Strings
@@ -47,16 +47,16 @@ public class Api {
         return ServerConnection.post(Config.getServerPathGames(), new Gson().toJson(game));
     }
 
-    public static String joinGame(Game game){
+    public static String joinGame(String gameJson){
 
-        return ServerConnection.put(Config.getServerPathJoinGames(), new Gson().toJson(game));
+        return ServerConnection.put(Config.getServerPathJoinGames(), gameJson);
     }
 
 
     //TODO: skal vi overhovedet bruge dette game? hvordan skal error jsonDatas håndteres? Måske bare returnere string og så håndtere hvorvidt det skal parses eller laves om til json et andet sted
-    public static String startGame(int gameId) {
+    public static String startGame(String gameJson) {
 
-        return ServerConnection.get(Config.getServerPathStartGames() + gameId);
+        return ServerConnection.put(Config.getServerPathStartGames(), gameJson);
     }
 
     public static String deleteGame(int gameId) {
@@ -101,9 +101,9 @@ public class Api {
         //return new Gson().fromJson(jsonData, new TypeToken<ArrayList<Game>>(){}.getType());
     }
 
-    public static String getOpenGames(){
+    public static String getOpenGames(int userId){
 
-        return ServerConnection.get(Config.getServerPathOpenGames());
+        return ServerConnection.get(Config.getServerPathOpenGames() + userId);
 
         //return new Gson().fromJson(jsonData, new TypeToken<ArrayList<Game>>(){}.getType());
     }
