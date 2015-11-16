@@ -112,11 +112,11 @@ public class Controller {
                 screen.getMainMenuPanel().show(Config.getGameOverviewerScreen());
             }
             else if (e.getActionCommand().equals(Config.getBtnShowHighScoreText())) {
-                    ArrayList<Score> scores = new Gson().fromJson(Api.getHighScores(), new TypeToken<ArrayList<Score>>(){}.getType());
-                    System.out.println(scores.get(0).getScore() + " " + scores.get(0).getGame().getWinner());
+                ArrayList<Score> scores = new Gson().fromJson(Api.getHighScores(), new TypeToken<ArrayList<Score>>(){}.getType());
+                System.out.println(scores.get(0).getScore() + " " + scores.get(0).getGame().getWinner());
 
-                    ArrayList<Score> scores1 = new Gson().fromJson(Api.getScoresByUserId(2), new TypeToken<ArrayList<Score>>(){}.getType());
-                    System.out.println(scores1.size());
+                ArrayList<Score> scores1 = new Gson().fromJson(Api.getScoresByUserId(2), new TypeToken<ArrayList<Score>>(){}.getType());
+                System.out.println(scores1.size());
             }
             else if (e.getActionCommand().equals(Config.getBtnDeleteGameText())) {
                 screen.getMainMenuPanel().show(Config.getDeleteGameScreen());
@@ -367,13 +367,17 @@ public class Controller {
             }
             else if (e.getActionCommand().equals(Config.getBtnRefreshText())){
 
-                ArrayList<User> users = new Gson().fromJson(Api.getUsers(), new TypeToken<ArrayList<User>>(){}.getType());
+
+                ArrayList<User> users = new Gson().fromJson(Api.getUsers(), new TypeToken<ArrayList<User>>() {
+                }.getType());
 
                 if (screen.getMainMenuPanel().getGameChooserPanel().getTypeOfGameChoice().equals(Config.getTypesOfGames()[Config.getIndexOne()]))
-                    games = new Gson().fromJson(Api.getGamesInvitedByID(currentUser.getId()), new TypeToken<ArrayList<Game>>(){}.getType());
+                    games = new Gson().fromJson(Api.getGamesInvitedByID(currentUser.getId()), new TypeToken<ArrayList<Game>>() {
+                    }.getType());
                 else
-                //TODO: you shouldn't see your own games!
-                    games = new Gson().fromJson(Api.getOpenGames(currentUser.getId()), new TypeToken<ArrayList<Game>>(){}.getType());
+                    //TODO: you shouldn't see your own games!
+                    games = new Gson().fromJson(Api.getOpenGames(currentUser.getId()), new TypeToken<ArrayList<Game>>() {
+                    }.getType());
 
                 for (int i = Config.getCount(); i < users.size(); i++) {
 
@@ -401,7 +405,7 @@ public class Controller {
                     DialogMessage.showMessage(screen, deleteGameLogic.deleteGame());
 
                     tableLogic.setGamesToDeleteTableModel(currentUser);
-                } catch (ArrayIndexOutOfBoundsException e2) {
+                } catch (IndexOutOfBoundsException e2) {
                     DialogMessage.showMessage(screen, Config.getMissingGameSelectionText());
                 }
             }
@@ -416,7 +420,14 @@ public class Controller {
 
             if (e.getActionCommand().equals(Config.getBtnReplayText())){
 
-                replayGame = gameOverviewerLogic.showReplay(currentUser, replaySnakeHandler);
+                try {
+
+                    replayGame = gameOverviewerLogic.showReplay(currentUser, replaySnakeHandler);
+                }
+                catch (IndexOutOfBoundsException e2){
+
+                    DialogMessage.showMessage(screen, Config.getMissingGameSelectionText());
+                }
 
             }
             else if (e.getActionCommand().equals(Config.getBtnRefreshText())){

@@ -3,17 +3,18 @@ package sdk;
 import com.sun.jersey.api.client.*;
 
 /**
- * Created by simonadams on 09/11/15.
+ * Generic methods to access the server. One for each of the following: get, post, put and delete. Will likewise be used
+ * in a generic way in the Api class which will only take and receive Strings in json format.
  */
 public class ServerConnection {
 
+    /**
+     * get method. Receives a string with the path with which to get data from the server. Returns it in the message
+     * variable
+     * @param path
+     * @return
+     */
     public static String get (String path) {
-
-//        return Client.create()
-//                .resource("http://" + Config.getIpAddress() + ":" +Config.getServerPort() + "/api/" + path)
-//                .accept("application/json")
-//                .get(ClientResponse.class)
-//                .getEntity(String.class);
 
         String message = "";
         Client client = Client.create();
@@ -35,13 +36,15 @@ public class ServerConnection {
         return message;
     }
 
+    /**
+     * Like the get method, it receives a string corresponding to the path from which it will connect with the server.
+     * Also it receives data as a String in json format, which it sends to the server. Is done with the ClientResponse
+     * object. The string variable message gets the answer from the server and the method returns the string.
+     * @param path
+     * @param data
+     * @return
+     */
     public static String post (String path, String data) {
-
-//        return Client.create()
-//                .resource("http://" + Config.getIpAddress() + ":9998/api/" + path)
-//                .accept("application/json")
-//                .post(ClientResponse.class, new Gson().toJson(data))
-//                .getEntity(String.class);
 
         String message = "";
         Client client = Client.create();
@@ -60,10 +63,16 @@ public class ServerConnection {
 
         } catch (ClientHandlerException e) {
             e.printStackTrace();
+            message = "{\"message\":\"Connection to server failed\"}";
         }
         return message;
     }
 
+    /**
+     * Delete method. Like the get method it receives a path as parameter and uses to connect to the server.
+     * @param path
+     * @return
+     */
     public static String delete(String path){
 
         String message = "";
@@ -86,6 +95,12 @@ public class ServerConnection {
         return message;
     }
 
+    /**
+     * Like the post method, it receives both a path and data, which it sends to the server through the .put method.
+     * @param path
+     * @param data
+     * @return
+     */
     public static String put(String path, String data) {
 
         String message = "";

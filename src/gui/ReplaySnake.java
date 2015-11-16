@@ -19,14 +19,14 @@ public class ReplaySnake extends JPanel {
 
     //Timer instead of Thread.sleep. Important in a JPanel
     private Timer tm;
-    private int counter;
     private Game game;
     private boolean gameHasEnded;
     ;
 
     /**
-     * Constructor for completed game.
-     * Two gamer objects, for a completed game with two moving snakes.
+     * Constructor. Takes a game object and an action listener. The action listener will be used to draw the board and
+     * snakes to the screen dynamically. The game object is used to set the drawing details, such as start point of
+     * snakes, game name etc.
      * @param game
      * @param l
      */
@@ -50,11 +50,15 @@ public class ReplaySnake extends JPanel {
 
         tm = new Timer(Config.getDelay(), l);
         System.out.println(Config.getDelay());
-        counter = Config.getCount();
         gameHasEnded = false;
 
     }
 
+    /**
+     * Method used to signal to the object, that the game has ended. Used to draw winner info and to stop the paintComponent
+     * from repainting to the panel (done with the timer's stop method).
+     * @param gameHasEnded
+     */
     public void setGameHasEnded(boolean gameHasEnded) {
         this.gameHasEnded = gameHasEnded;
     }
@@ -86,6 +90,11 @@ public class ReplaySnake extends JPanel {
         }
     }
 
+    /**
+     * Draws the winner's name to the screen after game has ended.
+     * @param g
+     * @param game
+     */
     private void drawWinnerInfo(Graphics g, Game game) {
 
         if (game.getWinner() != null) {
@@ -101,6 +110,11 @@ public class ReplaySnake extends JPanel {
         }
     }
 
+    /**
+     * Draw the game info to the screen.
+     * @param g
+     * @param game
+     */
     private void drawGameInfo(Graphics g, Game game) {
 
         g.drawString("Replaying game: " + game.getName(), Config.getDefaultXPosJComponent(), Config.getY9PosJComponent());
@@ -131,7 +145,8 @@ public class ReplaySnake extends JPanel {
     }
 
     /**
-     * The move method. Uses a snakes controls to asses the direction of the snake
+     * The move method. Uses a snake's controls to asses the direction of the snake. Also stops the snake from getting
+     * drawn outside of the board (see if-else statement).
      * @param user
      * @param ch
      */
@@ -144,25 +159,30 @@ public class ReplaySnake extends JPanel {
         //hardcoded chars and Points
         switch (ch) {
 
+            //decreases y with one (x,y - 0,0 is left side, top hand corner, so deduction in y moves snake up
             case 'w':
                 //
                 newPoint = new Point(head.x, head.y - Config.getMoveOne());
                 break;
 
+            //increases y so moves snake down when char 's' is fed to the method's parameter
             case 's':
                 newPoint = new Point(head.x, head.y + Config.getMoveOne());
                 break;
 
+            //decreases x, which moves snake to the left if char is 'a'
             case 'a':
                 newPoint = new Point(head.x - Config.getMoveOne(), head.y);
                 break;
 
+            //increases x, which moves snake to the right if char is 'd'
             case 'd':
                 newPoint = new Point(head.x + Config.getMoveOne(), head.y);
                 break;
         }
         user.getSnake().push(addPoint);
 
+        //if-else statement used to handle collisions with 'wall', the body of the snake or opposite of the direction
         if (newPoint.x < Config.getZeroXY() || newPoint.x > game.getMapSize() - Config.getMoveOne()){
 
             return;
@@ -179,6 +199,10 @@ public class ReplaySnake extends JPanel {
 
             return;
         }
+        /*
+        if method reaches this point (hint, it does not reach one of the if-else conditions, the move is valid and the
+        snake gets the point 'newpoint' added to its body (the linked list)
+         */
         user.getSnake().push(newPoint);
     }
 
@@ -235,10 +259,5 @@ public class ReplaySnake extends JPanel {
 
             g.drawLine(Config.getZeroXY(), y, Config.getFieldWidth() * game.getMapSize(), y);
         }
-    }
-
-    public void stopTimer() {
-
-        tm.stop();
     }
 }

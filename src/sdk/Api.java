@@ -8,7 +8,8 @@ import com.sun.jersey.api.client.ClientResponse;
 import java.util.ArrayList;
 
 /**
- * TODO: Maybe class should only pass data String through via ServerConnection and then logic can handle how to parse the data otherwise hard to both have jsonDatas and DAO!
+ * Api class. Constains generic methods that send and receive data in a String/json format. All the parsing of the json
+ * data is handled in the Logic sub-controller classes.
  */
 public class Api {
 
@@ -31,6 +32,11 @@ public class Api {
         return ServerConnection.get(Config.getServerPathUsers());
     }
 
+    /**
+     * returns a single user from the user id, in a json string format
+     * @param userId
+     * @return
+     */
     public static String getUser(int userId){
 
         return ServerConnection.get(Config.getServerPathUsers() + userId);
@@ -103,7 +109,7 @@ public class Api {
 
     public static String getOpenGames(int userId){
 
-        return ServerConnection.get(Config.getServerPathOpenGames() + userId);
+        return ServerConnection.get(Config.getServerPathOpenGames());
 
         //return new Gson().fromJson(jsonData, new TypeToken<ArrayList<Game>>(){}.getType());
     }

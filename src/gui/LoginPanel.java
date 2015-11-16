@@ -37,7 +37,7 @@ public class LoginPanel extends JPanel{
         iconLabel = new JLabel(depardieu);
 
         infoLabel.setBounds(Config.getDefaultXPosJComponent(), Config.getY1PosJComponent(),
-                Config.getLblWidth(), Config.getDefaultHeightJComponent());
+                Config.getWidth2JComponent()    , Config.getDefaultHeightJComponent());
 
         usernameField.setBounds(Config.getDefaultXPosJComponent(), Config.getY3PosJComponent(),
                 Config.getLblWidth(), Config.getDefaultHeightJComponent());
