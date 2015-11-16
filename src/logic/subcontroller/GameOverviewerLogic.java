@@ -27,10 +27,6 @@ public class GameOverviewerLogic {
 //        replayGame.setWinner(
 //                new Gson().fromJson(Api.getUser(replayGame.getWinner().getId()), Gamer.class));
 
-        //adding controls to gamer objects instead of game object.
-//                    replayGame.getHost().setControls(replayGame.getHostControls());
-//                    replayGame.getOpponent().setControls(replayGame.getOpponentControls());
-
         screen.getMainMenuPanel().addReplaySnakeToPanel(replayGame, replaySnakeHandler);
 
         return replayGame;
