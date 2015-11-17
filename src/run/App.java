@@ -1,6 +1,7 @@
 package run;
 
 import com.google.gson.Gson;
+import com.google.gson.internal.Streams;
 import logic.Controller;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -12,6 +13,7 @@ import sdk.User;
 import javax.swing.*;
 import java.awt.*;
 import java.io.FileReader;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
@@ -24,38 +26,36 @@ public class App {
 
         Config.init();
 
+        //TODO: remove this crap
+        User user = new User();
+        user.setId(1);
+        user.setUsername("SimonWeee");
 
-//        String test = "{\"" + Security.encrypt("id", Config.getEncryptionkey()) + "\": \"" + Security.encrypt(1, Config.getEncryptionkey()) + "\"}";
-//        System.out.println(test);
-//
-//        JSONParser jsonParser = new JSONParser();
-//
-//        try {
-//
-//            //Initialize Object class as json, parsed by jsonParsed.
-//            Object obj = jsonParser.parse(test);
-//
-//            //Instantiate JSONObject class as jsonObject equal to obj object.
-//            JSONObject jsonObject = (JSONObject) obj;
-//
-//            System.out.println(Security.decrypt(
-//                    Integer.parseInt( (String) jsonObject.get( Security.encrypt( "id", Config.getEncryptionkey() ) ) ),
-//                    Config.getEncryptionkey()));
-//
-//            User user = new User();
-//            user.setId(
-//                    Security.decrypt(
-//                            Integer.parseInt( (String) jsonObject.get(Security.encrypt("id", Config.getEncryptionkey()))),
-//                            Config.getEncryptionkey()));
-//
-//            System.out.println(user.getId());
-//            System.out.println(new Gson().toJson(user, User.class));
-//
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
+        String encrypted = getEncryptedUser(user);
+        User test = getDecryptedUser(encrypted);
+
+        System.out.println(test.getId()+test.getUsername());
+
 
         Controller controller = new Controller();
         controller.run();
+    }
+
+    //TODO: find suitable place
+    public static String getEncryptedUser(User user){
+
+        HashMap<String, String> encryptedUser = new HashMap<>();
+        encryptedUser.put("message", Security.encrypt(new Gson().toJson(user), Config.getEncryptionkey()));
+
+        return new Gson().toJson(encryptedUser);
+    }
+
+    public static User getDecryptedUser(String s){
+
+        HashMap<String, String> decrpyptedUser = new Gson().fromJson(s, HashMap.class);
+        String d = decrpyptedUser.get("message");
+
+        return new Gson().fromJson(Security.decrypt(d, Config.getEncryptionkey()), User.class);
+
     }
 }
