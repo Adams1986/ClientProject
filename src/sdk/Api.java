@@ -65,6 +65,7 @@ public class Api {
         return ServerConnection.put(Config.getServerPathStartGames(), gameJson);
     }
 
+
     public static String deleteGame(int gameId) {
 
         return ServerConnection.delete(Config.getServerPathGames() + gameId);

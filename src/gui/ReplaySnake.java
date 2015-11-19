@@ -88,6 +88,7 @@ public class ReplaySnake extends JPanel {
             drawWinnerInfo(g, game);
             tm.stop();
         }
+        System.out.println("in paint component");
     }
 
     /**
@@ -259,5 +260,13 @@ public class ReplaySnake extends JPanel {
 
             g.drawLine(Config.getZeroXY(), y, Config.getFieldWidth() * game.getMapSize(), y);
         }
+    }
+
+    public void stopTimer() {
+        tm.stop();
+    }
+
+    public boolean hasGameEnded() {
+        return gameHasEnded;
     }
 }

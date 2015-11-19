@@ -4,10 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import gui.DialogMessage;
 import gui.Screen;
-import logic.subcontroller.DeleteGameLogic;
-import logic.subcontroller.GameOverviewerLogic;
-import logic.subcontroller.LoginLogic;
-import logic.subcontroller.TableLogic;
+import logic.subcontroller.*;
 import sdk.*;
 
 import javax.swing.*;
@@ -28,7 +25,6 @@ public class Controller {
     private ArrayList<Game> games;
     private boolean isAuthenticated;
     private SnakeEngineDrawClass snakeEngineDrawClass = new SnakeEngineDrawClass();
-    private ReplaySnakeHandlerClass replaySnakeHandler = new ReplaySnakeHandlerClass();
     private LoginLogic loginLogic;
     private TableLogic tableLogic;
     private DeleteGameLogic deleteGameLogic;
@@ -113,6 +109,7 @@ public class Controller {
             }
             else if (e.getActionCommand().equals(Config.getBtnShowHighScoreText())) {
                 ArrayList<Score> scores = new Gson().fromJson(Api.getHighScores(), new TypeToken<ArrayList<Score>>(){}.getType());
+
                 System.out.println(scores.get(0).getScore() + " " + scores.get(0).getGame().getWinner());
 
                 ArrayList<Score> scores1 = new Gson().fromJson(Api.getScoresByUserId(2), new TypeToken<ArrayList<Score>>(){}.getType());
@@ -200,38 +197,7 @@ public class Controller {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            String message;
-
-            //if game has not ended yet, move snake according to the direction and repaint
-            if (!screen.getMainMenuPanel().getSnakeGameEngine().isGameEnded()) {
-                screen.getMainMenuPanel().getSnakeGameEngine().move(screen.getMainMenuPanel().getSnakeGameEngine().getDirection());
-                screen.getMainMenuPanel().getSnakeGameEngine().repaint();
-
-            }
-            else {
-
-                if(newGame.getHost().getControls() == null) {
-                    newGame.getHost().setControls(screen.getMainMenuPanel().getSnakeGameEngine().getSbToString());
-                    //Attempt to create the game and show response from server
-                    message = MessageParser.parseMessage(Api.createGame(newGame));
-                    DialogMessage.showMessage(screen, message);
-                }
-                else {
-
-                    newGame.getOpponent().setControls(screen.getMainMenuPanel().getSnakeGameEngine().getSbToString());
-
-                    String gameJson = new Gson().toJson(newGame);
-                    message = Api.joinGame(gameJson);
-                    Api.startGame(gameJson);
-                    DialogMessage.showMessage(screen, MessageParser.parseMessage(message));
-                }
-
-                //stops animation
-                screen.getMainMenuPanel().getSnakeGameEngine().stopTimer();
-                screen.getMainMenuPanel().getCreateNewGamePanel().resetFields();
-                screen.getMainMenuPanel().setSidePanelState(true);
-                screen.getMainMenuPanel().show(Config.getGameChooserScreen());
-            }
+            GameEngineLogic.draw(screen, newGame);
 
         }
     }
@@ -271,7 +237,8 @@ public class Controller {
                         newGame.setMapSize(screen.getMainMenuPanel().getCreateNewGamePanel().getMapSize());
 
                         //takes an actionlistener as parameter for a dynamic injection of listener
-                        screen.getMainMenuPanel().addPlaySnake(snakeEngineDrawClass, newGame);
+                        //screen.getMainMenuPanel().addPlaySnake(snakeEngineDrawClass, newGame);
+                        screen.getMainMenuPanel().addPlaySnake(new SnakeEngineDrawClass(), newGame);
 
                         //TODO: put this somewhere else and call method here. Used it twice now
                         screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getUp(),
@@ -303,15 +270,20 @@ public class Controller {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+
             //TODO: what to do? :D Hver gang den kører laver den en ny instans af replaySnake, men der sker ingen nye actions.. NEEDS WORK DONE
             //populates snake by taking the string controls and checking whether up, down, left or right (w,s,a,d).
-            if (counter < replayGame.getHost().getControls().length()) {
-                screen.getMainMenuPanel().getReplaySnake().move(replayGame.getHost(), replayGame.getHost().getControls().charAt(counter));
-            }
-            //checking theres an opponent and populates the snake with points
-            if (replayGame.getOpponent().getControls() != null) {
-                if (counter < replayGame.getOpponent().getControls().length()){
-                    screen.getMainMenuPanel().getReplaySnake().move(replayGame.getOpponent(), replayGame.getOpponent().getControls().charAt(counter));
+            if (!screen.getMainMenuPanel().getReplaySnake().hasGameEnded()) {
+                if (counter < replayGame.getHost().getControls().length()) {
+                    System.out.println(replayGame.getHost().getControls().charAt(counter));
+                    screen.getMainMenuPanel().getReplaySnake().move(replayGame.getHost(), replayGame.getHost().getControls().charAt(counter));
+                }
+                //checking theres an opponent and populates the snake with points
+                if (replayGame.getOpponent().getControls() != null) {
+                    if (counter < replayGame.getOpponent().getControls().length()) {
+                        System.out.println(replayGame.getOpponent().getControls().charAt(counter));
+                        screen.getMainMenuPanel().getReplaySnake().move(replayGame.getOpponent(), replayGame.getOpponent().getControls().charAt(counter));
+                    }
                 }
             }
             //repaints as long as there are usercontrols and opponentcontrols
@@ -322,12 +294,16 @@ public class Controller {
 
                 screen.getMainMenuPanel().getReplaySnake().setGameHasEnded(true);
                 //screen.getMainMenuPanel().getReplaySnake().stopTimer();
+                screen.getMainMenuPanel().setSidePanelState(true);
+                System.out.println("stopped repainting");
                 counter = Config.getCount();
                 //DialogMessage.showMessage(screen, replayGame.getWinner().getUsername() +" is the winner. Congratulations");
+                //screen.getMainMenuPanel().show(Config.getGameOverviewerScreen());
             }
             else {
                 counter++;
                 screen.getMainMenuPanel().getReplaySnake().repaint();
+                System.out.println("repainting");
             }
         }
     }
@@ -342,9 +318,8 @@ public class Controller {
                     newGame = screen.getMainMenuPanel().getGameChooserPanel().getGame();
                     newGame.getOpponent().setId(currentUser.getId());
 
-                    screen.getMainMenuPanel().addPlaySnake(
-                            snakeEngineDrawClass,
-                            newGame);
+                    screen.getMainMenuPanel().addPlaySnake(snakeEngineDrawClass, newGame);
+                    //screen.getMainMenuPanel().addPlaySnake(new SnakeEngineDrawClass(), newGame);
 
                     //TODO: put this somewhere else and call method here. Used it twice now
                     screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getUp(),
@@ -420,9 +395,11 @@ public class Controller {
 
             if (e.getActionCommand().equals(Config.getBtnReplayText())){
 
+                screen.getMainMenuPanel().setSidePanelState(false);
+
                 try {
 
-                    replayGame = gameOverviewerLogic.showReplay(currentUser, replaySnakeHandler);
+                    replayGame = gameOverviewerLogic.showReplay(currentUser, new ReplaySnakeHandlerClass());
                 }
                 catch (IndexOutOfBoundsException e2){
 

@@ -114,8 +114,7 @@ public class MainMenuPanel extends JPanel{
     public void addReplaySnakeToPanel(Game game, ActionListener l){
 
         replaySnake = new ReplaySnake(game, l);
-        centerPanel.add(replaySnake);
-        cl.addLayoutComponent(replaySnake, Config.getReplaySnakeScreen());
+        centerPanel.add(replaySnake, Config.getReplaySnakeScreen());
         cl.show(centerPanel, Config.getReplaySnakeScreen());
 
     }
@@ -136,8 +135,7 @@ public class MainMenuPanel extends JPanel{
     public void addPlaySnake(ActionListener l, Game newGame){
 
         snakeGameEngine = new SnakeGameEngine(l, newGame);
-        centerPanel.add(snakeGameEngine);
-        cl.addLayoutComponent(snakeGameEngine, Config.getPlaySnakeScreen());
+        centerPanel.add(snakeGameEngine, Config.getPlaySnakeScreen());
         cl.show(centerPanel, Config.getPlaySnakeScreen());
     }
 
