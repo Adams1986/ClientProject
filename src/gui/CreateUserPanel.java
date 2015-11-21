@@ -35,6 +35,8 @@ public class CreateUserPanel extends JPanel {
         emailLabel = new JLabel(Config.getEmailLabelText());
         usernameLabel = new JLabel(Config.getUsernameLabelText());
         passwordLabel = new JLabel(Config.getPasswordLabelText());
+        firstNameLabel.setBackground(Color.WHITE);
+        firstNameLabel.setForeground(Color.WHITE);
 
         firstNameField = new JTextField();
         lastNameField = new JTextField();
@@ -108,6 +110,16 @@ public class CreateUserPanel extends JPanel {
     public void setFonts(Font f){
 
         infoLabel.setFont(f);
+    }
+
+    public void setTextColor(Color c){
+
+        infoLabel.setForeground(c);
+    }
+
+    public void setBackgroundColor(Color c){
+
+        setBackground(c);
     }
 
     public String getFirstNameField() {

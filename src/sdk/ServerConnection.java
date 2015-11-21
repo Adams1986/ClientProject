@@ -52,7 +52,7 @@ public class ServerConnection {
         try {
 
             WebResource webResource = client.resource("http://" + Config.getIpAddress() + ":" + Config.getServerPort() + "/api/" + path);
-            System.out.println("http://" + Config.getIpAddress() + ":" + Config.getServerPort() + "/api/" + path);
+
             ClientResponse response = webResource.accept("application/json").post(ClientResponse.class, data);
 
             if (response != null) {

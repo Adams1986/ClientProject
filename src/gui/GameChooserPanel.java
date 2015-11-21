@@ -1,7 +1,7 @@
 package gui;
 
 import sdk.Config;
-import sdk.Game;
+import sdk.dto.Game;
 
 import javax.swing.*;
 import java.awt.*;
@@ -80,6 +80,16 @@ public class GameChooserPanel extends JPanel {
         gameChooserHeader.setFont(f);
     }
 
+    public void setTextColor(Color c){
+
+        gameChooserHeader.setForeground(c);
+    }
+
+    public void setBackgroundColor(Color c){
+
+        setBackground(c);
+    }
+
     public void setGameTableModel(ArrayList<Game> games){
 
         tableModel = new GameTableModel(games);
@@ -96,5 +106,11 @@ public class GameChooserPanel extends JPanel {
         btnCreateNewGame.addActionListener(l);
         btnJoinSelectedGame.addActionListener(l);
         btnRefreshJTable.addActionListener(l);
+    }
+
+    public void resetFields() {
+
+        gameType.setSelectedIndex(Config.getIndexOne());
+
     }
 }

@@ -1,8 +1,8 @@
 package gui;
 
 import sdk.Config;
-import sdk.Game;
-import sdk.Gamer;
+import sdk.dto.Game;
+import sdk.dto.Gamer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,6 +32,8 @@ public class ReplaySnake extends JPanel {
      */
     //TODO: Maybe use a Score object instead and make som graphics for winner/loser points etc.
     public ReplaySnake(Game game, ActionListener l){
+
+        setBackground(Color.BLACK);
 
         game.getHost().setSnakeColor(Color.BLUE);
         game.getHost().setSnake(new LinkedList<Point>());
@@ -98,17 +100,26 @@ public class ReplaySnake extends JPanel {
      */
     private void drawWinnerInfo(Graphics g, Game game) {
 
-        if (game.getWinner() != null) {
 
-            if (game.getWinner().getId() == game.getHost().getId()) {
-                g.setColor(game.getHost().getSnakeColor());
+            g.setFont(new Font(Config.getHeaderFont(), Font.BOLD, Config.getHeaderTextSize()));
+
+            if (game.getWinner().getUsername() != null) {
+
+                if (game.getWinner().getId() == game.getHost().getId()) {
+                    g.setColor(game.getHost().getSnakeColor());
+                }
+                else {
+                    g.setColor(game.getOpponent().getSnakeColor());
+                }
+
+                g.drawString(game.getWinner().getUsername() + Config.getWinnerText(), Config.getDefaultXPosJComponent(), Config.getY10PosJComponent());
+            }
+            else if (game.getOpponent().getUsername() != null){
+                g.drawString(Config.getGameTiedText(), Config.getDefaultXPosJComponent(), Config.getY10PosJComponent());
             }
             else {
-                g.setColor(game.getOpponent().getSnakeColor());
+                g.drawString(Config.getAwaitingOpponentText(), Config.getDefaultXPosJComponent(), Config.getY10PosJComponent());
             }
-            g.setFont(new Font(Config.getHeaderFont(), Font.BOLD, Config.getHeaderTextSize()));
-            g.drawString(game.getWinner().getUsername() + " is the winner. Congratulations", Config.getDefaultXPosJComponent(), Config.getY10PosJComponent());
-        }
     }
 
     /**
@@ -206,36 +217,6 @@ public class ReplaySnake extends JPanel {
          */
         user.getSnake().push(newPoint);
     }
-
-//TODO: remove? and have in Controller instead
-//    /**
-//     * Uses move method to make the 'incremental' changes of the snake to make animation materialize
-//     * @param e
-//     */
-//    @Override
-//    public void actionPerformed(ActionEvent e) {
-//
-//        //populates snake by taking the string controls and checking whether up, down, left or right (w,s,a,d).
-//        if (counter < user.getControls().length()) {
-//            move(user, user.getControls().charAt(counter));
-//        }
-//        //checking theres an opponent and populates the snake with points
-//        if (opponent.getControls() != null) {
-//            if (counter < opponent.getControls().length()){
-//                move(opponent, opponent.getControls().charAt(counter));
-//            }
-//        }
-//        //repaints as long as there are usercontrols and opponentcontrols
-//        if(counter > user.getControls().length() &&
-//                (opponent.getControls() != null && counter > opponent.getControls().length())){
-//
-//            tm.stop();
-//        }
-//        else {
-//            counter++;
-//            repaint();
-//        }
-//    }
 
 
     /**

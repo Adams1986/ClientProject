@@ -7,12 +7,18 @@ import javax.swing.*;
  */
 public class DialogMessage {
 
+    private Screen screen;
+
+    public DialogMessage(Screen screen){
+
+        this.screen = screen;
+    }
+
     /**
      * Normal JOptionPane dialog box which shows a message to the user
-     * @param screen
      * @param message
      */
-    public static void showMessage(Screen screen, String message){
+    public void showMessage(String message){
 
         JOptionPane.showMessageDialog(screen, message);
     }
@@ -20,12 +26,11 @@ public class DialogMessage {
     /**
      * JOptionPane dialog box that interacts with the user,
      * so user can confirm for example a log out
-     * @param screen
      * @param message
      * @param title
      * @return
      */
-    public static boolean showConfirmMessage(Screen screen, String message, String title){
+    public boolean showConfirmMessage(String message, String title){
 
         int option = JOptionPane.showConfirmDialog(screen, message, title, JOptionPane.YES_NO_OPTION);
 
@@ -38,11 +43,10 @@ public class DialogMessage {
     /**
      * If error has occurred this method makes it possible to really show user
      * with the JOptionPane.ERROR_MESSAGE int which shows a big fat error logo
-     * @param screen
      * @param message
      * @param title
      */
-    public static void showErrorMessage(Screen screen, String message, String title){
+    public void showErrorMessage(String message, String title){
 
         JOptionPane.showMessageDialog(screen, message, title, JOptionPane.ERROR_MESSAGE);
     }

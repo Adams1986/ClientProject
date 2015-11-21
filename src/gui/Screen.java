@@ -46,6 +46,8 @@ public class Screen extends JFrame {
         cl.show(clPanel, Config.getLoginScreen());
 
         setFonts(new Font(Config.getHeaderFont(), Font.BOLD, Config.getHeaderTextSize()));
+        setTextColor(Color.GREEN);
+        setBackGroundColor(Color.BLACK);
 
         setSize(Config.getAppWidth(), Config.getAppHeight());
         setResizable(false);
@@ -58,6 +60,21 @@ public class Screen extends JFrame {
         mainMenuPanel.setFonts(f);
         createUserPanel.setFonts(f);
         loginPanel.setFonts(f);
+    }
+
+    public void setTextColor(Color c){
+
+        mainMenuPanel.setTextColor(c);
+        createUserPanel.setTextColor(c);
+        loginPanel.setTextColor(c);
+    }
+
+    public void setBackGroundColor(Color c){
+
+        contentPane.setBackground(c);
+        mainMenuPanel.setBackgroundColor(c);
+        createUserPanel.setBackground(c);
+        loginPanel.setBackground(c);
     }
 
     /**

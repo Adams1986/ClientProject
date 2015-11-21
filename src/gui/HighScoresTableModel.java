@@ -1,7 +1,7 @@
 package gui;
 
 import sdk.Config;
-import sdk.dto.Game;
+import sdk.dto.Score;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
@@ -10,16 +10,16 @@ import java.util.List;
 /**
  * Created by ADI on 31-10-2015.
  */
-public class GameTableModel extends AbstractTableModel {
+public class HighScoresTableModel extends AbstractTableModel {
 
-    private List<Game> gameList;
+    private List<Score> highScores;
     private int numberOfRows;
     private String [] columns;
 
-    public GameTableModel (ArrayList<Game> games){
+    public HighScoresTableModel (ArrayList<Score> highScores){
 
-        gameList = games;
-        columns = Config.getColumnNamesGameTable();
+        this.highScores = highScores;
+        columns = Config.getColumnNameHighScoresTable();
         //Winner and opponent redundant in the case of join game
         fireTableStructureChanged();
     }
@@ -32,14 +32,15 @@ public class GameTableModel extends AbstractTableModel {
     }
 
     @Override
-    public Class<?> getColumnClass(int columnIndex) {
-        return super.getColumnClass(columnIndex);
+    public Class<?> getColumnClass(int column) {
+        return super.getColumnClass(column);
     }
 
     @Override
     public int getRowCount() {
 
-        numberOfRows = gameList.size();
+        numberOfRows
+                = highScores.size();
 
         return numberOfRows;
     }
@@ -52,39 +53,30 @@ public class GameTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int row, int column) {
 
-        Game game = gameList.get(row);
+        Score score = highScores.get(row);
 
         //TODO: change for better scaling?
         switch (column){
 
             case 0:
-                return game.getHost().getUsername();
+                return score.getGame().getWinner().getUsername();
 
             case 1:
-                return game.getOpponent().getUsername();
+                return score.getScore();
 
             case 2:
-                return game.getName();
+                return score.getGame().getGameId();
 
             case 3:
-                return game.getStatus();
-
-            case 4:
-                return game.getCreated();
-
-            case 5:
-                return game.getWinner().getUsername();
-
-            case 6:
-                return game.getMapSize();
+                return score.getGame().getName();
 
         }
 
         return null;
     }
 
-    public Game getGameFromTable(int row){
+    public Score getHighscoreFromTable(int row){
 
-        return gameList.get(row);
+        return highScores.get(row);
     }
 }

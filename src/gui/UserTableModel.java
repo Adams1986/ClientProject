@@ -1,8 +1,7 @@
 package gui;
 
 import sdk.Config;
-import sdk.Game;
-import sdk.User;
+import sdk.dto.User;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;

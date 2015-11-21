@@ -1,4 +1,4 @@
-package sdk;
+package sdk.dto;
 
 import java.sql.Date;
 import java.util.Scanner;

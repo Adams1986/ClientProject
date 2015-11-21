@@ -35,6 +35,7 @@ public class LoginPanel extends JPanel{
         btnCreateNewUser = new JButton(Config.getBtnCreateNewUserText());
         depardieu = new ImageIcon(Config.getDepardieuImagePath());
         iconLabel = new JLabel(depardieu);
+        btnLogin.setBackground(Color.GREEN);
 
         infoLabel.setBounds(Config.getDefaultXPosJComponent(), Config.getY1PosJComponent(),
                 Config.getWidth2JComponent()    , Config.getDefaultHeightJComponent());
@@ -65,6 +66,16 @@ public class LoginPanel extends JPanel{
     public void setFonts(Font f){
 
         infoLabel.setFont(f);
+    }
+
+    public void setTextColor(Color c){
+
+        infoLabel.setForeground(c);
+    }
+
+    public void setBackgroundColor(Color c){
+
+        setBackground(c);
     }
 
     public void addActionListeners(ActionListener l) {

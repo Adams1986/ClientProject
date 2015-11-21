@@ -1,12 +1,5 @@
 package sdk;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-
-import java.util.ArrayList;
-
 /**
  * Api class. Constains generic methods that send and receive data in a String/json format. All the parsing of the json
  * data is handled in the Logic sub-controller classes.
@@ -27,9 +20,9 @@ public class Api {
      * Retrieves all users from the server and saves them in an arraylist
      * @return Arraylist of all users/gamers
      */
-    public static String getUsers() {
+    public static String getUsers(int userId) {
 
-        return ServerConnection.get(Config.getServerPathUsers());
+        return ServerConnection.get(Config.getServerPathUsers() + userId);
     }
 
     /**
@@ -39,18 +32,17 @@ public class Api {
      */
     public static String getUser(int userId){
 
-        return ServerConnection.get(Config.getServerPathUsers() + userId);
+        return ServerConnection.get(Config.getServerPathUser() + userId);
     }
 
-    //TODO: handle toJson in controller instead, so only sends and receives Strings
-    public static String createUser(User user){
+    public static String createUser(String userJson){
 
-        return ServerConnection.post(Config.getServerPathUsers(), new Gson().toJson(user));
+        return ServerConnection.post(Config.getServerPathUsers(), userJson);
     }
 
-    public static String createGame(Game game){
+    public static String createGame(String gameJson){
 
-        return ServerConnection.post(Config.getServerPathGames(), new Gson().toJson(game));
+        return ServerConnection.post(Config.getServerPathGames(), gameJson);
     }
 
     public static String joinGame(String gameJson){
@@ -59,7 +51,6 @@ public class Api {
     }
 
 
-    //TODO: skal vi overhovedet bruge dette game? hvordan skal error jsonDatas håndteres? Måske bare returnere string og så håndtere hvorvidt det skal parses eller laves om til json et andet sted
     public static String startGame(String gameJson) {
 
         return ServerConnection.put(Config.getServerPathStartGames(), gameJson);
@@ -78,7 +69,7 @@ public class Api {
 
     public static String getHighScores(){
 
-        return ServerConnection.get(Config.getServerPathScores());
+        return ServerConnection.get(Config.getServerPathHighScores());
     }
 
 
@@ -93,7 +84,7 @@ public class Api {
     public static String getGamesByStatusAndUserId(String status, int userId){
 
         //TODO: forwardslash...
-        return ServerConnection.get(Config.getServerPathGames() + status + "/" + userId);
+        return ServerConnection.get(Config.getServerPathGames() + status + userId);
     }
 
     public static String getGamesInvitedByID(int userId){

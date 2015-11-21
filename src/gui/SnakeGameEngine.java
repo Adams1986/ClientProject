@@ -1,7 +1,7 @@
 package gui;
 
 import sdk.Config;
-import sdk.Game;
+import sdk.dto.Game;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,9 +22,9 @@ public class SnakeGameEngine extends JPanel {
 
     private Game game;
 
-
-    //TODO: change to int mapSize at some point?!
     public SnakeGameEngine(ActionListener l, Game game){
+
+        setBackground(Color.BLACK);
 
         this.game = game;
         snake = new LinkedList<>();
@@ -88,7 +88,7 @@ public class SnakeGameEngine extends JPanel {
 
         if (gameEnded) {
 
-            drawMessage(g);
+            //drawMessage(g);
         }
 
     }
@@ -99,24 +99,6 @@ public class SnakeGameEngine extends JPanel {
         g.setFont(new Font("Sans Serif", Font.BOLD, 20));
         g.drawString("Hello there", 40, 500);
     }
-
-//    @Override
-//    public void actionPerformed(ActionEvent e) {
-//
-//        if(!gameEnded) {
-//            move(direction);
-//            btnSend.setEnabled(false);
-//            gameNameField.setEnabled(false);
-//            gameNameField.setText("Type game name here..");
-//        }
-//        else{
-//            moves = sb.toString();
-//            btnSend.setEnabled(true);
-//            gameNameField.setEnabled(true);
-//            gameNameField.setText("");
-//        }
-//        repaint();
-//    }
 
 
 
@@ -132,6 +114,7 @@ public class SnakeGameEngine extends JPanel {
 
     private void drawBoard(Graphics g){
 
+        g.setColor(Color.GREEN);
         //draw outer frame
         g.drawRect(Config.getZeroXY(), Config.getZeroXY(), Config.getFieldWidth() * game.getMapSize(),
                 Config.getFieldHeight() * game.getMapSize());

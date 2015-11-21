@@ -1,6 +1,4 @@
-package sdk;
-
-import sdk.Gamer;
+package sdk.dto;
 
 import java.sql.Date;
 

@@ -1,7 +1,7 @@
 package gui;
 
 import sdk.Config;
-import sdk.Game;
+import sdk.dto.Game;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,6 +21,7 @@ public class GameOverviewerPanel extends JPanel {
     private JComboBox<String> gameType;
     private GameTableModel tableModel;
     private String[] typesOfGames;
+
 
     public GameOverviewerPanel(){
 
@@ -52,6 +53,7 @@ public class GameOverviewerPanel extends JPanel {
         for (int i = 0; i < typesOfGames.length; i++) {
 
             gameType.addItem(typesOfGames[i]);
+
         }
 
         add(gameOverviewerHeader);
@@ -71,6 +73,16 @@ public class GameOverviewerPanel extends JPanel {
         gameOverviewerHeader.setFont(f);
     }
 
+    public void setTextColor(Color c){
+
+        gameOverviewerHeader.setForeground(c);
+    }
+
+    public void setBackgroundColor(Color c){
+
+        setBackground(c);
+    }
+
     public void setGameTableModel(ArrayList<Game> games){
 
         tableModel = new GameTableModel(games);
@@ -86,5 +98,10 @@ public class GameOverviewerPanel extends JPanel {
 
         btnReplayGame.addActionListener(l);
         btnRefreshJTable.addActionListener(l);
+    }
+
+    public void resetFields() {
+
+        gameType.setSelectedIndex(Config.getIndexOne());
     }
 }

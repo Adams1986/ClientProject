@@ -1,9 +1,9 @@
 package logic.subcontroller;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import gui.Screen;
 import sdk.*;
+import sdk.dto.Game;
+import sdk.dto.User;
 
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -20,48 +20,47 @@ public class GameOverviewerLogic {
         this.screen = screen;
     }
 
-    public Game showReplay(User currentUser, ActionListener replaySnakeHandler){
+    public Game showReplay(ActionListener replaySnakeHandler){
 
-        Game replayGame = screen.getMainMenuPanel().getGameOverviewerPanelPanel().getGame();
-//        //TODO: maybe move to replaysnake class instead! modeling host and opponent to create graphics
-//        replayGame.setWinner(
-//                new Gson().fromJson(Api.getUser(replayGame.getWinner().getId()), Gamer.class));
-
+        Game replayGame = screen.getMainMenuPanel().getGameOverviewerPanel().getGame();
         screen.getMainMenuPanel().addReplaySnakeToPanel(replayGame, replaySnakeHandler);
 
         return replayGame;
     }
 
+    //TODO: nasty piece of code - little better
     public ArrayList<Game> refreshTable(User currentUser){
 
-        ArrayList<User> users = new Gson().fromJson(Api.getUsers(), new TypeToken<ArrayList<User>>(){}.getType());
+        //TODO this is encrypted. Change maybe? Using -1 to get all the users. Important right now to show host and opponent in table
+        ArrayList<User> users = DataParser.getDecryptedUserList(Api.getUsers(-1));
         ArrayList<Game> games = null;
 
-        if (screen.getMainMenuPanel().getGameOverviewerPanelPanel().getTypeOfGameChoice().equals(Config.getTypesOfGamesToReplay()[Config.getIndexOne()])) {
+        if (screen.getMainMenuPanel().getGameOverviewerPanel().getTypeOfGameChoice().equals(Config.getTypesOfGamesToReplay()[Config.getIndexOne()])) {
 
-            games = new Gson().fromJson(Api.getGamesInvitedByID(currentUser.getId()), new TypeToken<ArrayList<Game>>(){}.getType());
+            games = DataParser.getDecryptedGamesList(Api.getGamesInvitedByID(currentUser.getId()));
         }
-        else if (screen.getMainMenuPanel().getGameOverviewerPanelPanel().getTypeOfGameChoice().equals(Config.getTypesOfGamesToReplay()[Config.getIndexTwo()])){
+        else if (screen.getMainMenuPanel().getGameOverviewerPanel().getTypeOfGameChoice().equals(Config.getTypesOfGamesToReplay()[Config.getIndexTwo()])){
 
-            games = new Gson().fromJson(Api.getOpenGames(currentUser.getId()), new TypeToken<ArrayList<Game>>(){}.getType());
+            games = DataParser.getDecryptedGamesList(Api.getOpenGames(currentUser.getId()));
         }
-        else if (screen.getMainMenuPanel().getGameOverviewerPanelPanel().getTypeOfGameChoice().equals(Config.getTypesOfGamesToReplay()[Config.getIndexThree()])){
+        else if (screen.getMainMenuPanel().getGameOverviewerPanel().getTypeOfGameChoice().equals(Config.getTypesOfGamesToReplay()[Config.getIndexThree()])){
 
-            games = new Gson().fromJson(Api.getGamesByStatusAndUserId("pending", currentUser.getId()), new TypeToken<ArrayList<Game>>(){}.getType());
+            games = DataParser.getDecryptedGamesList(Api.getGamesByStatusAndUserId(Config.getServerPathPendingGamesById(), currentUser.getId()));
         }
-        else if (screen.getMainMenuPanel().getGameOverviewerPanelPanel().getTypeOfGameChoice().equals(Config.getTypesOfGamesToReplay()[Config.getIndexFour()])){
+        else if (screen.getMainMenuPanel().getGameOverviewerPanel().getTypeOfGameChoice().equals(Config.getTypesOfGamesToReplay()[Config.getIndexFour()])){
 
-            games = new Gson().fromJson(Api.getGamesHostedById(currentUser.getId()), new TypeToken<ArrayList<Game>>(){}.getType());
+            games = DataParser.getDecryptedGamesList(Api.getGamesHostedById(currentUser.getId()));
         }
-        else if (screen.getMainMenuPanel().getGameOverviewerPanelPanel().getTypeOfGameChoice().equals(Config.getTypesOfGamesToReplay()[Config.getIndexFive()])){
+        else if (screen.getMainMenuPanel().getGameOverviewerPanel().getTypeOfGameChoice().equals(Config.getTypesOfGamesToReplay()[Config.getIndexFive()])){
 
-            games = new Gson().fromJson(Api.getGamesByStatusAndUserId("openbyid", currentUser.getId()), new TypeToken<ArrayList<Game>>(){}.getType());
+            games = DataParser.getDecryptedGamesList(Api.getGamesByStatusAndUserId(Config.getServerPathOpenGamesById(), currentUser.getId()));
         }
-        else if (screen.getMainMenuPanel().getGameOverviewerPanelPanel().getTypeOfGameChoice().equals(Config.getTypesOfGamesToReplay()[Config.getIndexSix()])){
+        else if (screen.getMainMenuPanel().getGameOverviewerPanel().getTypeOfGameChoice().equals(Config.getTypesOfGamesToReplay()[Config.getIndexSix()])){
 
-            games = new Gson().fromJson(Api.getGamesByStatusAndUserId("finished", currentUser.getId()), new TypeToken<ArrayList<Game>>(){}.getType());
+            games = DataParser.getDecryptedGamesList(Api.getGamesByStatusAndUserId(Config.getServerPathFinishedGamesById(), currentUser.getId()));
         }
 
+        //TODO fix this in SQLDriver on the server
         if (games != null) {
             for (int i = Config.getCount(); i < users.size(); i++) {
 
@@ -83,7 +82,7 @@ public class GameOverviewerLogic {
                 }
             }
         }
-        screen.getMainMenuPanel().getGameOverviewerPanelPanel().setGameTableModel(games);
+        screen.getMainMenuPanel().getGameOverviewerPanel().setGameTableModel(games);
 
         return games;
     }

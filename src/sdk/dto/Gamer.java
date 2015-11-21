@@ -1,4 +1,4 @@
-package sdk;
+package sdk.dto;
 
 import java.awt.*;
 import java.util.LinkedList;

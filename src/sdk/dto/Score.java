@@ -1,4 +1,4 @@
-package sdk;
+package sdk.dto;
 
 /**
  * Created by nicolaiostergaard on 12/10/15.

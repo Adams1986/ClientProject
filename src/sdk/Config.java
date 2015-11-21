@@ -21,7 +21,6 @@ public class Config {
     private static int delay;
     private static int zeroXY;
 
-    //TODO: is this neccesary? when using in switch values have to be static. Seems like a stupid workaround?
     private static String up;
     private static String down;
     private static String left;
@@ -139,6 +138,18 @@ public class Config {
     private static int indexFive;
     private static int indexSix;
     private static int indexSeven;
+    private static String[] columnNameHighScoresTable = new String[4];
+    private static String serverPathHighScores;
+    private static String highScoresScreen;
+    private static String highScoresHeaderText;
+    private static String awaitingOpponentText;
+    private static String gameTiedText;
+    private static String winnerText;
+    private static String welcomeText;
+    private static String serverPathUser;
+    private static String serverPathPendingGamesById;
+    private static String serverPathOpenGamesById;
+    private static String serverPathFinishedGamesById;
 
 
     public static void init () {
@@ -205,6 +216,11 @@ public class Config {
             getColumnNamesUserTable()[1] = (String) jsonObject.get("lastname");
             getColumnNamesUserTable()[2] = (String) jsonObject.get("username");
 
+            getColumnNameHighScoresTable()[0] = (String) jsonObject.get("username");
+            getColumnNameHighScoresTable()[1] = (String) jsonObject.get("highscore");
+            getColumnNameHighScoresTable()[2] = (String) jsonObject.get("gameid");
+            getColumnNameHighScoresTable()[3] = (String) jsonObject.get("gamename");
+
             getColumnNamesGameTable()[0] = (String) jsonObject.get("challenger");
             getColumnNamesGameTable()[1] = (String) jsonObject.get("opponent");
             getColumnNamesGameTable()[2] = (String) jsonObject.get("gamename");
@@ -229,9 +245,11 @@ public class Config {
 
             setServerPathLogin((String) jsonObject.get("serverpathlogin"));
             setServerPathUsers((String) jsonObject.get("serverpathusers"));
+            setServerPathUser((String) jsonObject.get("serverpathuser"));
             setServerPathGames((String) jsonObject.get("serverpathgames"));
             setServerPathGame((String) jsonObject.get("serverpathgame"));
             setServerPathScores((String) jsonObject.get("serverpathscores"));
+            setServerPathHighScores((String) jsonObject.get("serverpathhighscores"));
 
             setBtnPlayText((String) jsonObject.get("btnplaytext"));
             setBtnSendText((String) jsonObject.get("btnsendtext"));
@@ -318,6 +336,15 @@ public class Config {
             setGameChooserHeaderText((String) jsonObject.get("gamechooserheadertext"));
             setGameOverviewerHeaderText((String) jsonObject.get("gameoverviewerheadertext"));
             setBtnReplayText((String) jsonObject.get("btnreplaytext"));
+            setHighScoresScreen((String) jsonObject.get("highscoresscreen"));
+            setHighScoresHeaderText((String) jsonObject.get("highscoresheadertext"));
+            setAwaitingOpponentText((String) jsonObject.get("awaitingopponenttext"));
+            setGameTiedText((String) jsonObject.get("gametiedtext"));
+            setWinnerText((String) jsonObject.get("winnertext"));
+            setWelcomeText((String) jsonObject.get("welcometext"));
+            setServerPathPendingGamesById((String) jsonObject.get("serverpathpendinggamesid"));
+            setServerPathOpenGamesById((String) jsonObject.get("serverpathopengamesid"));
+            setServerPathFinishedGamesById((String) jsonObject.get("serverpathfinishedgamesid"));
 
 
         } catch (org.json.simple.parser.ParseException e) {
@@ -1273,5 +1300,101 @@ public class Config {
 
     public static void setIndexSeven(int indexSeven) {
         Config.indexSeven = indexSeven;
+    }
+
+    public static String[] getColumnNameHighScoresTable() {
+        return columnNameHighScoresTable;
+    }
+
+    public static void setColumnNameHighScoresTable(String[] columnNameHighScoresTable) {
+        Config.columnNameHighScoresTable = columnNameHighScoresTable;
+    }
+
+    public static String getServerPathHighScores() {
+        return serverPathHighScores;
+    }
+
+    public static void setServerPathHighScores(String serverPathHighScores) {
+        Config.serverPathHighScores = serverPathHighScores;
+    }
+
+    public static String getHighScoresScreen() {
+        return highScoresScreen;
+    }
+
+    public static void setHighScoresScreen(String highScoresScreen) {
+        Config.highScoresScreen = highScoresScreen;
+    }
+
+    public static String getHighScoresHeaderText() {
+        return highScoresHeaderText;
+    }
+
+    public static void setHighScoresHeaderText(String highScoresHeaderText) {
+        Config.highScoresHeaderText = highScoresHeaderText;
+    }
+
+    public static String getAwaitingOpponentText() {
+        return awaitingOpponentText;
+    }
+
+    public static void setAwaitingOpponentText(String awaitingOpponentText) {
+        Config.awaitingOpponentText = awaitingOpponentText;
+    }
+
+    public static String getGameTiedText() {
+        return gameTiedText;
+    }
+
+    public static void setGameTiedText(String gameTiedText) {
+        Config.gameTiedText = gameTiedText;
+    }
+
+    public static String getWinnerText() {
+        return winnerText;
+    }
+
+    public static void setWinnerText(String winnerText) {
+        Config.winnerText = winnerText;
+    }
+
+    public static String getWelcomeText() {
+        return welcomeText;
+    }
+
+    public static void setWelcomeText(String welcomeText) {
+        Config.welcomeText = welcomeText;
+    }
+
+    public static String getServerPathUser() {
+        return serverPathUser;
+    }
+
+    public static void setServerPathUser(String serverPathUser) {
+        Config.serverPathUser = serverPathUser;
+    }
+
+    public static String getServerPathPendingGamesById() {
+        return serverPathPendingGamesById;
+    }
+
+    public static void setServerPathPendingGamesById(String serverPathPendingGamesById) {
+        Config.serverPathPendingGamesById = serverPathPendingGamesById;
+    }
+
+    public static String getServerPathOpenGamesById() {
+        return serverPathOpenGamesById;
+    }
+
+    public static void setServerPathOpenGamesById(String serverPathOpenGamesById) {
+        Config.serverPathOpenGamesById = serverPathOpenGamesById;
+    }
+
+    public static String getServerPathFinishedGamesById() {
+        return serverPathFinishedGamesById;
+    }
+
+    public static void setServerPathFinishedGamesById(String serverPathFinishedGamesById) {
+        Config.serverPathFinishedGamesById = serverPathFinishedGamesById;
     }
 }

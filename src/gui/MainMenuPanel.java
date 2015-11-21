@@ -1,7 +1,7 @@
 package gui;
 
 import sdk.Config;
-import sdk.Game;
+import sdk.dto.Game;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 public class MainMenuPanel extends JPanel{
 
     private JLabel welcomeLabel;
+    private JLabel infoLabel;
     private JButton btnPlay;
     private JButton btnWatchReplay;
     private JButton btnShowHighScore;
@@ -26,13 +27,15 @@ public class MainMenuPanel extends JPanel{
     private CreateNewGamePanel createNewGamePanel;
     private GameChooserPanel gameChooserPanel;
     private DeleteGamePanel deleteGamePanel;
-    private GameOverviewerPanel gameOverviewerPanelPanel;
+    private GameOverviewerPanel gameOverviewerPanel;
+    private HighScoresPanel highScoresPanel;
 
 
     public MainMenuPanel(){
         setLayout(null);
 
         welcomeLabel = new JLabel();
+        infoLabel = new JLabel();
         btnPlay = new JButton(Config.getBtnPlayText());
         btnWatchReplay = new JButton(Config.getBtnWatchReplayText());
         btnShowHighScore = new JButton(Config.getBtnShowHighScoreText());
@@ -43,7 +46,8 @@ public class MainMenuPanel extends JPanel{
         createNewGamePanel = new CreateNewGamePanel();
         deleteGamePanel = new DeleteGamePanel();
         gameChooserPanel = new GameChooserPanel();
-        gameOverviewerPanelPanel = new GameOverviewerPanel();
+        gameOverviewerPanel = new GameOverviewerPanel();
+        highScoresPanel = new HighScoresPanel();
         cl = new CardLayout();
 
         sidePanel.setBounds(Config.getZeroXY(), Config.getZeroXY(), Config.getWidth3JComponent(), Config.getAppHeight());
@@ -54,18 +58,27 @@ public class MainMenuPanel extends JPanel{
         welcomeLabel.setBounds(Config.getDefaultXPosJComponent(), Config.getY1PosJComponent(),
                 Config.getLblWidth(), Config.getDefaultHeightJComponent());
 
+        infoLabel.setBounds(Config.getDefaultXPosJComponent(), Config.getY2PosJComponent(),
+                Config.getLblWidth(), Config.getDefaultHeightJComponent());
+
         btnPlay.setBounds(Config.getDefaultXPosJComponent(), Config.getY3PosJComponent(),
                 Config.getDefaultWidthJComponent(), Config.getDefaultHeightJComponent());
+
         btnWatchReplay.setBounds(Config.getDefaultXPosJComponent(), Config.getY4PosJComponent(),
                 Config.getDefaultWidthJComponent(), Config.getDefaultHeightJComponent());
+
         btnShowHighScore.setBounds(Config.getDefaultXPosJComponent(), Config.getY5PosJComponent(),
                 Config.getDefaultWidthJComponent(), Config.getDefaultHeightJComponent());
+
         btnDeleteGame.setBounds(Config.getDefaultXPosJComponent(), Config.getY6PosJComponent(),
                 Config.getDefaultWidthJComponent(), Config.getDefaultHeightJComponent());
+
         btnLogOut.setBounds(Config.getDefaultXPosJComponent(), Config.getY7PosJComponent(),
                 Config.getDefaultWidthJComponent(), Config.getDefaultHeightJComponent());
 
+
         sidePanel.add(welcomeLabel);
+        sidePanel.add(infoLabel);
         sidePanel.add(btnPlay);
         sidePanel.add(btnWatchReplay);
         sidePanel.add(btnShowHighScore);
@@ -75,7 +88,8 @@ public class MainMenuPanel extends JPanel{
         centerPanel.add(createNewGamePanel, Config.getCreateNewGameScreen());
         centerPanel.add(gameChooserPanel, Config.getGameChooserScreen());
         centerPanel.add(deleteGamePanel, Config.getDeleteGameScreen());
-        centerPanel.add(gameOverviewerPanelPanel, Config.getGameOverviewerScreen());
+        centerPanel.add(gameOverviewerPanel, Config.getGameOverviewerScreen());
+        centerPanel.add(highScoresPanel, Config.getHighScoresScreen());
 
 
         add(sidePanel);
@@ -87,17 +101,42 @@ public class MainMenuPanel extends JPanel{
     public void setFonts(Font f){
 
         welcomeLabel.setFont(f);
+        infoLabel.setFont(f);
         deleteGamePanel.setFonts(f);
         createNewGamePanel.setFonts(f);
         gameChooserPanel.setFonts(f);
-        gameOverviewerPanelPanel.setFonts(f);
+        gameOverviewerPanel.setFonts(f);
+        highScoresPanel.setFonts(f);
+    }
+
+    public void setTextColor(Color c){
+
+        welcomeLabel.setForeground(c);
+        infoLabel.setForeground(c);
+
+        deleteGamePanel.setTextColor(c);
+        createNewGamePanel.setTextColor(c);
+        gameChooserPanel.setTextColor(c);
+        gameOverviewerPanel.setTextColor(c);
+        highScoresPanel.setTextColor(c);
+    }
+
+    public void setBackgroundColor(Color c){
+
+        setBackground(c);
+
+        deleteGamePanel.setBackground(c);
+        createNewGamePanel.setBackground(c);
+        gameChooserPanel.setBackground(c);
+        gameOverviewerPanel.setBackground(c);
+        highScoresPanel.setBackground(c);
+        sidePanel.setBackground(c);
     }
 
     /**
      * For controller to use to enable/disable sidepanel with menu buttons to help user not to get distracted and focus
      * on the game and more importantly to avoid the unreliable nature of pressing menu button while game is currently
      * being played.
-     * Also avoids cheating if not doing so well TODO: (can close the client app though)
      * @param b boolean to determine if sidepanels components should be enabled
      */
     public void setSidePanelState(boolean b) {
@@ -165,6 +204,11 @@ public class MainMenuPanel extends JPanel{
         welcomeLabel.setText(welcomeMessage);
     }
 
+    public void setInfoMessage(String infoMessage) {
+
+        infoLabel.setText(infoMessage);
+    }
+
     public CreateNewGamePanel getCreateNewGamePanel() {
         return createNewGamePanel;
     }
@@ -178,8 +222,13 @@ public class MainMenuPanel extends JPanel{
         return deleteGamePanel;
     }
 
-    public GameOverviewerPanel getGameOverviewerPanelPanel(){
+    public GameOverviewerPanel getGameOverviewerPanel(){
 
-        return gameOverviewerPanelPanel;
+        return gameOverviewerPanel;
+    }
+
+    public HighScoresPanel getHighScoresPanel(){
+
+        return highScoresPanel;
     }
 }

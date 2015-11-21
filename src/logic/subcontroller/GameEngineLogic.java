@@ -5,15 +5,22 @@ import gui.DialogMessage;
 import gui.Screen;
 import sdk.Api;
 import sdk.Config;
-import sdk.Game;
-import sdk.MessageParser;
+import sdk.dto.Game;
+import sdk.DataParser;
 
 /**
  * Created by ADI on 15-11-2015.
  */
 public class GameEngineLogic {
 
-    public static void draw(Screen screen, Game newGame) {
+    private Screen screen;
+
+    public GameEngineLogic(Screen screen){
+
+        this.screen = screen;
+    }
+
+    public void draw(Game newGame, DialogMessage dialogMessage) {
 
         String message;
 
@@ -28,8 +35,8 @@ public class GameEngineLogic {
             if(newGame.getHost().getControls() == null) {
                 newGame.getHost().setControls(screen.getMainMenuPanel().getSnakeGameEngine().getSbToString());
                 //Attempt to create the game and show response from server
-                message = MessageParser.parseMessage(Api.createGame(newGame));
-                DialogMessage.showMessage(screen, message);
+                message = DataParser.parseMessage(Api.createGame(new Gson().toJson(newGame)));
+                dialogMessage.showMessage(message);
             }
             else {
 
@@ -38,7 +45,7 @@ public class GameEngineLogic {
                 String gameJson = new Gson().toJson(newGame);
                 message = Api.joinGame(gameJson);
                 Api.startGame(gameJson);
-                DialogMessage.showMessage(screen, MessageParser.parseMessage(message));
+                dialogMessage.showMessage(DataParser.parseMessage(message));
             }
 
             //stops animation

@@ -3,9 +3,8 @@ package logic.subcontroller;
 import com.google.gson.Gson;
 import gui.Screen;
 import sdk.Api;
-import sdk.Config;
-import sdk.MessageParser;
-import sdk.User;
+import sdk.DataParser;
+import sdk.dto.User;
 
 
 public class LoginLogic {
@@ -24,6 +23,6 @@ public class LoginLogic {
 
         String message = Api.authenticateLogin(new Gson().toJson(currentUser));
 
-        return MessageParser.parseMessage(message, currentUser);
+        return DataParser.parseMessage(message, currentUser);
     }
 }

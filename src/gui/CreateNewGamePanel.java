@@ -1,7 +1,7 @@
 package gui;
 
 import sdk.Config;
-import sdk.User;
+import sdk.dto.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,7 +23,6 @@ public class CreateNewGamePanel extends JPanel {
     private JCheckBox openGame;
     private JLabel lblOpenGame;
     private int[] mapSizes;
-    //TODO: label for the table
 
 
     public CreateNewGamePanel(){
@@ -66,8 +65,11 @@ public class CreateNewGamePanel extends JPanel {
         for (int i = 0; i < mapSizes.length; i++){
             mapSizeChooser.addItem(mapSizes[i]);
         }
+
         gameNameField.setToolTipText(Config.getGameNameFieldTtt());
         mapSizeChooser.setToolTipText(Config.getMapSizeChooserTtt());
+
+        //mapSizeChooser.setSize(new Dimension(Config.getDefaultWidthJComponent(), Config.getDefaultHeightJComponent()));
         openGame.setSelected(true);
         setOpponentTableState(false);
 
@@ -83,6 +85,16 @@ public class CreateNewGamePanel extends JPanel {
     public void setFonts(Font f){
 
         headerLabel.setFont(f);
+    }
+
+    public void setTextColor(Color c){
+
+        headerLabel.setForeground(c);
+    }
+
+    public void setBackgroundColor(Color c){
+
+        setBackground(c);
     }
 
     public void setOpponentTableState(boolean b) {
@@ -131,7 +143,6 @@ public class CreateNewGamePanel extends JPanel {
         gameNameField.requestFocus();
     }
 
-    //TODO: hardcoding?
     public void resetFields() {
 
         gameNameField.setText(Config.getClearField());

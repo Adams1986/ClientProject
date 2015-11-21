@@ -1,7 +1,7 @@
 package gui;
 
 import sdk.Config;
-import sdk.Game;
+import sdk.dto.Game;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,10 +32,10 @@ public class DeleteGamePanel extends JPanel{
         deleteGameHeader = new JLabel(Config.getBtnDeleteGameText());
 
         //setting bounds via the config file
-        scrollPane.setBounds(Config.getDefaultXPosJComponent(), Config.getY2PosJComponent(),
+        scrollPane.setBounds(Config.getDefaultXPosJComponent(), Config.getY3PosJComponent(),
                 Config.getWidth2JComponent(), Config.getY5PosJComponent());
 
-        btnDeleteGame.setBounds(Config.getDefaultXPosJComponent(), Config.getY7PosJComponent(),
+        btnDeleteGame.setBounds(Config.getDefaultXPosJComponent(), Config.getY8PosJComponent(),
                 Config.getDefaultWidthJComponent(), Config.getDefaultHeightJComponent());
 
         deleteGameHeader.setBounds(Config.getDefaultXPosJComponent(), Config.getY1PosJComponent(),
@@ -56,6 +56,16 @@ public class DeleteGamePanel extends JPanel{
     public void setFonts(Font f){
 
         deleteGameHeader.setFont(f);
+    }
+
+    public void setTextColor(Color c){
+
+        deleteGameHeader.setForeground(c);
+    }
+
+    public void setBackgroundColor(Color c){
+
+        setBackground(c);
     }
 
     /**
