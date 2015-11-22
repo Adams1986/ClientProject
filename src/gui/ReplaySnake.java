@@ -226,6 +226,7 @@ public class ReplaySnake extends JPanel {
      */
     private void drawBoard(Graphics g){
 
+        g.setColor(Color.GREEN);
         //draw outer frame
         g.drawRect(Config.getZeroXY(), Config.getZeroXY(), Config.getFieldWidth() * game.getMapSize(),
                 Config.getFieldHeight() * game.getMapSize());

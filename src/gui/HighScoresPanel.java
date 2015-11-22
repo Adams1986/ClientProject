@@ -45,11 +45,6 @@ public class HighScoresPanel extends JPanel {
         highScoresHeader.setForeground(c);
     }
 
-    public void setBackgroundColor(Color c){
-
-        setBackground(c);
-    }
-
     public void setHighScoreTableModel(ArrayList<Score> scores){
 
         tableModel = new HighScoresTableModel(scores);

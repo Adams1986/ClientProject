@@ -29,6 +29,7 @@ public class Screen extends JFrame {
 
         contentPane.setLayout(new BorderLayout(Config.getZeroXY(), Config.getZeroXY()));
         setContentPane(contentPane);
+        contentPane.setBackground(Color.GREEN);
 
         loginPanel = new LoginPanel();
         mainMenuPanel = new MainMenuPanel();
@@ -48,6 +49,7 @@ public class Screen extends JFrame {
         setFonts(new Font(Config.getHeaderFont(), Font.BOLD, Config.getHeaderTextSize()));
         setTextColor(Color.GREEN);
         setBackGroundColor(Color.BLACK);
+        setTextColorInfoLabels(Color.WHITE);
 
         setSize(Config.getAppWidth(), Config.getAppHeight());
         setResizable(false);
@@ -69,9 +71,14 @@ public class Screen extends JFrame {
         loginPanel.setTextColor(c);
     }
 
+    public void setTextColorInfoLabels(Color c){
+
+        createUserPanel.setTextColorInfoLabels(c);
+        getMainMenuPanel().getCreateNewGamePanel().setTextColorInfoLabels(c);
+    }
+
     public void setBackGroundColor(Color c){
 
-        contentPane.setBackground(c);
         mainMenuPanel.setBackgroundColor(c);
         createUserPanel.setBackground(c);
         loginPanel.setBackground(c);

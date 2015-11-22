@@ -73,11 +73,6 @@ public class LoginPanel extends JPanel{
         infoLabel.setForeground(c);
     }
 
-    public void setBackgroundColor(Color c){
-
-        setBackground(c);
-    }
-
     public void addActionListeners(ActionListener l) {
 
         btnLogin.addActionListener(l);

@@ -2,10 +2,12 @@ package gui;
 
 import sdk.Config;
 import sdk.dto.Game;
+import sdk.dto.Score;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 /**
  * The Main menu. Is a customised panel which contains the view of the clients main menu
@@ -29,6 +31,7 @@ public class MainMenuPanel extends JPanel{
     private DeleteGamePanel deleteGamePanel;
     private GameOverviewerPanel gameOverviewerPanel;
     private HighScoresPanel highScoresPanel;
+    private HighScoresMovingPanel highScoresMovingPanel;
 
 
     public MainMenuPanel(){
@@ -94,6 +97,16 @@ public class MainMenuPanel extends JPanel{
 
         add(sidePanel);
         add(centerPanel);
+
+
+    }
+
+    public void getNewInstanceOfHighScoresMovingPanel(ArrayList<Score> highScores, ActionListener l){
+
+        highScoresMovingPanel = new HighScoresMovingPanel(highScores, l);
+        highScoresMovingPanel.setBounds(Config.getDefaultXPosJComponent(), Config.getY8PosJComponent(),
+                Config.getWidth3JComponent(), Config.getY3PosJComponent());
+        sidePanel.add(highScoresMovingPanel);
 
 
     }
@@ -230,5 +243,9 @@ public class MainMenuPanel extends JPanel{
     public HighScoresPanel getHighScoresPanel(){
 
         return highScoresPanel;
+    }
+
+    public HighScoresMovingPanel getHighScoresMovingPanel() {
+        return highScoresMovingPanel;
     }
 }

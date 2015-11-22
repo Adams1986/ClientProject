@@ -26,7 +26,8 @@ public class GameChooserLogic {
 
     public void refreshTable(User currentUser) {
 
-        ArrayList<User> users = DataParser.getDecryptedUserList(Api.getUsers(currentUser.getId()));
+        //TODO //FIX ME please
+        ArrayList<User> users = DataParser.getDecryptedUserList(Api.getUsers(-1));
         ArrayList<Game> games = null;
 
         if (screen.getMainMenuPanel().getGameChooserPanel().getTypeOfGameChoice().equals(Config.getTypesOfGames()[Config.getIndexOne()]))
@@ -42,6 +43,10 @@ public class GameChooserLogic {
                 if (users.get(i).getId() == games.get(j).getHost().getId()) {
 
                     games.get(j).getHost().setUsername(users.get(i).getUsername());
+                }
+                else if (users.get(i).getId() == games.get(j).getOpponent().getId()) {
+
+                    games.get(j).getOpponent().setUsername(users.get(i).getUsername());
                 }
             }
 

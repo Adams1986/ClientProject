@@ -134,6 +134,7 @@
   "gamechooserheadertext": "Join or create a game",
   "gameoverviewerheadertext": "Choose a game to replay",
   "highscoresheadertext": "List of High Scores",
+  "highscoresmovingtext": "High Scores TOP 3:",
   "invitedgamestext": "Invited games",
   "opengamestext": "Open games",
   "pendinggamestext": "Pending games",
@@ -148,6 +149,9 @@
   "welcometext": "Welcome ",
   "serverpathpendinggamesid": "pending/",
   "serverpathopengamesid": "openbyid/",
-  "serverpathfinishedgamesid": "finished/"
+  "serverpathfinishedgamesid": "finished/",
+  "hsmovingtextsize": 16,
+  "startymovingpanel": -100,
+  "delaymovingpanel": 40
 
 }

@@ -92,9 +92,9 @@ public class CreateNewGamePanel extends JPanel {
         headerLabel.setForeground(c);
     }
 
-    public void setBackgroundColor(Color c){
+    void setTextColorInfoLabels(Color c){
 
-        setBackground(c);
+        lblOpenGame.setForeground(c);
     }
 
     public void setOpponentTableState(boolean b) {

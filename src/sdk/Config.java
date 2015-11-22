@@ -150,6 +150,10 @@ public class Config {
     private static String serverPathPendingGamesById;
     private static String serverPathOpenGamesById;
     private static String serverPathFinishedGamesById;
+    private static String highScoresMovingText;
+    private static int HSMovingTextSize;
+    private static int startYMovingPanel;
+    private static int delayMovingPanel;
 
 
     public static void init () {
@@ -345,6 +349,10 @@ public class Config {
             setServerPathPendingGamesById((String) jsonObject.get("serverpathpendinggamesid"));
             setServerPathOpenGamesById((String) jsonObject.get("serverpathopengamesid"));
             setServerPathFinishedGamesById((String) jsonObject.get("serverpathfinishedgamesid"));
+            setHighScoresMovingText((String) jsonObject.get("highscoresmovingtext"));
+            setHSMovingTextSize((int)(long) jsonObject.get("hsmovingtextsize"));
+            setStartYMovingPanel((int)(long) jsonObject.get("startymovingpanel"));
+            setDelayMovingPanel((int)(long) jsonObject.get("delaymovingpanel"));
 
 
         } catch (org.json.simple.parser.ParseException e) {
@@ -1396,5 +1404,37 @@ public class Config {
 
     public static void setServerPathFinishedGamesById(String serverPathFinishedGamesById) {
         Config.serverPathFinishedGamesById = serverPathFinishedGamesById;
+    }
+
+    public static String getHighScoresMovingText() {
+        return highScoresMovingText;
+    }
+
+    public static void setHighScoresMovingText(String highScoresMovingText) {
+        Config.highScoresMovingText = highScoresMovingText;
+    }
+
+    public static int getHSMovingTextSize() {
+        return HSMovingTextSize;
+    }
+
+    public static void setHSMovingTextSize(int HSMovingTextSize) {
+        Config.HSMovingTextSize = HSMovingTextSize;
+    }
+
+    public static int getStartYMovingPanel() {
+        return startYMovingPanel;
+    }
+
+    public static void setStartYMovingPanel(int startYMovingPanel) {
+        Config.startYMovingPanel = startYMovingPanel;
+    }
+
+    public static int getDelayMovingPanel() {
+        return delayMovingPanel;
+    }
+
+    public static void setDelayMovingPanel(int delayMovingPanel) {
+        Config.delayMovingPanel = delayMovingPanel;
     }
 }

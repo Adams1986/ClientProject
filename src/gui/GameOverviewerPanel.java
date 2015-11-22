@@ -78,11 +78,6 @@ public class GameOverviewerPanel extends JPanel {
         gameOverviewerHeader.setForeground(c);
     }
 
-    public void setBackgroundColor(Color c){
-
-        setBackground(c);
-    }
-
     public void setGameTableModel(ArrayList<Game> games){
 
         tableModel = new GameTableModel(games);

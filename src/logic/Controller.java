@@ -85,6 +85,10 @@ public class Controller {
                     screen.getMainMenuPanel().setWelcomeMessage(message);
                     screen.getMainMenuPanel().setInfoMessage(Config.getWelcomeText() + currentUser.getUsername());
                     tableLogic.setGamesTableModel(currentUser);
+
+                    //TODO highscores when logging on because of moving panel
+                    tableLogic.setHighScoresMovingPanel(new MovingHighScoresHandlerClass());
+
                     gameOverviewerLogic.refreshTable(currentUser);
 
                 }
@@ -118,6 +122,7 @@ public class Controller {
             }
             else if (e.getActionCommand().equals(Config.getBtnShowHighScoreText())) {
 
+                screen.getMainMenuPanel().show(Config.getHighScoresScreen());
                 tableLogic.setHighScoreTableModel();
 
             }
@@ -383,6 +388,22 @@ public class Controller {
                 gameOverviewerLogic.refreshTable(currentUser);
 
             }
+        }
+    }
+
+    private class MovingHighScoresHandlerClass implements ActionListener {
+
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            if (screen.getMainMenuPanel().getHighScoresMovingPanel().getYCoord() < Config.getY4PosJComponent())
+                screen.getMainMenuPanel().getHighScoresMovingPanel().setYCoord(
+                        screen.getMainMenuPanel().getHighScoresMovingPanel().getYCoord()+1);
+            else
+                screen.getMainMenuPanel().getHighScoresMovingPanel().setYCoord(Config.getStartYMovingPanel());
+
+            screen.getMainMenuPanel().getHighScoresMovingPanel().repaint();
         }
     }
 }

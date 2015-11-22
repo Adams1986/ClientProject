@@ -63,11 +63,6 @@ public class DeleteGamePanel extends JPanel{
         deleteGameHeader.setForeground(c);
     }
 
-    public void setBackgroundColor(Color c){
-
-        setBackground(c);
-    }
-
     /**
      * Takes an list of games and uses it to populate the table, via the GameTableModel class
      * @param games
