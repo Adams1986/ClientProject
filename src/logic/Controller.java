@@ -141,6 +141,7 @@ public class Controller {
                     screen.getMainMenuPanel().getCreateNewGamePanel().resetFields();
                     screen.getMainMenuPanel().getGameOverviewerPanel().resetFields();
                     screen.getMainMenuPanel().getGameChooserPanel().resetFields();
+                    screen.getMainMenuPanel().getHighScoresMovingPanel().stopTimer();
                     currentUser = new User();
                 }
             }

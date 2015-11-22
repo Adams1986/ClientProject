@@ -28,6 +28,8 @@ public class HighScoresMovingPanel extends JPanel{
         x = 20;
         y = Config.getStartYMovingPanel();
 
+        tm.start();
+
 
     }
 
@@ -36,8 +38,6 @@ public class HighScoresMovingPanel extends JPanel{
     protected void paintComponent(Graphics g) {
 
         super.paintComponent(g);
-
-        tm.start();
 
         g.setColor(Color.GREEN);
         g.setFont(new Font(Config.getHeaderFont(), Font.BOLD, Config.getHSMovingTextSize()));
