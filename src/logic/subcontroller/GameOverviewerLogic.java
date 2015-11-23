@@ -1,5 +1,6 @@
 package logic.subcontroller;
 
+import gui.DialogMessage;
 import gui.Screen;
 import sdk.*;
 import sdk.dto.Game;
@@ -20,10 +21,17 @@ public class GameOverviewerLogic {
         this.screen = screen;
     }
 
-    public Game showReplay(ActionListener replaySnakeHandler){
+    public Game showReplay(ActionListener replaySnakeHandler, int userId){
 
         Game replayGame = screen.getMainMenuPanel().getGameOverviewerPanel().getGame();
-        screen.getMainMenuPanel().addReplaySnakeToPanel(replayGame, replaySnakeHandler);
+
+        //TODO: // FIXME: 23/11/15
+        //if (replayGame.getHost().getId() == userId || replayGame.getOpponent().getId() == userId)
+            screen.getMainMenuPanel().addReplaySnakeToPanel(replayGame, replaySnakeHandler);
+        
+        //else
+            System.out.println("Can't replay this game. You haven't played it");
+
 
         return replayGame;
     }

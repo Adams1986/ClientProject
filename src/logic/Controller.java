@@ -341,7 +341,8 @@ public class Controller {
             }
             else if (e.getActionCommand().equals(Config.getBtnRefreshText())){
 
-                gameChooserLogic.refreshTable(currentUser);
+                //gameChooserLogic.refreshTable(currentUser);
+                tableLogic.setGameChooserTableModel(currentUser);
             }
         }
     }
@@ -376,7 +377,7 @@ public class Controller {
 
                 try {
 
-                    replayGame = gameOverviewerLogic.showReplay(new ReplaySnakeHandlerClass());
+                    replayGame = gameOverviewerLogic.showReplay(new ReplaySnakeHandlerClass(), currentUser.getId());
                 }
                 catch (IndexOutOfBoundsException e2){
 

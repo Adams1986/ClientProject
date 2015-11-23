@@ -26,20 +26,7 @@ public class TableLogic {
         ArrayList<User> users = DataParser.getDecryptedUserList(Api.getUsers(-1));
         ArrayList<Game> games = new Gson().fromJson(Api.getGamesInvitedByID(currentUser.getId()), new TypeToken<ArrayList<Game>>(){}.getType());
 
-        for (int i = Config.getCount(); i < users.size(); i++) {
-
-            for (int j = Config.getCount(); j < games.size(); j++) {
-                if (users.get(i).getId() == games.get(j).getHost().getId()) {
-
-                    games.get(j).getHost().setUsername(users.get(i).getUsername());
-                }
-                else if (users.get(i).getId() == games.get(j).getOpponent().getId()) {
-
-                    games.get(j).getOpponent().setUsername(users.get(i).getUsername());
-                }
-            }
-
-        }
+        addUsernameToList(users, games);
 
         screen.getMainMenuPanel().getGameChooserPanel().setGameTableModel(games);
         screen.getMainMenuPanel().getCreateNewGamePanel().setOpponentTableModel(users);
@@ -52,21 +39,7 @@ public class TableLogic {
         ArrayList<Game> games = DataParser
                 .getDecryptedGamesList(Api.getGamesByStatusAndUserId(Config.getServerPathPendingGamesById(), currentUser.getId()));
 
-        //TODO: fix on server side
-        for (int i = Config.getCount(); i < users.size(); i++) {
-
-            for (int j = Config.getCount(); j < games.size(); j++) {
-                if (users.get(i).getId() == games.get(j).getHost().getId()) {
-
-                    games.get(j).getHost().setUsername(users.get(i).getUsername());
-                }
-                else if (users.get(i).getId() == games.get(j).getOpponent().getId()) {
-
-                    games.get(j).getOpponent().setUsername(users.get(i).getUsername());
-                }
-            }
-
-        }
+        addUsernameToList(users, games);
 
         screen.getMainMenuPanel().getDeleteGamePanel().setDeleteGameTableModel(games);
     }
@@ -83,5 +56,41 @@ public class TableLogic {
 
         ArrayList<Score> highScores = new Gson().fromJson(Api.getHighScores(), new TypeToken<ArrayList<Score>>(){}.getType());
         screen.getMainMenuPanel().getNewInstanceOfHighScoresMovingPanel(highScores, l);
+    }
+
+    public void setGameChooserTableModel(User currentUser) {
+
+        //TODO //FIX ME please
+        ArrayList<User> users = DataParser.getDecryptedUserList(Api.getUsers(-1));
+        ArrayList<Game> games = null;
+
+        if (screen.getMainMenuPanel().getGameChooserPanel().getTypeOfGameChoice().equals(Config.getTypesOfGames()[Config.getIndexOne()]))
+            games = DataParser.getDecryptedGamesList(Api.getGamesInvitedByID(currentUser.getId()));
+        else
+            //TODO: you shouldn't see your own games! Kinda fixed
+            games = DataParser.getDecryptedGamesList(Api.getOpenGames(currentUser.getId()));
+
+        addUsernameToList(users, games);
+
+        screen.getMainMenuPanel().getGameChooserPanel().setGameTableModel(games);
+    }
+
+    private void addUsernameToList(ArrayList<User>users, ArrayList<Game>games){
+
+        //TODO: fix on server side
+        for (int i = Config.getCount(); i < users.size(); i++) {
+
+            for (int j = Config.getCount(); j < games.size(); j++) {
+                if (users.get(i).getId() == games.get(j).getHost().getId()) {
+
+                    games.get(j).getHost().setUsername(users.get(i).getUsername());
+                }
+                else if (users.get(i).getId() == games.get(j).getOpponent().getId()) {
+
+                    games.get(j).getOpponent().setUsername(users.get(i).getUsername());
+                }
+            }
+
+        }
     }
 }

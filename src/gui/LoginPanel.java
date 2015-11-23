@@ -35,6 +35,8 @@ public class LoginPanel extends JPanel{
         btnCreateNewUser = new JButton(Config.getBtnCreateNewUserText());
         depardieu = new ImageIcon(Config.getDepardieuImagePath());
         iconLabel = new JLabel(depardieu);
+
+        btnLogin.setOpaque(true);
         btnLogin.setBackground(Color.GREEN);
 
         infoLabel.setBounds(Config.getDefaultXPosJComponent(), Config.getY1PosJComponent(),

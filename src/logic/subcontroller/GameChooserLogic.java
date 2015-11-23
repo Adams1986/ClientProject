@@ -24,35 +24,35 @@ public class GameChooserLogic {
         this.screen = screen;
     }
 
-    public void refreshTable(User currentUser) {
-
-        //TODO //FIX ME please
-        ArrayList<User> users = DataParser.getDecryptedUserList(Api.getUsers(-1));
-        ArrayList<Game> games = null;
-
-        if (screen.getMainMenuPanel().getGameChooserPanel().getTypeOfGameChoice().equals(Config.getTypesOfGames()[Config.getIndexOne()]))
-            games = DataParser.getDecryptedGamesList(Api.getGamesInvitedByID(currentUser.getId()));
-        else
-            //TODO: you shouldn't see your own games! Kinda fixed
-            games = DataParser.getDecryptedGamesList(Api.getOpenGames(currentUser.getId()));
-
-        //TODO:Fix this from the Server side
-        for (int i = Config.getCount(); i < users.size(); i++) {
-
-            for (int j = Config.getCount(); j < games.size(); j++) {
-                if (users.get(i).getId() == games.get(j).getHost().getId()) {
-
-                    games.get(j).getHost().setUsername(users.get(i).getUsername());
-                }
-                else if (users.get(i).getId() == games.get(j).getOpponent().getId()) {
-
-                    games.get(j).getOpponent().setUsername(users.get(i).getUsername());
-                }
-            }
-
-        }
-        screen.getMainMenuPanel().getGameChooserPanel().setGameTableModel(games);
-    }
+//    public void refreshTable(User currentUser) {
+//
+//        //TODO //FIX ME please
+//        ArrayList<User> users = DataParser.getDecryptedUserList(Api.getUsers(-1));
+//        ArrayList<Game> games = null;
+//
+//        if (screen.getMainMenuPanel().getGameChooserPanel().getTypeOfGameChoice().equals(Config.getTypesOfGames()[Config.getIndexOne()]))
+//            games = DataParser.getDecryptedGamesList(Api.getGamesInvitedByID(currentUser.getId()));
+//        else
+//            //TODO: you shouldn't see your own games! Kinda fixed
+//            games = DataParser.getDecryptedGamesList(Api.getOpenGames(currentUser.getId()));
+//
+//        //TODO:Fix this from the Server side
+//        for (int i = Config.getCount(); i < users.size(); i++) {
+//
+//            for (int j = Config.getCount(); j < games.size(); j++) {
+//                if (users.get(i).getId() == games.get(j).getHost().getId()) {
+//
+//                    games.get(j).getHost().setUsername(users.get(i).getUsername());
+//                }
+//                else if (users.get(i).getId() == games.get(j).getOpponent().getId()) {
+//
+//                    games.get(j).getOpponent().setUsername(users.get(i).getUsername());
+//                }
+//            }
+//
+//        }
+//        screen.getMainMenuPanel().getGameChooserPanel().setGameTableModel(games);
+//    }
 
     public Game joinGame(User currentUser, DialogMessage dialogMessage) {
 

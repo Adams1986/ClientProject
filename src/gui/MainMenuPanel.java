@@ -182,7 +182,7 @@ public class MainMenuPanel extends JPanel{
 
     /**
      * Creates a new instance of the SnakeGameEngine JPanel,
-     * to be started everytime an event happens (e.g. button-click)
+     * to be started everytime a new snake game is played TODO: fix this maybe with the timer
      */
     public void addPlaySnake(ActionListener l, Game newGame){
 
