@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 /**
  * Created by ADI on 06-11-2015.
+ * Contains JComponents for setting up a game, including a JComboBox to join either an open or invited game.
  */
 public class GameChooserPanel extends JPanel {
 
@@ -70,6 +71,11 @@ public class GameChooserPanel extends JPanel {
 
     }
 
+    /**
+     * Method to return the String from the selected item in the combo box. Used to determine which games list to get
+     * from the server.
+     * @return
+     */
     public String getTypeOfGameChoice (){
 
         return (String) gameType.getSelectedItem();
@@ -91,11 +97,19 @@ public class GameChooserPanel extends JPanel {
         gamesToJoinTable.setModel(tableModel);
     }
 
+    /**
+     * Gets the game which the user selected to join and play.
+     * @return
+     */
     public Game getGame(){
 
         return tableModel.getGameFromTable(gamesToJoinTable.getSelectedRow());
     }
 
+    /**
+     * Method for adding action listeners to the panel's buttons
+     * @param l
+     */
     public void addActionListeners(ActionListener l){
 
         btnCreateNewGame.addActionListener(l);
@@ -103,6 +117,9 @@ public class GameChooserPanel extends JPanel {
         btnRefreshJTable.addActionListener(l);
     }
 
+    /**
+     * Method to reset state when user logs off and on
+     */
     public void resetFields() {
 
         gameType.setSelectedIndex(Config.getIndexOne());

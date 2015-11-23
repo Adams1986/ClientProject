@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 
 /**
  * Created by simonadams on 27/10/15.
+ * Panel for creating a new user if gamer doesn't have an account.
  */
 public class CreateUserPanel extends JPanel {
 
@@ -47,6 +48,7 @@ public class CreateUserPanel extends JPanel {
         btnCreate = new JButton(Config.getBtnCreateUserText());
         btnBack = new JButton(Config.getBtnBackToLoginText());
 
+        //placing components in the panel (x, y, width, height)
         infoLabel.setBounds(Config.getDefaultXPosJComponent(), Config.getY1PosJComponent(),
                 Config.getWidth1JComponent(), Config.getDefaultHeightJComponent());
 
@@ -89,6 +91,7 @@ public class CreateUserPanel extends JPanel {
                 Config.getDefaultWidthJComponent(), Config.getDefaultHeightJComponent());
 
 
+        //adding components to panel
         add(infoLabel);
         add(firstNameLabel);
         add(lastNameLabel);
@@ -107,7 +110,12 @@ public class CreateUserPanel extends JPanel {
 
     }
 
-    void setTextColorInfoLabels(Color c) {
+    /**
+     * Takes a color as parameter and sets the panels labels. The JFrame in the Screen.java class will use method
+     * to change the look of the client application in one place, for easy change of the look
+     * @param c
+     */
+    public void setTextColorInfoLabels(Color c) {
 
         firstNameLabel.setForeground(c);
         lastNameLabel.setForeground(c);
@@ -116,16 +124,25 @@ public class CreateUserPanel extends JPanel {
         passwordLabel.setForeground(c);
     }
 
+    /**
+     * Look and feel method
+     * @param f
+     */
     public void setFonts(Font f){
 
         infoLabel.setFont(f);
     }
 
+    /**
+     * Look and feel method
+     * @param c
+     */
     public void setTextColor(Color c){
 
         infoLabel.setForeground(c);
     }
 
+    //Methods below are text-getters to use to set the information to send to the server for creating the new user.
     public String getFirstNameField() {
         return firstNameField.getText();
     }
@@ -145,15 +162,22 @@ public class CreateUserPanel extends JPanel {
     public String getPasswordField() {
         return new String(passwordField.getPassword());
     }
+    //End of getters
 
 
-
+    /**
+     * Method to add an action listener to the panels buttons
+     * @param l
+     */
     public void addActionListeners(ActionListener l){
 
         btnCreate.addActionListener(l);
         btnBack.addActionListener(l);
     }
 
+    /**
+     * Clears the fields. Used after a user is created, to remove input from the application.
+     */
     public void clearFields() {
 
         firstNameField.setText(Config.getClearField());

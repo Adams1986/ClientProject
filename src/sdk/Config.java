@@ -154,6 +154,8 @@ public class Config {
     private static int HSMovingTextSize;
     private static int startYMovingPanel;
     private static int delayMovingPanel;
+    private static String serverPathOpenAndPendingGamesById;
+    private static String serverPAthOpenGamesByOtherUsers;
 
 
     public static void init () {
@@ -353,6 +355,8 @@ public class Config {
             setHSMovingTextSize((int)(long) jsonObject.get("hsmovingtextsize"));
             setStartYMovingPanel((int)(long) jsonObject.get("startymovingpanel"));
             setDelayMovingPanel((int)(long) jsonObject.get("delaymovingpanel"));
+            setServerPathOpenAndPendingGamesById((String) jsonObject.get("serverpathopenandpending"));
+            setServerPAthOpenGamesByOtherUsers((String) jsonObject.get("serverpathopenfromotherusers"));
 
 
         } catch (org.json.simple.parser.ParseException e) {
@@ -1436,5 +1440,21 @@ public class Config {
 
     public static void setDelayMovingPanel(int delayMovingPanel) {
         Config.delayMovingPanel = delayMovingPanel;
+    }
+
+    public static String getServerPathOpenAndPendingGamesById() {
+        return serverPathOpenAndPendingGamesById;
+    }
+
+    public static void setServerPathOpenAndPendingGamesById(String serverPathOpenAndPendingGamesById) {
+        Config.serverPathOpenAndPendingGamesById = serverPathOpenAndPendingGamesById;
+    }
+
+    public static String getServerPathOpenGamesByOtherUsers() {
+        return serverPAthOpenGamesByOtherUsers;
+    }
+
+    public static void setServerPAthOpenGamesByOtherUsers(String serverPAthOpenGamesByOtherUsers) {
+        Config.serverPAthOpenGamesByOtherUsers = serverPAthOpenGamesByOtherUsers;
     }
 }

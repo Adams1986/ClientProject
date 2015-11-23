@@ -23,7 +23,7 @@ public class TableLogic {
 
     public void setGamesTableModel(User currentUser){
 
-        ArrayList<User> users = DataParser.getDecryptedUserList(Api.getUsers(-1));
+        ArrayList<User> users = DataParser.getDecryptedUserList(Api.getUsers(currentUser.getId()));
         ArrayList<Game> games = new Gson().fromJson(Api.getGamesInvitedByID(currentUser.getId()), new TypeToken<ArrayList<Game>>(){}.getType());
 
         addUsernameToList(users, games);
@@ -37,7 +37,7 @@ public class TableLogic {
         //TODO // FIXME: 22/11/15
         ArrayList<User> users = DataParser.getDecryptedUserList(Api.getUsers(-1));
         ArrayList<Game> games = DataParser
-                .getDecryptedGamesList(Api.getGamesByStatusAndUserId(Config.getServerPathPendingGamesById(), currentUser.getId()));
+                .getDecryptedGamesList(Api.getGamesByStatusAndUserId(Config.getServerPathOpenAndPendingGamesById(), currentUser.getId()));
 
         addUsernameToList(users, games);
 
@@ -68,7 +68,7 @@ public class TableLogic {
             games = DataParser.getDecryptedGamesList(Api.getGamesInvitedByID(currentUser.getId()));
         else
             //TODO: you shouldn't see your own games! Kinda fixed
-            games = DataParser.getDecryptedGamesList(Api.getOpenGames(currentUser.getId()));
+            games = DataParser.getDecryptedGamesList(Api.getGamesByStatusAndUserId(Config.getServerPathOpenGamesByOtherUsers(), currentUser.getId()));
 
         addUsernameToList(users, games);
 

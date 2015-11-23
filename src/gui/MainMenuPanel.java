@@ -140,6 +140,7 @@ public class MainMenuPanel extends JPanel{
 
         deleteGamePanel.setBackground(c);
         createNewGamePanel.setBackground(c);
+        createNewGamePanel.setOpenGameBackGround(c);
         gameChooserPanel.setBackground(c);
         gameOverviewerPanel.setBackground(c);
         highScoresPanel.setBackground(c);

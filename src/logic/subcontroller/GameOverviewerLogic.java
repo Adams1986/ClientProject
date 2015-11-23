@@ -49,7 +49,7 @@ public class GameOverviewerLogic {
         }
         else if (screen.getMainMenuPanel().getGameOverviewerPanel().getTypeOfGameChoice().equals(Config.getTypesOfGamesToReplay()[Config.getIndexTwo()])){
 
-            games = DataParser.getDecryptedGamesList(Api.getOpenGames(currentUser.getId()));
+            games = DataParser.getDecryptedGamesList(Api.getGamesByStatusAndUserId(Config.getServerPathOpenGamesById(), currentUser.getId()));
         }
         else if (screen.getMainMenuPanel().getGameOverviewerPanel().getTypeOfGameChoice().equals(Config.getTypesOfGamesToReplay()[Config.getIndexThree()])){
 
@@ -61,7 +61,7 @@ public class GameOverviewerLogic {
         }
         else if (screen.getMainMenuPanel().getGameOverviewerPanel().getTypeOfGameChoice().equals(Config.getTypesOfGamesToReplay()[Config.getIndexFive()])){
 
-            games = DataParser.getDecryptedGamesList(Api.getGamesByStatusAndUserId(Config.getServerPathOpenGamesById(), currentUser.getId()));
+            games = DataParser.getDecryptedGamesList(Api.getOpenGames(currentUser.getId()));
         }
         else if (screen.getMainMenuPanel().getGameOverviewerPanel().getTypeOfGameChoice().equals(Config.getTypesOfGamesToReplay()[Config.getIndexSix()])){
 

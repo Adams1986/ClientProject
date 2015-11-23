@@ -22,7 +22,7 @@ public class LoginPanel extends JPanel{
 
 
     /**
-     * empty constructor which inits the JComponents
+     * No params constructor which inits the JComponents
      */
     public LoginPanel() {
 

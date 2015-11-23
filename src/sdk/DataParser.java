@@ -52,7 +52,7 @@ public class DataParser {
                 user.setId((int)(long) jsonObject.get("userid"));
 
         } catch (ParseException p){
-            p.printStackTrace();
+
         }
 
         return message;

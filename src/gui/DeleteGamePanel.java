@@ -48,6 +48,10 @@ public class DeleteGamePanel extends JPanel{
 
     }
 
+    /**
+     * Button actionlistener method
+     * @param l
+     */
     public void addActionListeners(ActionListener l){
 
         btnDeleteGame.addActionListener(l);

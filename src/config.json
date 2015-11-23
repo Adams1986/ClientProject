@@ -152,6 +152,8 @@
   "serverpathfinishedgamesid": "finished/",
   "hsmovingtextsize": 16,
   "startymovingpanel": -100,
-  "delaymovingpanel": 40
+  "delaymovingpanel": 40,
+  "serverpathopenandpending": "openandpending/",
+  "serverpathopenfromotherusers": "openfromotherusers/"
 
 }
