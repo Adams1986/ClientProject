@@ -30,7 +30,7 @@ public class GameOverviewerLogic {
             screen.getMainMenuPanel().addReplaySnakeToPanel(replayGame, replaySnakeHandler);
         
         //else
-            System.out.println("Can't replay this game. You haven't played it");
+            //System.out.println("Can't replay this game. You haven't played it");
 
 
         return replayGame;
@@ -40,7 +40,7 @@ public class GameOverviewerLogic {
     public ArrayList<Game> refreshTable(User currentUser){
 
         //TODO this is encrypted. Change maybe? Using -1 to get all the users. Important right now to show host and opponent in table
-        ArrayList<User> users = DataParser.getDecryptedUserList(Api.getUsers(-1));
+        //ArrayList<User> users = DataParser.getDecryptedUserList(Api.getUsers(-1));
         ArrayList<Game> games = null;
 
         if (screen.getMainMenuPanel().getGameOverviewerPanel().getTypeOfGameChoice().equals(Config.getTypesOfGamesToReplay()[Config.getIndexOne()])) {
@@ -68,7 +68,7 @@ public class GameOverviewerLogic {
             games = DataParser.getDecryptedGamesList(Api.getGamesByStatusAndUserId(Config.getServerPathFinishedGamesById(), currentUser.getId()));
         }
 
-        //TODO fix this in SQLDriver on the server
+        /*//TODO fix this in SQLDriver on the server
         if (games != null) {
             for (int i = Config.getCount(); i < users.size(); i++) {
 
@@ -89,7 +89,7 @@ public class GameOverviewerLogic {
                     }
                 }
             }
-        }
+        }*/
         screen.getMainMenuPanel().getGameOverviewerPanel().setGameTableModel(games);
 
         return games;

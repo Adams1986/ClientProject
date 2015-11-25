@@ -58,6 +58,22 @@ public class DataParser {
         return message;
     }
 
+    public static String parseHashMapMessage(String dataToBeParsed, User user){
+
+        Gson gson = new Gson();
+
+        //Issue with json, as it reads/converts ints to doubles, there needs workaround to get the userid with gson lib
+        HashMap<String, Double> mapWithUserId = gson.fromJson(dataToBeParsed, HashMap.class);
+        HashMap<String, String> mapWithData = gson.fromJson(dataToBeParsed, HashMap.class);
+
+            if (mapWithUserId.get("userid") != null)
+                user.setId(mapWithUserId.get("userid").intValue());
+
+            return mapWithData.get("message");
+
+
+    }
+
     public static User getDecryptedUser(String jsonData){
 
         Gson parser = new Gson();

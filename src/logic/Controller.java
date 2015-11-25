@@ -85,6 +85,7 @@ public class Controller {
                     screen.getMainMenuPanel().setWelcomeMessage(message);
                     screen.getMainMenuPanel().setInfoMessage(Config.getWelcomeText() + currentUser.getUsername());
                     tableLogic.setGamesTableModel(currentUser);
+                    tableLogic.setUserTableModel(currentUser);
 
                     //TODO highscores when logging on because of moving panel
                     tableLogic.setHighScoresMovingPanel(new MovingHighScoresHandlerClass());

@@ -1,6 +1,7 @@
 package logic.subcontroller;
 
 import com.google.gson.Gson;
+import com.sun.jersey.api.client.ClientResponse;
 import gui.Screen;
 import sdk.Api;
 import sdk.DataParser;
@@ -23,6 +24,7 @@ public class LoginLogic {
 
         String message = Api.authenticateLogin(new Gson().toJson(currentUser));
 
-        return DataParser.parseMessage(message, currentUser);
+        return DataParser.parseHashMapMessage(message, currentUser);
+        //return DataParser.parseMessage(message, currentUser);
     }
 }
