@@ -62,7 +62,7 @@ public class ServerConnection {
             }
 
         } catch (ClientHandlerException e) {
-            e.printStackTrace();
+
             message = "{\"message\":\"Connection to server failed\"}";
         }
         return message;

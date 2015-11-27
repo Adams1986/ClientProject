@@ -17,26 +17,27 @@ import java.awt.event.ActionListener;
  */
 public class Controller {
 
+    //GUI objects
     private Screen screen;
+    private DialogMessage dialogMessage;
 
+    //DTO's
     private User currentUser;
     private Game replayGame;
     private Game newGame;
 
+    //Logic objects
     private LoginLogic loginLogic;
     private TableLogic tableLogic;
     private DeleteGameLogic deleteGameLogic;
     private GameOverviewerLogic gameOverviewerLogic;
     private GameChooserLogic gameChooserLogic;
     private GameEngineLogic gameEngineLogic;
-    private DialogMessage dialogMessage;
-
-    private boolean isAuthenticated;
     private CreateUserLogic createUserLogic;
+
 
     public Controller(){
 
-        isAuthenticated = false;
         screen = new Screen();
         loginLogic = new LoginLogic(screen);
         tableLogic = new TableLogic(screen);
@@ -46,6 +47,8 @@ public class Controller {
         gameEngineLogic = new GameEngineLogic(screen);
         dialogMessage = new DialogMessage(screen);
         createUserLogic = new CreateUserLogic(screen);
+
+        //instantiating the currentUser object, which will be used to the logged on state in the client
         currentUser = new User();
     }
 
@@ -54,10 +57,12 @@ public class Controller {
      */
     public void run(){
 
+        //injection of the 'first' three panels.
         screen.getLoginPanel().addActionListeners(new LoginHandlerClass());
         screen.getMainMenuPanel().addActionListeners(new MainMenuHandlerClass());
         screen.getCreateUserPanel().addActionListeners(new CreateUserHandlerClass());
 
+        //injection of the action listeners of the 'inner' panels to handle actions done within the main menu
         screen.getMainMenuPanel().getCreateNewGamePanel().addActionListeners(new CreateNewGameHandlerClass());
         screen.getMainMenuPanel().getGameChooserPanel().addActionListeners(new GameChooserHandlerClass());
         screen.getMainMenuPanel().getDeleteGamePanel().addActionListeners(new DeleteGameHandlerClass());
@@ -76,14 +81,22 @@ public class Controller {
             if (e.getActionCommand().equals(Config.getBtnLoginText())) {
 
                 String message = loginLogic.authenticated(currentUser);
-                isAuthenticated = message.equals(Config.getLoginAuthentication());
+                boolean isAuthenticated = message.equals(Config.getLoginAuthentication());
 
                 if (isAuthenticated) {
 
+                    /*
+                     *changing panels to show, first show main menu. Then show game chooser panel inside the main menu
+                     * will be done every time you log on for consistency. So if you e.g. logged off from replayer panel
+                     * you are met by game chooser panel always.
+                     */
                     screen.show(Config.getMainMenuScreen());
                     screen.getMainMenuPanel().show(Config.getGameChooserScreen());
+
+                    //TODO: clean up?
                     screen.getMainMenuPanel().setWelcomeMessage(message);
                     screen.getMainMenuPanel().setInfoMessage(Config.getWelcomeText() + currentUser.getUsername());
+
                     tableLogic.setGamesTableModel(currentUser);
                     tableLogic.setUserTableModel(currentUser);
 
@@ -106,7 +119,7 @@ public class Controller {
     }
 
     /**
-     * Inner class actionlistener for main menu panel
+     * Inner class action listener for main menu panel
      */
     private class MainMenuHandlerClass implements ActionListener {
 
@@ -139,10 +152,10 @@ public class Controller {
 
                     screen.getMainMenuPanel().show(Config.getGameChooserScreen());
                     screen.show(Config.getLoginScreen());
-                    screen.getMainMenuPanel().getCreateNewGamePanel().resetFields();
-                    screen.getMainMenuPanel().getGameOverviewerPanel().resetFields();
-                    screen.getMainMenuPanel().getGameChooserPanel().resetFields();
-                    screen.getMainMenuPanel().getHighScoresMovingPanel().stopTimer();
+
+                    screen.getMainMenuPanel().resetFields();
+
+                    //'resetting' current user object when logging out
                     currentUser = new User();
                 }
             }
@@ -178,7 +191,7 @@ public class Controller {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            if(e.getActionCommand().equals(Character.toString(Config.getUp()))){
+            if (e.getActionCommand().equals(Character.toString(Config.getUp()))){
                 if(screen.getMainMenuPanel().getSnakeGameEngine().getDirection()!= Config.getDown())
                     screen.getMainMenuPanel().getSnakeGameEngine().setDirection(Config.getUp());
             }
@@ -359,7 +372,9 @@ public class Controller {
                     dialogMessage.showMessage(deleteGameLogic.deleteGame());
 
                     tableLogic.setGamesToDeleteTableModel(currentUser);
-                } catch (IndexOutOfBoundsException e2) {
+                }
+                //Catch the missing selection and prompt the user
+                catch (IndexOutOfBoundsException e2) {
                     dialogMessage.showMessage(Config.getMissingGameSelectionText());
                 }
             }
@@ -368,7 +383,7 @@ public class Controller {
 
     private class GameOverviewerHandlerClass implements ActionListener {
 
-        //private ArrayList<Game> replayGames;
+
         @Override
         public void actionPerformed(ActionEvent e) {
 
@@ -394,17 +409,26 @@ public class Controller {
         }
     }
 
+    /**
+     * Inner class for the high scores top 3 panel. Updates the y-coordinates of the high scores and repaints to give
+     * a moving motion
+     */
     private class MovingHighScoresHandlerClass implements ActionListener {
 
 
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            if (screen.getMainMenuPanel().getHighScoresMovingPanel().getYCoord() < Config.getY4PosJComponent())
+            //As long as the high scores are visible the y-coordinates will be incremented by 1
+            if (screen.getMainMenuPanel().getHighScoresMovingPanel().getYCoord() < Config.getY4PosJComponent()) {
+
                 screen.getMainMenuPanel().getHighScoresMovingPanel().setYCoord(
-                        screen.getMainMenuPanel().getHighScoresMovingPanel().getYCoord()+1);
-            else
+                        screen.getMainMenuPanel().getHighScoresMovingPanel().getYCoord() + 1);
+            }
+            //when the high scores have disappeared from the panel, reset the starting position
+            else {
                 screen.getMainMenuPanel().getHighScoresMovingPanel().setYCoord(Config.getStartYMovingPanel());
+            }
 
             screen.getMainMenuPanel().getHighScoresMovingPanel().repaint();
         }

@@ -74,48 +74,61 @@ public class DataParser {
 
     }
 
+    public static String getEncryptedUser(){
+
+        return null;
+    }
+
+    public static String getEncryptedDto(User user){
+
+        HashMap<String, String> encryptedDto = new HashMap<>();
+        encryptedDto.put("data", Security.encrypt(new Gson().toJson(user), Config.getEncryptionkey()));
+
+        return new Gson().toJson(encryptedDto);
+    }
+
     public static User getDecryptedUser(String jsonData){
 
-        Gson parser = new Gson();
-        HashMap<String, String> jsonHashMap = parser.fromJson(jsonData, HashMap.class);
+        Gson gson = new Gson();
+        HashMap<String, String> jsonHashMap = gson.fromJson(jsonData, HashMap.class);
         String encryptedUser = jsonHashMap.get("data");
         String jsonUser = Security.decrypt(encryptedUser, Config.getEncryptionkey());
 
-        return parser.fromJson(jsonUser, User.class);
+        return gson.fromJson(jsonUser, User.class);
 
     }
 
     public static Object getDecryptedDTO(String jsonData){
 
-        Gson parser = new Gson();
-        HashMap<String, String> jsonHashMap = parser.fromJson(jsonData, HashMap.class);
+        Gson gson = new Gson();
+        HashMap<String, String> jsonHashMap = gson.fromJson(jsonData, HashMap.class);
         String encryptedUser = jsonHashMap.get("data");
         String jsonUser = Security.decrypt(encryptedUser, Config.getEncryptionkey());
 
-        return parser.fromJson(jsonUser, Object.class);
+        return gson.fromJson(jsonUser, Object.class);
 
     }
 
     public static ArrayList<User> getDecryptedUserList(String jsonData){
 
-        Gson parser = new Gson();
-        HashMap<String, String> jsonHashMap = parser.fromJson(jsonData, HashMap.class);
+        Gson gson = new Gson();
+        HashMap<String, String> jsonHashMap = gson.fromJson(jsonData, HashMap.class);
         String encryptedUsers = jsonHashMap.get("data");
         String jsonUsers = Security.decrypt(encryptedUsers, Config.getEncryptionkey());
 
-        return parser.fromJson(jsonUsers, new TypeToken<ArrayList<User>>(){}.getType());
+        return gson.fromJson(jsonUsers, new TypeToken<ArrayList<User>>(){}.getType());
 
     }
 
     public static ArrayList<Game> getDecryptedGamesList(String jsonData) {
 
-        Gson parser = new Gson();
-//        HashMap<String, String> jsonHashMap = parser.fromJson(jsonData, HashMap.class);
+        Gson gson = new Gson();
+//        HashMap<String, String> jsonHashMap = gson.fromJson(jsonData, HashMap.class);
 //        String encryptedGames = jsonHashMap.get("data");
 //        String jsonGames = Security.decrypt(encryptedGames, Config.getEncryptionkey());
 //
-//        return parser.fromJson(jsonGames, new TypeToken<ArrayList<Game>>(){}.getType());
-        return parser.fromJson(jsonData, new TypeToken<ArrayList<Game>>(){}.getType());
+//        return gson.fromJson(jsonGames, new TypeToken<ArrayList<Game>>(){}.getType());
+        return gson.fromJson(jsonData, new TypeToken<ArrayList<Game>>(){}.getType());
     }
 
 }

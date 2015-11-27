@@ -249,4 +249,13 @@ public class MainMenuPanel extends JPanel{
     public HighScoresMovingPanel getHighScoresMovingPanel() {
         return highScoresMovingPanel;
     }
+
+
+    public void resetFields(){
+
+        createNewGamePanel.resetFields();
+        gameOverviewerPanel.resetFields();
+        gameChooserPanel.resetFields();
+        highScoresMovingPanel.stopTimer();
+    }
 }

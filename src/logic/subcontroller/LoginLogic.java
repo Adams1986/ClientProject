@@ -22,7 +22,7 @@ public class LoginLogic {
         currentUser.setUsername(screen.getLoginPanel().getUsernameInput());
         currentUser.setPassword(screen.getLoginPanel().getPasswordInput());
 
-        String message = Api.authenticateLogin(new Gson().toJson(currentUser));
+        String message = Api.authenticateLogin(DataParser.getEncryptedDto(currentUser));
 
         return DataParser.parseHashMapMessage(message, currentUser);
         //return DataParser.parseMessage(message, currentUser);
