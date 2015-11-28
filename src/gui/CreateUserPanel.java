@@ -186,4 +186,14 @@ public class CreateUserPanel extends JPanel {
         usernameField.setText(Config.getClearField());
         passwordField.setText(Config.getClearField());
     }
+
+    public boolean checkForEmptyFields() {
+
+        if (firstNameField.getText().equals(Config.getClearField()) || lastNameField.getText().equals(Config.getClearField())
+                || emailField.getText().equals(Config.getClearField()) || usernameField.getText().equals(Config.getClearField())
+                || new String(passwordField.getPassword()).equals(Config.getClearField()))
+            return false;
+
+        return true;
+    }
 }

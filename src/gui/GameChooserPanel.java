@@ -6,6 +6,7 @@ import sdk.dto.Game;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
 /**
@@ -61,9 +62,13 @@ public class GameChooserPanel extends JPanel {
             gameType.addItem(typesOfGames[i]);
         }
 
+        gameType.setActionCommand(Config.getComboBoxActionCommand());
+
         add(btnCreateNewGame);
         add(scrollPane);
         add(btnJoinSelectedGame);
+
+        //TODO: redundant right now. Could be useful if caching instead of direct server calls
         add(btnRefreshJTable);
         add(gameChooserHeader);
         add(gameType);
@@ -78,7 +83,8 @@ public class GameChooserPanel extends JPanel {
      */
     public String getTypeOfGameChoice (){
 
-        return (String) gameType.getSelectedItem();
+        String selectedItem = (String) gameType.getSelectedItem();
+        return selectedItem.replace(" ", "_");
     }
 
     public void setFonts(Font f){
@@ -115,6 +121,11 @@ public class GameChooserPanel extends JPanel {
         btnCreateNewGame.addActionListener(l);
         btnJoinSelectedGame.addActionListener(l);
         btnRefreshJTable.addActionListener(l);
+    }
+
+    public void addItemListeners(ItemListener l){
+
+        gameType.addItemListener(l);
     }
 
     /**

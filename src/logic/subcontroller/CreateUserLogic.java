@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import gui.DialogMessage;
 import gui.Screen;
 import sdk.Api;
+import sdk.Config;
 import sdk.DataParser;
 import sdk.dto.User;
 
@@ -20,20 +21,26 @@ public class CreateUserLogic {
     }
 
 
-    public String create(DialogMessage dialogMessage) {
+    public String create() {
 
         User createNewUser = new User();
 
-        createNewUser.setFirstName(screen.getCreateUserPanel().getFirstNameField());
-        createNewUser.setLastName(screen.getCreateUserPanel().getLastNameField());
-        createNewUser.setEmail(screen.getCreateUserPanel().getEmailField());
-        createNewUser.setUsername(screen.getCreateUserPanel().getUsernameField());
-        createNewUser.setPassword(screen.getCreateUserPanel().getPasswordField());
+        String message;
 
-        String jsonData = Api.createUser(new Gson().toJson(createNewUser));
-        String message = DataParser.parseMessage(jsonData);
+        if (screen.getCreateUserPanel().checkForEmptyFields()) {
+            createNewUser.setFirstName(screen.getCreateUserPanel().getFirstNameField());
+            createNewUser.setLastName(screen.getCreateUserPanel().getLastNameField());
+            createNewUser.setEmail(screen.getCreateUserPanel().getEmailField());
+            createNewUser.setUsername(screen.getCreateUserPanel().getUsernameField());
+            createNewUser.setPassword(screen.getCreateUserPanel().getPasswordField());
 
-        dialogMessage.showMessage(message);
+            String jsonData = Api.createUser(DataParser.getEncryptedUser(createNewUser));
+            message = DataParser.parseMessage(jsonData);
+        }
+        else
+            message = Config.getCreateUserEmptyFieldsText();
+
+        DialogMessage.showMessage(screen, message);
 
         return message;
     }

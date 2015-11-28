@@ -46,7 +46,7 @@ public class Config {
     private static int appWidth;
 
     private static String [] columnNamesGameTable = new String[7];
-    private static String [] columnNamesUserTable = new String[3];
+    private static String [] columnNamesUserTable = new String[4];
     private static String gameChooserScreen;
     private static String serverPathUsers;
     private static String serverPathLogin;
@@ -156,6 +156,8 @@ public class Config {
     private static int delayMovingPanel;
     private static String serverPathOpenAndPendingGamesById;
     private static String serverPAthOpenGamesByOtherUsers;
+    private static String createUserEmptyFieldsText;
+    private static String comboBoxActionCommand;
 
 
     public static void init () {
@@ -221,6 +223,7 @@ public class Config {
             getColumnNamesUserTable()[0] = (String) jsonObject.get("firstname");
             getColumnNamesUserTable()[1] = (String) jsonObject.get("lastname");
             getColumnNamesUserTable()[2] = (String) jsonObject.get("username");
+            getColumnNamesUserTable()[3] = (String) jsonObject.get("totalscore");
 
             getColumnNameHighScoresTable()[0] = (String) jsonObject.get("username");
             getColumnNameHighScoresTable()[1] = (String) jsonObject.get("highscore");
@@ -240,14 +243,14 @@ public class Config {
             getMapSizes()[2] = (int)(long) jsonObject.get("largemap");
 
             getTypesOfGames()[0] = (String) jsonObject.get("invitedgamestext");
-            getTypesOfGames()[1] = (String) jsonObject.get("opengamestext");
+            getTypesOfGames()[1] = (String) jsonObject.get("openchallengestext");
 
-            getTypesOfGamesToReplay()[0] = (String) jsonObject.get("invitedgamestext");
+            getTypesOfGamesToReplay()[0] = (String) jsonObject.get("completedgamestext");
             getTypesOfGamesToReplay()[1] = (String) jsonObject.get("opengamestext");
             getTypesOfGamesToReplay()[2] = (String) jsonObject.get("pendinggamestext");
             getTypesOfGamesToReplay()[3] = (String) jsonObject.get("hostedgamestext");
             getTypesOfGamesToReplay()[4] = (String) jsonObject.get("openbyidgamestext");
-            getTypesOfGamesToReplay()[5] = (String) jsonObject.get("completedgamestext");
+            getTypesOfGamesToReplay()[5] = (String) jsonObject.get("invitedgamestext");
 
             setServerPathLogin((String) jsonObject.get("serverpathlogin"));
             setServerPathUsers((String) jsonObject.get("serverpathusers"));
@@ -357,6 +360,8 @@ public class Config {
             setDelayMovingPanel((int)(long) jsonObject.get("delaymovingpanel"));
             setServerPathOpenAndPendingGamesById((String) jsonObject.get("serverpathopenandpending"));
             setServerPAthOpenGamesByOtherUsers((String) jsonObject.get("serverpathopenfromotherusers"));
+            setCreateUserEmptyFieldsText((String) jsonObject.get("createuseremptyfields"));
+            setComboBoxActionCommand((String) jsonObject.get("comboboxactioncommand"));
 
 
         } catch (org.json.simple.parser.ParseException e) {
@@ -1456,5 +1461,21 @@ public class Config {
 
     public static void setServerPAthOpenGamesByOtherUsers(String serverPAthOpenGamesByOtherUsers) {
         Config.serverPAthOpenGamesByOtherUsers = serverPAthOpenGamesByOtherUsers;
+    }
+
+    public static String getCreateUserEmptyFieldsText() {
+        return createUserEmptyFieldsText;
+    }
+
+    public static void setCreateUserEmptyFieldsText(String createUserEmptyFieldsText) {
+        Config.createUserEmptyFieldsText = createUserEmptyFieldsText;
+    }
+
+    public static String getComboBoxActionCommand() {
+        return comboBoxActionCommand;
+    }
+
+    public static void setComboBoxActionCommand(String comboBoxActionCommand) {
+        Config.comboBoxActionCommand = comboBoxActionCommand;
     }
 }

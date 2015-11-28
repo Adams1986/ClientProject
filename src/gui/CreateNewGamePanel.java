@@ -1,6 +1,7 @@
 package gui;
 
 import sdk.Config;
+import sdk.dto.Gamer;
 import sdk.dto.User;
 
 import javax.swing.*;
@@ -146,7 +147,7 @@ public class CreateNewGamePanel extends JPanel {
         return gameNameField.getText();
     }
 
-    public void setOpponentTableModel(ArrayList<User> users){
+    public void setOpponentTableModel(ArrayList<Gamer> users){
 
         tableModel = new UserTableModel(users);
         opponentTable.setModel(tableModel);

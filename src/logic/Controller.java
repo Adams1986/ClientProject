@@ -11,6 +11,8 @@ import sdk.dto.User;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 /**
  * Created by ADI on 24-10-2015.
@@ -19,7 +21,6 @@ public class Controller {
 
     //GUI objects
     private Screen screen;
-    private DialogMessage dialogMessage;
 
     //DTO's
     private User currentUser;
@@ -34,6 +35,7 @@ public class Controller {
     private GameChooserLogic gameChooserLogic;
     private GameEngineLogic gameEngineLogic;
     private CreateUserLogic createUserLogic;
+    private boolean isAuthenticated;
 
 
     public Controller(){
@@ -45,7 +47,6 @@ public class Controller {
         gameOverviewerLogic = new GameOverviewerLogic(screen);
         gameChooserLogic = new GameChooserLogic(screen);
         gameEngineLogic = new GameEngineLogic(screen);
-        dialogMessage = new DialogMessage(screen);
         createUserLogic = new CreateUserLogic(screen);
 
         //instantiating the currentUser object, which will be used to the logged on state in the client
@@ -68,6 +69,10 @@ public class Controller {
         screen.getMainMenuPanel().getDeleteGamePanel().addActionListeners(new DeleteGameHandlerClass());
         screen.getMainMenuPanel().getGameOverviewerPanel().addActionListeners(new GameOverviewerHandlerClass());
 
+        //injection of item listeners for the combo boxes
+        screen.getMainMenuPanel().getGameChooserPanel().addItemListeners(new GameChooserHandlerClass());
+        screen.getMainMenuPanel().getGameOverviewerPanel().addItemListeners(new GameOverviewerHandlerClass());
+
     }
 
     /**
@@ -81,15 +86,11 @@ public class Controller {
             if (e.getActionCommand().equals(Config.getBtnLoginText())) {
 
                 String message = loginLogic.authenticated(currentUser);
-                boolean isAuthenticated = message.equals(Config.getLoginAuthentication());
+
+                isAuthenticated = message.equals(Config.getLoginAuthentication());
 
                 if (isAuthenticated) {
 
-                    /*
-                     *changing panels to show, first show main menu. Then show game chooser panel inside the main menu
-                     * will be done every time you log on for consistency. So if you e.g. logged off from replayer panel
-                     * you are met by game chooser panel always.
-                     */
                     screen.show(Config.getMainMenuScreen());
                     screen.getMainMenuPanel().show(Config.getGameChooserScreen());
 
@@ -97,13 +98,12 @@ public class Controller {
                     screen.getMainMenuPanel().setWelcomeMessage(message);
                     screen.getMainMenuPanel().setInfoMessage(Config.getWelcomeText() + currentUser.getUsername());
 
-                    tableLogic.setGamesTableModel(currentUser);
+                    tableLogic.setGameOverviewerTableModel(currentUser);
+                    tableLogic.setGameChooserTableModel(currentUser);
                     tableLogic.setUserTableModel(currentUser);
 
                     //TODO highscores when logging on because of moving panel
                     tableLogic.setHighScoresMovingPanel(new MovingHighScoresHandlerClass());
-
-                    gameOverviewerLogic.refreshTable(currentUser);
 
                 }
                 else {
@@ -148,11 +148,12 @@ public class Controller {
             }
             else if (e.getActionCommand().equals(Config.getBtnLogoutText())) {
 
-                if (dialogMessage.showConfirmMessage(Config.getLogoutMessage(), Config.getLogoutTitle())) {
+                if (DialogMessage.showConfirmMessage(screen, Config.getLogoutMessage(), Config.getLogoutTitle())) {
 
                     screen.getMainMenuPanel().show(Config.getGameChooserScreen());
                     screen.show(Config.getLoginScreen());
 
+                    isAuthenticated = false;
                     screen.getMainMenuPanel().resetFields();
 
                     //'resetting' current user object when logging out
@@ -168,7 +169,7 @@ public class Controller {
 
             if (e.getActionCommand().equals(Config.getBtnCreateUserText())){
 
-                String message = createUserLogic.create(dialogMessage);
+                String message = createUserLogic.create();
 
                 if (!message.equals(Config.getConfirmedUserCreationText())) {
 
@@ -218,7 +219,9 @@ public class Controller {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            gameEngineLogic.draw(newGame, dialogMessage);
+            gameEngineLogic.draw(newGame);
+            tableLogic.setGameChooserTableModel(currentUser);
+            tableLogic.setGameOverviewerTableModel(currentUser);
 
         }
     }
@@ -329,13 +332,15 @@ public class Controller {
         }
     }
 
-    private class GameChooserHandlerClass implements ActionListener {
+    private class GameChooserHandlerClass implements ActionListener, ItemListener {
         @Override
         public void actionPerformed(ActionEvent e) {
 
+
+
             if (e.getActionCommand().equals(Config.getBtnJoinSelectedGameText())){
 
-                newGame = gameChooserLogic.joinGame(currentUser, dialogMessage);
+                newGame = gameChooserLogic.joinGame(currentUser);
 
                 screen.getMainMenuPanel().addPlaySnake(new SnakeEngineDrawClass(), newGame);
 
@@ -356,8 +361,14 @@ public class Controller {
             else if (e.getActionCommand().equals(Config.getBtnRefreshText())){
 
                 //gameChooserLogic.refreshTable(currentUser);
-                tableLogic.setGameChooserTableModel(currentUser);
             }
+        }
+
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            
+            if (e.getStateChange() == ItemEvent.SELECTED && isAuthenticated)
+                tableLogic.setGameChooserTableModel(currentUser);
         }
     }
 
@@ -366,30 +377,29 @@ public class Controller {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            if (dialogMessage.showConfirmMessage(Config.getBtnDeleteText(), Config.getBtnDeleteGameText())) {
+            if (DialogMessage.showConfirmMessage(screen, Config.getBtnDeleteText(), Config.getBtnDeleteGameText())) {
 
                 try {
-                    dialogMessage.showMessage(deleteGameLogic.deleteGame());
+                    DialogMessage.showMessage(screen, deleteGameLogic.deleteGame());
 
                     tableLogic.setGamesToDeleteTableModel(currentUser);
                 }
                 //Catch the missing selection and prompt the user
                 catch (IndexOutOfBoundsException e2) {
-                    dialogMessage.showMessage(Config.getMissingGameSelectionText());
+                    DialogMessage.showMessage(screen, Config.getMissingGameSelectionText());
                 }
             }
         }
     }
 
-    private class GameOverviewerHandlerClass implements ActionListener {
+    private class GameOverviewerHandlerClass implements ActionListener, ItemListener {
 
 
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            if (e.getActionCommand().equals(Config.getBtnReplayText())){
 
-                screen.getMainMenuPanel().setSidePanelState(false);
+            if (e.getActionCommand().equals(Config.getBtnReplayText())){
 
                 try {
 
@@ -397,15 +407,23 @@ public class Controller {
                 }
                 catch (IndexOutOfBoundsException e2){
 
-                    dialogMessage.showMessage(Config.getMissingGameSelectionText());
+                    DialogMessage.showMessage(screen, Config.getMissingGameSelectionText());
+                    screen.getMainMenuPanel().setSidePanelState(true);
                 }
 
             }
             else if (e.getActionCommand().equals(Config.getBtnRefreshText())){
 
-                gameOverviewerLogic.refreshTable(currentUser);
 
             }
+        }
+
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+
+            //using boolean isAuthenticated to prevent server call when logging out of client and combo box is reset
+            if (e.getStateChange() == ItemEvent.SELECTED && isAuthenticated)
+                tableLogic.setGameOverviewerTableModel(currentUser);
         }
     }
 

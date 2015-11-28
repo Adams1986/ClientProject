@@ -1,6 +1,7 @@
 package gui;
 
 import sdk.Config;
+import sdk.dto.Gamer;
 import sdk.dto.User;
 
 import javax.swing.table.AbstractTableModel;
@@ -12,14 +13,14 @@ import java.util.List;
  */
 public class UserTableModel extends AbstractTableModel {
 
-    private List<User> userList;
+    private List<Gamer> userList;
     private int numberOfRows;
     private String [] columns;
 //    private static final int FIRST_NAME = Config.getIndexOne();
 //    private static final int LAST_NAME = Config.getIndexTwo();
 //    private static final int USERNAME = Config.getIndexThree();
 
-    public UserTableModel (ArrayList<User> users){
+    public UserTableModel (ArrayList<Gamer> users){
 
         userList = users;
         columns = Config.getColumnNamesUserTable();
@@ -55,7 +56,7 @@ public class UserTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int row, int column) {
 
-        User user = userList.get(row);
+        Gamer user = userList.get(row);
 
         switch (column){
 
@@ -67,6 +68,8 @@ public class UserTableModel extends AbstractTableModel {
 
             case 2:
                 return user.getUsername();
+            case 3:
+                return user.getTotalScore();
         }
 
         return null;

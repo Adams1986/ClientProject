@@ -6,6 +6,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import sdk.dto.Game;
+import sdk.dto.Gamer;
 import sdk.dto.User;
 
 import java.util.ArrayList;
@@ -21,6 +22,8 @@ public class DataParser {
         JSONParser jsonParser = new JSONParser();
         String message = "";
 
+        HashMap<String, String> mapWithData = new Gson().fromJson(dataToBeParsed, HashMap.class);
+
         try {
 
             Object obj = jsonParser.parse(dataToBeParsed);
@@ -32,7 +35,8 @@ public class DataParser {
             p.printStackTrace();
         }
 
-        return message;
+        return mapWithData.get("message");
+        //return message;
     }
 
     //Method overload to create a method that sets the id for a user. Used for the login API.
@@ -62,24 +66,19 @@ public class DataParser {
 
         Gson gson = new Gson();
 
-        //Issue with json, as it reads/converts ints to doubles, there needs workaround to get the userid with gson lib
-        HashMap<String, Double> mapWithUserId = gson.fromJson(dataToBeParsed, HashMap.class);
+        //Issue with json, as it reads/converts ints to doubles, so little workaround to get the userid with gson lib
+        //HashMap<String, Double> mapWithUserId = gson.fromJson(dataToBeParsed, HashMap.class);
         HashMap<String, String> mapWithData = gson.fromJson(dataToBeParsed, HashMap.class);
 
-            if (mapWithUserId.get("userid") != null)
-                user.setId(mapWithUserId.get("userid").intValue());
+            if (mapWithData.get("data") != null)
+                user.setId(Integer.parseInt(mapWithData.get("data")));
 
             return mapWithData.get("message");
 
 
     }
 
-    public static String getEncryptedUser(){
-
-        return null;
-    }
-
-    public static String getEncryptedDto(User user){
+    public static String getEncryptedUser(User user){
 
         HashMap<String, String> encryptedDto = new HashMap<>();
         encryptedDto.put("data", Security.encrypt(new Gson().toJson(user), Config.getEncryptionkey()));
@@ -109,14 +108,14 @@ public class DataParser {
 
     }
 
-    public static ArrayList<User> getDecryptedUserList(String jsonData){
+    public static ArrayList<Gamer> getDecryptedUserList(String jsonData){
 
         Gson gson = new Gson();
         HashMap<String, String> jsonHashMap = gson.fromJson(jsonData, HashMap.class);
         String encryptedUsers = jsonHashMap.get("data");
         String jsonUsers = Security.decrypt(encryptedUsers, Config.getEncryptionkey());
 
-        return gson.fromJson(jsonUsers, new TypeToken<ArrayList<User>>(){}.getType());
+        return gson.fromJson(jsonUsers, new TypeToken<ArrayList<Gamer>>(){}.getType());
 
     }
 

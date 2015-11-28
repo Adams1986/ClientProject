@@ -20,7 +20,7 @@ public class GameEngineLogic {
         this.screen = screen;
     }
 
-    public void draw(Game newGame, DialogMessage dialogMessage) {
+    public boolean draw(Game newGame) {
 
         String message;
 
@@ -36,7 +36,7 @@ public class GameEngineLogic {
                 newGame.getHost().setControls(screen.getMainMenuPanel().getSnakeGameEngine().getSbToString());
                 //Attempt to create the game and show response from server
                 message = DataParser.parseMessage(Api.createGame(new Gson().toJson(newGame)));
-                dialogMessage.showMessage(message);
+                DialogMessage.showMessage(screen, message);
             }
             else {
 
@@ -45,7 +45,7 @@ public class GameEngineLogic {
                 String gameJson = new Gson().toJson(newGame);
                 message = Api.joinGame(gameJson);
                 Api.startGame(gameJson);
-                dialogMessage.showMessage(DataParser.parseMessage(message));
+                DialogMessage.showMessage(screen, DataParser.parseMessage(message));
             }
 
             //stops animation
@@ -54,5 +54,6 @@ public class GameEngineLogic {
             screen.getMainMenuPanel().setSidePanelState(true);
             screen.getMainMenuPanel().show(Config.getGameChooserScreen());
         }
+        return screen.getMainMenuPanel().getSnakeGameEngine().isGameEnded();
     }
 }

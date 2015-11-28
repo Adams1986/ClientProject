@@ -1,7 +1,5 @@
 package logic.subcontroller;
 
-import com.google.gson.Gson;
-import com.sun.jersey.api.client.ClientResponse;
 import gui.Screen;
 import sdk.Api;
 import sdk.DataParser;
@@ -22,9 +20,6 @@ public class LoginLogic {
         currentUser.setUsername(screen.getLoginPanel().getUsernameInput());
         currentUser.setPassword(screen.getLoginPanel().getPasswordInput());
 
-        String message = Api.authenticateLogin(DataParser.getEncryptedDto(currentUser));
-
-        return DataParser.parseHashMapMessage(message, currentUser);
-        //return DataParser.parseMessage(message, currentUser);
+        return Api.authenticateLogin(currentUser);
     }
 }

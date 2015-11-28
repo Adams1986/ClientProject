@@ -43,6 +43,7 @@
   "firstname": "First name",
   "lastname": "Last name",
   "username": "Username",
+  "totalscore": "Total score",
   "serverpathlogin": "login/",
   "serverpathusers": "users/",
   "serverpathuser": "users/id/",
@@ -136,7 +137,7 @@
   "highscoresheadertext": "List of High Scores",
   "highscoresmovingtext": "High Scores TOP 3:",
   "invitedgamestext": "Invited games",
-  "opengamestext": "Open games",
+  "opengamestext": "My open games",
   "pendinggamestext": "Pending games",
   "hostedgamestext": "Hosted games",
   "openbyidgamestext": "All open games",
@@ -153,7 +154,10 @@
   "hsmovingtextsize": 16,
   "startymovingpanel": -100,
   "delaymovingpanel": 40,
-  "serverpathopenandpending": "openandpending/",
-  "serverpathopenfromotherusers": "openfromotherusers/"
+  "serverpathopenandpending": "Open_and_pending/",
+  "serverpathopenfromotherusers": "openfromotherusers/",
+  "createuseremptyfields": "Please fill out all fields!",
+  "openchallengestext": "Open challenges",
+  "comboboxactioncommand": "combo box firing action"
 
 }

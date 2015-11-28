@@ -7,18 +7,13 @@ import javax.swing.*;
  */
 public class DialogMessage {
 
-    private Screen screen;
 
-    public DialogMessage(Screen screen){
-
-        this.screen = screen;
-    }
 
     /**
      * Normal JOptionPane dialog box which shows a message to the user
      * @param message
      */
-    public void showMessage(String message){
+    public static void showMessage(Screen screen, String message){
 
         JOptionPane.showMessageDialog(screen, message);
     }
@@ -30,7 +25,7 @@ public class DialogMessage {
      * @param title
      * @return
      */
-    public boolean showConfirmMessage(String message, String title){
+    public static boolean showConfirmMessage(Screen screen, String message, String title){
 
         int option = JOptionPane.showConfirmDialog(screen, message, title, JOptionPane.YES_NO_OPTION);
 
@@ -46,7 +41,7 @@ public class DialogMessage {
      * @param message
      * @param title
      */
-    public void showErrorMessage(String message, String title){
+    public static void showErrorMessage(Screen screen, String message, String title){
 
         JOptionPane.showMessageDialog(screen, message, title, JOptionPane.ERROR_MESSAGE);
     }

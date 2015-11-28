@@ -104,7 +104,10 @@ public class SnakeGameEngine extends JPanel {
 
     private void drawSnake(Graphics g){
 
-        g.setColor(Color.BLUE);
+        if (game.getHost().getControls() != null)
+            g.setColor(Color.RED);
+        else
+            g.setColor(Color.BLUE);
 
         //draw points in snake to canvas
         for (Point p : snake) {

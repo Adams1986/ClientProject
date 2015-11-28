@@ -90,7 +90,6 @@ public class ReplaySnake extends JPanel {
             drawWinnerInfo(g, game);
             tm.stop();
         }
-        System.out.println("in paint component");
     }
 
     /**
@@ -101,25 +100,26 @@ public class ReplaySnake extends JPanel {
     private void drawWinnerInfo(Graphics g, Game game) {
 
 
-            g.setFont(new Font(Config.getHeaderFont(), Font.BOLD, Config.getHeaderTextSize()));
+        g.setFont(new Font(Config.getHeaderFont(), Font.BOLD, Config.getHeaderTextSize()));
+        g.setColor(Color.WHITE);
 
-            if (game.getWinner().getUsername() != null) {
+        if (game.getWinner().getUsername() != null) {
 
-                if (game.getWinner().getId() == game.getHost().getId()) {
-                    g.setColor(game.getHost().getSnakeColor());
-                }
-                else {
-                    g.setColor(game.getOpponent().getSnakeColor());
-                }
-
-                g.drawString(game.getWinner().getUsername() + Config.getWinnerText(), Config.getDefaultXPosJComponent(), Config.getY10PosJComponent());
-            }
-            else if (game.getOpponent().getUsername() != null){
-                g.drawString(Config.getGameTiedText(), Config.getDefaultXPosJComponent(), Config.getY10PosJComponent());
+            if (game.getWinner().getId() == game.getHost().getId()) {
+                g.setColor(game.getHost().getSnakeColor());
             }
             else {
-                g.drawString(Config.getAwaitingOpponentText(), Config.getDefaultXPosJComponent(), Config.getY10PosJComponent());
+                g.setColor(game.getOpponent().getSnakeColor());
             }
+
+            g.drawString(game.getWinner().getUsername() + Config.getWinnerText(), Config.getDefaultXPosJComponent(), Config.getY10PosJComponent());
+        }
+        else if (game.getOpponent().getUsername() != null){
+            g.drawString(Config.getGameTiedText(), Config.getDefaultXPosJComponent(), Config.getY10PosJComponent());
+        }
+        else {
+            g.drawString(Config.getAwaitingOpponentText(), Config.getDefaultXPosJComponent(), Config.getY10PosJComponent());
+        }
     }
 
     /**

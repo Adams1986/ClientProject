@@ -6,6 +6,7 @@ import sdk.dto.Game;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
 /**
@@ -56,6 +57,8 @@ public class GameOverviewerPanel extends JPanel {
 
         }
 
+        gameType.setActionCommand(Config.getComboBoxActionCommand());
+
         add(gameOverviewerHeader);
         add(btnReplayGame);
         add(btnRefreshJTable);
@@ -63,9 +66,10 @@ public class GameOverviewerPanel extends JPanel {
         add(scrollPane);
     }
 
-    public String getTypeOfGameChoice (){
+    public String getTypeOfGameChoice(){
 
-        return (String) gameType.getSelectedItem();
+        String selectedItem = (String) gameType.getSelectedItem();
+        return selectedItem.replace(" ", "_");
     }
 
     public void setFonts(Font f){
@@ -93,6 +97,11 @@ public class GameOverviewerPanel extends JPanel {
 
         btnReplayGame.addActionListener(l);
         btnRefreshJTable.addActionListener(l);
+    }
+
+    public void addItemListeners(ItemListener l){
+
+        gameType.addItemListener(l);
     }
 
     public void resetFields() {

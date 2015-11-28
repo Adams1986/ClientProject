@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import gui.Screen;
 import sdk.*;
 import sdk.dto.Game;
+import sdk.dto.Gamer;
 import sdk.dto.Score;
 import sdk.dto.User;
 
@@ -21,15 +22,16 @@ public class TableLogic {
         this.screen = screen;
     }
 
-    public void setGamesTableModel(User currentUser){
+    public void setGameOverviewerTableModel(User currentUser){
 
-        ArrayList<Game> games = new Gson().fromJson(Api.getGamesInvitedByID(currentUser.getId()), new TypeToken<ArrayList<Game>>(){}.getType());
-        screen.getMainMenuPanel().getGameChooserPanel().setGameTableModel(games);
+        ArrayList<Game> games = DataParser.getDecryptedGamesList(Api.getGamesByStatusAndUserId(screen.getMainMenuPanel().getGameOverviewerPanel().getTypeOfGameChoice()+ "/", currentUser.getId()));
+
+        screen.getMainMenuPanel().getGameOverviewerPanel().setGameTableModel(games);
     }
 
     public void setUserTableModel(User currentUser){
 
-        ArrayList<User> users = DataParser.getDecryptedUserList(Api.getUsers(currentUser.getId()));
+        ArrayList<Gamer> users = Api.getUsers(currentUser.getId());
         screen.getMainMenuPanel().getCreateNewGamePanel().setOpponentTableModel(users);
     }
 
@@ -58,12 +60,12 @@ public class TableLogic {
     public void setGameChooserTableModel(User currentUser) {
 
         ArrayList<Game> games;
-
-        if (screen.getMainMenuPanel().getGameChooserPanel().getTypeOfGameChoice().equals(Config.getTypesOfGames()[Config.getIndexOne()]))
-            games = DataParser.getDecryptedGamesList(Api.getGamesInvitedByID(currentUser.getId()));
-        else
-            //TODO: you shouldn't see your own games! Kinda fixed
-            games = DataParser.getDecryptedGamesList(Api.getGamesByStatusAndUserId(Config.getServerPathOpenGamesByOtherUsers(), currentUser.getId()));
+        games = DataParser.getDecryptedGamesList(Api.getGamesByStatusAndUserId(screen.getMainMenuPanel().getGameChooserPanel().getTypeOfGameChoice() + "/", currentUser.getId()));
+//        if (screen.getMainMenuPanel().getGameChooserPanel().getTypeOfGameChoice().equals(Config.getTypesOfGames()[Config.getIndexOne()]))
+//            //games = DataParser.getDecryptedGamesList(Api.getGamesInvitedByID(currentUser.getId()));
+//            games = DataParser.getDecryptedGamesList(Api.getGamesByStatusAndUserId(screen.getMainMenuPanel().getGameOverviewerPanel().getTypeOfGameChoice() + "/", currentUser.getId()));
+//        else
+//            games = DataParser.getDecryptedGamesList(Api.getGamesByStatusAndUserId(Config.getServerPathOpenGamesByOtherUsers(), currentUser.getId()));
 
         screen.getMainMenuPanel().getGameChooserPanel().setGameTableModel(games);
     }

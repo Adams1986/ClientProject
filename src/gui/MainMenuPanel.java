@@ -254,8 +254,8 @@ public class MainMenuPanel extends JPanel{
     public void resetFields(){
 
         createNewGamePanel.resetFields();
-        gameOverviewerPanel.resetFields();
-        gameChooserPanel.resetFields();
         highScoresMovingPanel.stopTimer();
+        gameChooserPanel.resetFields();
+        gameOverviewerPanel.resetFields();
     }
 }
