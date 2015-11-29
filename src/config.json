@@ -27,7 +27,7 @@
   "zeroxy": 0,
   "numberforsnakeplacement": 2,
   "keystrokemodifier": 0,
-  "replaywidth": 320,
+  "centerpanelwidth": 640,
   "replayheight": 340,
   "loginauthentication": "Login successful",
   "loginscreen": "login screen",
@@ -158,6 +158,7 @@
   "serverpathopenfromotherusers": "openfromotherusers/",
   "createuseremptyfields": "Please fill out all fields!",
   "openchallengestext": "Open challenges",
-  "comboboxactioncommand": "combo box firing action"
+  "comboboxactioncommand": "combo box firing action",
+  "btnstopreplaytext": "End replay"
 
 }

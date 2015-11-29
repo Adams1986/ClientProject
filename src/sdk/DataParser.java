@@ -62,7 +62,7 @@ public class DataParser {
         return message;
     }
 
-    public static String parseHashMapMessage(String dataToBeParsed, User user){
+    public static String parseLoginData(String dataToBeParsed, User user){
 
         Gson gson = new Gson();
 
@@ -70,8 +70,14 @@ public class DataParser {
         //HashMap<String, Double> mapWithUserId = gson.fromJson(dataToBeParsed, HashMap.class);
         HashMap<String, String> mapWithData = gson.fromJson(dataToBeParsed, HashMap.class);
 
-            if (mapWithData.get("data") != null)
-                user.setId(Integer.parseInt(mapWithData.get("data")));
+            if (mapWithData.get("data") != null) {
+                User temp = getDecryptedUser(mapWithData.get("data"));
+                user.setId(temp.getId());
+                user.setFirstName(temp.getFirstName());
+                user.setLastName(temp.getLastName());
+                user.setEmail(temp.getEmail());
+                user.setTotalScore(temp.getTotalScore());
+            }
 
             return mapWithData.get("message");
 
@@ -92,6 +98,7 @@ public class DataParser {
         HashMap<String, String> jsonHashMap = gson.fromJson(jsonData, HashMap.class);
         String encryptedUser = jsonHashMap.get("data");
         String jsonUser = Security.decrypt(encryptedUser, Config.getEncryptionkey());
+        System.out.println(jsonUser);
 
         return gson.fromJson(jsonUser, User.class);
 

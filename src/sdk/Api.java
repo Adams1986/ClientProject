@@ -4,7 +4,6 @@ import sdk.dto.Gamer;
 import sdk.dto.User;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Api class. Constains generic methods that send and receive data in a String/json format. All the parsing of the json
@@ -23,7 +22,7 @@ public class Api {
 
         String receivedData = ServerConnection.post(Config.getServerPathLogin(), sendingToServer);
 
-        return DataParser.parseHashMapMessage(receivedData, currentUser);
+        return DataParser.parseLoginData(receivedData, currentUser);
     }
 
     /**

@@ -83,6 +83,7 @@ public class Controller {
         @Override
         public void actionPerformed(ActionEvent e) {
 
+
             if (e.getActionCommand().equals(Config.getBtnLoginText())) {
 
                 String message = loginLogic.authenticated(currentUser);
@@ -91,20 +92,17 @@ public class Controller {
 
                 if (isAuthenticated) {
 
+                    //showing start screen - the game chooser panel
                     screen.show(Config.getMainMenuScreen());
                     screen.getMainMenuPanel().show(Config.getGameChooserScreen());
 
-                    //TODO: clean up?
-                    screen.getMainMenuPanel().setWelcomeMessage(message);
-                    screen.getMainMenuPanel().setInfoMessage(Config.getWelcomeText() + currentUser.getUsername());
+                    //setting user info.
+                    loginLogic.setUserInfo(currentUser, message);
 
                     tableLogic.setGameOverviewerTableModel(currentUser);
                     tableLogic.setGameChooserTableModel(currentUser);
                     tableLogic.setUserTableModel(currentUser);
-
-                    //TODO highscores when logging on because of moving panel
                     tableLogic.setHighScoresMovingPanel(new MovingHighScoresHandlerClass());
-
                 }
                 else {
                     screen.getLoginPanel().setFailedLoginAttempt(message);
@@ -154,10 +152,11 @@ public class Controller {
                     screen.show(Config.getLoginScreen());
 
                     isAuthenticated = false;
-                    screen.getMainMenuPanel().resetFields();
-
                     //'resetting' current user object when logging out
                     currentUser = new User();
+
+                    loginLogic.setIsRunning(false);
+                    screen.getMainMenuPanel().resetFields();
                 }
             }
         }
@@ -360,7 +359,7 @@ public class Controller {
             }
             else if (e.getActionCommand().equals(Config.getBtnRefreshText())){
 
-                //gameChooserLogic.refreshTable(currentUser);
+                tableLogic.setGameChooserTableModel(currentUser);
             }
         }
 
@@ -386,6 +385,7 @@ public class Controller {
                 }
                 //Catch the missing selection and prompt the user
                 catch (IndexOutOfBoundsException e2) {
+
                     DialogMessage.showMessage(screen, Config.getMissingGameSelectionText());
                 }
             }
@@ -414,7 +414,7 @@ public class Controller {
             }
             else if (e.getActionCommand().equals(Config.getBtnRefreshText())){
 
-
+                tableLogic.setGameOverviewerTableModel(currentUser);
             }
         }
 

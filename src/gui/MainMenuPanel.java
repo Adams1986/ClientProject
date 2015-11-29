@@ -54,7 +54,7 @@ public class MainMenuPanel extends JPanel{
         cl = new CardLayout();
 
         sidePanel.setBounds(Config.getZeroXY(), Config.getZeroXY(), Config.getWidth3JComponent(), Config.getAppHeight());
-        centerPanel.setBounds(Config.getWidth3JComponent(), Config.getZeroXY(), Config.getReplayWidth()*2, Config.getAppHeight());
+        centerPanel.setBounds(Config.getWidth3JComponent(), Config.getZeroXY(), Config.getCenterPanelWidth(), Config.getAppHeight());
         sidePanel.setLayout(null);
         centerPanel.setLayout(cl);
 
@@ -97,8 +97,6 @@ public class MainMenuPanel extends JPanel{
 
         add(sidePanel);
         add(centerPanel);
-
-
     }
 
     public void getNewInstanceOfHighScoresMovingPanel(ArrayList<Score> highScores, ActionListener l){
@@ -106,9 +104,8 @@ public class MainMenuPanel extends JPanel{
         highScoresMovingPanel = new HighScoresMovingPanel(highScores, l);
         highScoresMovingPanel.setBounds(Config.getDefaultXPosJComponent(), Config.getY8PosJComponent(),
                 Config.getWidth3JComponent(), Config.getY3PosJComponent());
+
         sidePanel.add(highScoresMovingPanel);
-
-
     }
 
     public void setFonts(Font f){
@@ -169,7 +166,6 @@ public class MainMenuPanel extends JPanel{
         replaySnake = new ReplaySnake(game, l);
         centerPanel.add(replaySnake, Config.getReplaySnakeScreen());
         cl.show(centerPanel, Config.getReplaySnakeScreen());
-
     }
 
     public ReplaySnake getReplaySnake(){
@@ -202,12 +198,12 @@ public class MainMenuPanel extends JPanel{
      * @param l
      */
     public void addActionListeners(ActionListener l) {
+
         btnPlay.addActionListener(l);
         btnWatchReplay.addActionListener(l);
         btnShowHighScore.addActionListener(l);
         btnDeleteGame.addActionListener(l);
         btnLogOut.addActionListener(l);
-
     }
 
     public void show(String card){
@@ -257,5 +253,7 @@ public class MainMenuPanel extends JPanel{
         highScoresMovingPanel.stopTimer();
         gameChooserPanel.resetFields();
         gameOverviewerPanel.resetFields();
+        infoLabel.setText(Config.getClearField());
+        welcomeLabel.setText(Config.getClearField());
     }
 }

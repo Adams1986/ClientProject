@@ -21,12 +21,12 @@ public class GameOverviewerLogic {
         this.screen = screen;
     }
 
-    public Game showReplay(ActionListener replaySnakeHandler, int userId){
+    public Game showReplay(ActionListener l, int userId){
 
         Game replayGame = screen.getMainMenuPanel().getGameOverviewerPanel().getGame();
 
         if (replayGame.getHost().getId() == userId || (replayGame.getOpponent().getId() == userId && replayGame.getOpponent().getControls() != null)) {
-            screen.getMainMenuPanel().addReplaySnakeToPanel(replayGame, replaySnakeHandler);
+            screen.getMainMenuPanel().addReplaySnakeToPanel(replayGame, l);
             screen.getMainMenuPanel().setSidePanelState(false);
         }
         

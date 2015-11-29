@@ -3,7 +3,6 @@ package sdk;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import javax.swing.*;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -27,7 +26,7 @@ public class Config {
     private static String right;
     private static String awaiting;
 
-    private static int replayWidth;
+    private static int centerPanelWidth;
     private static int replayHeight;
 
     private static String loginAuthentication;
@@ -158,6 +157,7 @@ public class Config {
     private static String serverPAthOpenGamesByOtherUsers;
     private static String createUserEmptyFieldsText;
     private static String comboBoxActionCommand;
+    private static String btnStopReplayText;
 
 
     public static void init () {
@@ -204,7 +204,7 @@ public class Config {
 
             setZeroXY((int) (long) jsonObject.get("zeroxy"));
 
-            setReplayWidth((int) (long) jsonObject.get("replaywidth"));
+            setCenterPanelWidth((int) (long) jsonObject.get("centerpanelwidth"));
             setReplayHeight((int) (long) jsonObject.get("replayheight"));
 
             setLoginAuthentication((String) jsonObject.get("loginauthentication"));
@@ -362,6 +362,7 @@ public class Config {
             setServerPAthOpenGamesByOtherUsers((String) jsonObject.get("serverpathopenfromotherusers"));
             setCreateUserEmptyFieldsText((String) jsonObject.get("createuseremptyfields"));
             setComboBoxActionCommand((String) jsonObject.get("comboboxactioncommand"));
+            setBtnStopReplayText((String) jsonObject.get("btnstopreplaytext"));
 
 
         } catch (org.json.simple.parser.ParseException e) {
@@ -483,12 +484,12 @@ public class Config {
         Config.zeroXY = zeroXY;
     }
 
-    public static int getReplayWidth() {
-        return replayWidth;
+    public static int getCenterPanelWidth() {
+        return centerPanelWidth;
     }
 
-    public static void setReplayWidth(int replayWidth) {
-        Config.replayWidth = replayWidth;
+    public static void setCenterPanelWidth(int centerPanelWidth) {
+        Config.centerPanelWidth = centerPanelWidth;
     }
 
     public static int getReplayHeight() {
@@ -1477,5 +1478,13 @@ public class Config {
 
     public static void setComboBoxActionCommand(String comboBoxActionCommand) {
         Config.comboBoxActionCommand = comboBoxActionCommand;
+    }
+
+    public static String getBtnStopReplayText() {
+        return btnStopReplayText;
+    }
+
+    public static void setBtnStopReplayText(String btnStopReplayText) {
+        Config.btnStopReplayText = btnStopReplayText;
     }
 }

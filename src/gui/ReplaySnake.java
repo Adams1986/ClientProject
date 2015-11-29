@@ -21,7 +21,6 @@ public class ReplaySnake extends JPanel {
     private Timer tm;
     private Game game;
     private boolean gameHasEnded;
-    ;
 
     /**
      * Constructor. Takes a game object and an action listener. The action listener will be used to draw the board and
