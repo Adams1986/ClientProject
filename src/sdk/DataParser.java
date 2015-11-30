@@ -27,6 +27,7 @@ public class DataParser {
 
         HashMap<String, String> mapWithData = new Gson().fromJson(dataToBeParsed, HashMap.class);
 
+        //TODO: remove
         try {
 
             Object obj = jsonParser.parse(dataToBeParsed);

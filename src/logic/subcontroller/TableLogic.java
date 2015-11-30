@@ -2,8 +2,10 @@ package logic.subcontroller;
 
 import gui.Screen;
 import sdk.*;
-import sdk.dto.*;
-
+import sdk.dto.Game;
+import sdk.dto.Gamer;
+import sdk.dto.Score;
+import sdk.dto.User;
 
 import java.awt.event.ActionListener;
 import java.util.ArrayList;

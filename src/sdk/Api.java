@@ -75,7 +75,7 @@ public class Api {
 
         String sendingToServer = DataParser.getEncryptedGame(game);
 
-        String dataReceived = ServerConnection.post(Config.getServerPathJoinGames(), sendingToServer);
+        String dataReceived = ServerConnection.put(Config.getServerPathJoinGames(), sendingToServer);
 
         return DataParser.parseMessage(dataReceived);
     }
@@ -85,7 +85,7 @@ public class Api {
 
         String sendingToServer = DataParser.getEncryptedGame(game);
 
-        String dataReceived = ServerConnection.post(Config.getServerPathStartGames(), sendingToServer);
+        String dataReceived = ServerConnection.put(Config.getServerPathStartGames(), sendingToServer);
 
         return DataParser.parseMessage(dataReceived);
     }
