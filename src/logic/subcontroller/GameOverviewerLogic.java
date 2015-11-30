@@ -2,7 +2,7 @@ package logic.subcontroller;
 
 import gui.DialogMessage;
 import gui.Screen;
-import sdk.*;
+import sdk.Api;
 import sdk.dto.Game;
 import sdk.dto.User;
 
@@ -25,7 +25,9 @@ public class GameOverviewerLogic {
 
         Game replayGame = screen.getMainMenuPanel().getGameOverviewerPanel().getGame();
 
-        if (replayGame.getHost().getId() == userId || (replayGame.getOpponent().getId() == userId && replayGame.getOpponent().getControls() != null)) {
+        if (replayGame.getHost().getId() == userId ||
+                ( replayGame.getOpponent().getId() == userId && replayGame.getOpponent().getControls() != null ) ) {
+
             screen.getMainMenuPanel().addReplaySnakeToPanel(replayGame, l);
             screen.getMainMenuPanel().setSidePanelState(false);
         }
@@ -37,37 +39,11 @@ public class GameOverviewerLogic {
         return replayGame;
     }
 
-    //TODO: nasty piece of code - little better
+
     public ArrayList<Game> refreshTable(User currentUser){
 
-        ArrayList<Game> games = null;
-
-//        //TODO use value inside combobox as param in getGamesByStatusAndUserId
-//        if (screen.getMainMenuPanel().getGameOverviewerPanel().getTypeOfGameChoice().equals(Config.getTypesOfGamesToReplay()[Config.getIndexOne()])) {
-//
-//            games = DataParser.getDecryptedGamesList(Api.getGamesInvitedByID(currentUser.getId()));
-//        }
-//        else if (screen.getMainMenuPanel().getGameOverviewerPanel().getTypeOfGameChoice().equals(Config.getTypesOfGamesToReplay()[Config.getIndexTwo()])){
-//
-//            games = DataParser.getDecryptedGamesList(Api.getGamesByStatusAndUserId(Config.getServerPathOpenGamesById(), currentUser.getId()));
-//        }
-//        else if (screen.getMainMenuPanel().getGameOverviewerPanel().getTypeOfGameChoice().equals(Config.getTypesOfGamesToReplay()[Config.getIndexThree()])){
-//
-//            games = DataParser.getDecryptedGamesList(Api.getGamesByStatusAndUserId(Config.getServerPathPendingGamesById(), currentUser.getId()));
-//        }
-//        else if (screen.getMainMenuPanel().getGameOverviewerPanel().getTypeOfGameChoice().equals(Config.getTypesOfGamesToReplay()[Config.getIndexFour()])){
-//
-//            //games = DataParser.getDecryptedGamesList(Api.getGamesHostedById(currentUser.getId()));
-//        }
-//        else if (screen.getMainMenuPanel().getGameOverviewerPanel().getTypeOfGameChoice().equals(Config.getTypesOfGamesToReplay()[Config.getIndexFive()])){
-//
-//            games = DataParser.getDecryptedGamesList(Api.getOpenGames(currentUser.getId()));
-//        }
-//        else if (screen.getMainMenuPanel().getGameOverviewerPanel().getTypeOfGameChoice().equals(Config.getTypesOfGamesToReplay()[Config.getIndexSix()])){
-//
-//            games = DataParser.getDecryptedGamesList(Api.getGamesByStatusAndUserId(Config.getServerPathFinishedGamesById(), currentUser.getId()));
-//        }
-        games = DataParser.getDecryptedGamesList(Api.getGamesByStatusAndUserId(screen.getMainMenuPanel().getGameOverviewerPanel().getTypeOfGameChoice()+ "/", currentUser.getId()));
+        String gameStatus = screen.getMainMenuPanel().getGameOverviewerPanel().getTypeOfGameChoice();
+        ArrayList<Game> games = Api.getGamesByStatusAndUserId(gameStatus, currentUser.getId());
 
         screen.getMainMenuPanel().getGameOverviewerPanel().setGameTableModel(games);
 

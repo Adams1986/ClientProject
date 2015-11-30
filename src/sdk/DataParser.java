@@ -7,14 +7,17 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import sdk.dto.Game;
 import sdk.dto.Gamer;
+import sdk.dto.Score;
 import sdk.dto.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by simonadams on 09/11/15.
- *///TODO remove hardcoding from class
+ * Class parses data by combining Gson and json simple librarys and parses DTO's (Game, Gamer, Score, User) to and
+ * from json format
+ */
+//TODO remove hardcoding from class. Plus major clean up needed!
 public class DataParser {
 
     public static String parseMessage(String dataToBeParsed){
@@ -70,16 +73,16 @@ public class DataParser {
         //HashMap<String, Double> mapWithUserId = gson.fromJson(dataToBeParsed, HashMap.class);
         HashMap<String, String> mapWithData = gson.fromJson(dataToBeParsed, HashMap.class);
 
-            if (mapWithData.get("data") != null) {
-                User temp = getDecryptedUser(mapWithData.get("data"));
-                user.setId(temp.getId());
-                user.setFirstName(temp.getFirstName());
-                user.setLastName(temp.getLastName());
-                user.setEmail(temp.getEmail());
-                user.setTotalScore(temp.getTotalScore());
-            }
+        if (mapWithData.get("data") != null) {
+            User temp = getDecryptedUser(mapWithData.get("data"));
+            user.setId(temp.getId());
+            user.setFirstName(temp.getFirstName());
+            user.setLastName(temp.getLastName());
+            user.setEmail(temp.getEmail());
+            user.setTotalScore(temp.getTotalScore());
+        }
 
-            return mapWithData.get("message");
+        return mapWithData.get("message");
 
 
     }
@@ -128,6 +131,7 @@ public class DataParser {
 
     public static ArrayList<Game> getDecryptedGamesList(String jsonData) {
 
+        //TODO: encrypt on server
         Gson gson = new Gson();
 //        HashMap<String, String> jsonHashMap = gson.fromJson(jsonData, HashMap.class);
 //        String encryptedGames = jsonHashMap.get("data");
@@ -137,4 +141,24 @@ public class DataParser {
         return gson.fromJson(jsonData, new TypeToken<ArrayList<Game>>(){}.getType());
     }
 
+    public static String getEncryptedGame(Game game) {
+
+//        HashMap<String, String> encryptedDto = new HashMap<>();
+//        String encryptedGame = Security.encrypt(new Gson().toJson(game), Config.getEncryptionkey());
+//        encryptedDto.put("data", encryptedGame);
+//
+//        return new Gson().toJson(encryptedDto);
+        return new Gson().toJson(game);
+    }
+
+    public static ArrayList<Score> getDecryptedScoresList(String jsonData) {
+
+        Gson gson = new Gson();
+//        HashMap<String, String> jsonHashMap = gson.fromJson(jsonData, HashMap.class);
+//        String encryptedScores = jsonHashMap.get("data");
+//        String jsonScores = Security.decrypt(encryptedScores, Config.getEncryptionkey());
+//
+//        return gson.fromJson(jsonScores, new TypeToken<ArrayList<Game>>(){}.getType());
+        return gson.fromJson(jsonData, new TypeToken<ArrayList<Score>>(){}.getType());
+    }
 }

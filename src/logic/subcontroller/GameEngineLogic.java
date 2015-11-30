@@ -1,15 +1,13 @@
 package logic.subcontroller;
 
-import com.google.gson.Gson;
 import gui.DialogMessage;
 import gui.Screen;
 import sdk.Api;
 import sdk.Config;
 import sdk.dto.Game;
-import sdk.DataParser;
 
 /**
- * Created by ADI on 15-11-2015.
+ *
  */
 public class GameEngineLogic {
 
@@ -35,17 +33,17 @@ public class GameEngineLogic {
             if(newGame.getHost().getControls() == null) {
                 newGame.getHost().setControls(screen.getMainMenuPanel().getSnakeGameEngine().getSbToString());
                 //Attempt to create the game and show response from server
-                message = DataParser.parseMessage(Api.createGame(new Gson().toJson(newGame)));
+                message = Api.createGame(newGame);
+
                 DialogMessage.showMessage(screen, message);
             }
             else {
 
                 newGame.getOpponent().setControls(screen.getMainMenuPanel().getSnakeGameEngine().getSbToString());
 
-                String gameJson = new Gson().toJson(newGame);
-                message = Api.joinGame(gameJson);
-                Api.startGame(gameJson);
-                DialogMessage.showMessage(screen, DataParser.parseMessage(message));
+                message = Api.joinGame(newGame);
+                Api.startGame(newGame);
+                DialogMessage.showMessage(screen, message);
             }
 
             //stops animation

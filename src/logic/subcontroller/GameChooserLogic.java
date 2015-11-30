@@ -1,19 +1,14 @@
 package logic.subcontroller;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import gui.DialogMessage;
 import gui.Screen;
-import sdk.Api;
 import sdk.Config;
-import sdk.DataParser;
 import sdk.dto.Game;
 import sdk.dto.User;
 
-import java.util.ArrayList;
-
 /**
- * Created by ADI on 15-11-2015.
+ * Class contains the join game method, which gets the chosen game from the table before controller starts the game
+ * engine
  */
 public class GameChooserLogic {
 
@@ -24,6 +19,7 @@ public class GameChooserLogic {
         this.screen = screen;
     }
 
+    //TODO: join game api call? how would that work?
     public Game joinGame(User currentUser) {
 
         Game newGame = null;
@@ -32,9 +28,12 @@ public class GameChooserLogic {
 
             newGame = screen.getMainMenuPanel().getGameChooserPanel().getGame();
             newGame.getOpponent().setId(currentUser.getId());
+
             screen.getMainMenuPanel().setSidePanelState(false);
 
-        } catch (IndexOutOfBoundsException e1) {
+        }
+        //catch if no selection was made and prompt message
+        catch (IndexOutOfBoundsException e1) {
 
             DialogMessage.showMessage(screen, Config.getMissingGameSelectionText());
         }

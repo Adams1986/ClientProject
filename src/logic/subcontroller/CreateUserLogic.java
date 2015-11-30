@@ -1,11 +1,9 @@
 package logic.subcontroller;
 
-import com.google.gson.Gson;
 import gui.DialogMessage;
 import gui.Screen;
 import sdk.Api;
 import sdk.Config;
-import sdk.DataParser;
 import sdk.dto.User;
 
 /**
@@ -28,14 +26,14 @@ public class CreateUserLogic {
         String message;
 
         if (screen.getCreateUserPanel().checkForEmptyFields()) {
+
             createNewUser.setFirstName(screen.getCreateUserPanel().getFirstNameField());
             createNewUser.setLastName(screen.getCreateUserPanel().getLastNameField());
             createNewUser.setEmail(screen.getCreateUserPanel().getEmailField());
             createNewUser.setUsername(screen.getCreateUserPanel().getUsernameField());
             createNewUser.setPassword(screen.getCreateUserPanel().getPasswordField());
 
-            String jsonData = Api.createUser(DataParser.getEncryptedUser(createNewUser));
-            message = DataParser.parseMessage(jsonData);
+            message = Api.createUser(createNewUser);
         }
         else
             message = Config.getCreateUserEmptyFieldsText();

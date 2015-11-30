@@ -1,13 +1,11 @@
 package sdk;
 
-import sdk.dto.Gamer;
-import sdk.dto.User;
-
+import sdk.dto.*;
 import java.util.ArrayList;
 
 /**
- * Api class. Constains generic methods that send and receive data in a String/json format. All the parsing of the json
- * data is handled in the Logic sub-controller classes.
+ * Api class. Combines DataParser class and ServerConnection class to parse -> send -> parse -> return. Controller will
+ * use methods and combine with screen methods to piece it all together.
  */
 public class Api {
 
@@ -20,20 +18,20 @@ public class Api {
 
         String sendingToServer = DataParser.getEncryptedUser(currentUser);
 
-        String receivedData = ServerConnection.post(Config.getServerPathLogin(), sendingToServer);
+        String dataReceived = ServerConnection.post(Config.getServerPathLogin(), sendingToServer);
 
-        return DataParser.parseLoginData(receivedData, currentUser);
+        return DataParser.parseLoginData(dataReceived, currentUser);
     }
 
     /**
      * Retrieves all users from the server and saves them in an arraylist
-     * @return Arraylist of all users/gamers
+     * @return ArrayList of all users/gamers
      */
     public static ArrayList<Gamer> getUsers(int userId) {
 
-        String receivedData = ServerConnection.get(Config.getServerPathUsers() + userId);
+        String dataReceived = ServerConnection.get(Config.getServerPathUsers() + userId);
 
-        return DataParser.getDecryptedUserList(receivedData);
+        return DataParser.getDecryptedUserList(dataReceived);
     }
 
     /**
@@ -43,43 +41,61 @@ public class Api {
      */
     public static String getUser(User user){
 
-        String receivedData = ServerConnection.get(Config.getServerPathUser() + user.getId());
-        User temp = DataParser.getDecryptedUser(receivedData);
+        String dataReceived = ServerConnection.get(Config.getServerPathUser() + user.getId());
+        User temp = DataParser.getDecryptedUser(dataReceived);
 
         if (temp != null) {
             user.setId(temp.getId());
             user.setUsername(temp.getUsername());
         }
 
-        return DataParser.parseMessage(receivedData);
+        return DataParser.parseMessage(dataReceived);
     }
 
-    public static String createUser(String userJson){
+    public static String createUser(User createNewUser){
 
-        return ServerConnection.post(Config.getServerPathUsers(), userJson);
+        String sendingToServer = DataParser.getEncryptedUser(createNewUser);
+
+        String dataReceived = ServerConnection.post(Config.getServerPathUsers(), sendingToServer);
+
+        return DataParser.parseMessage(dataReceived);
     }
 
-    public static String createGame(String gameJson){
+    public static String createGame(Game newGame){
 
-        return ServerConnection.post(Config.getServerPathGames(), gameJson);
+        String sendingToServer = DataParser.getEncryptedGame(newGame);
+
+        String dataReceived = ServerConnection.post(Config.getServerPathGames(), sendingToServer);
+
+        return DataParser.parseMessage(dataReceived);
+
     }
 
-    public static String joinGame(String gameJson){
+    public static String joinGame(Game game){
 
-        System.out.println(gameJson);
-        return ServerConnection.put(Config.getServerPathJoinGames(), gameJson);
+        String sendingToServer = DataParser.getEncryptedGame(game);
+
+        String dataReceived = ServerConnection.post(Config.getServerPathJoinGames(), sendingToServer);
+
+        return DataParser.parseMessage(dataReceived);
     }
 
 
-    public static String startGame(String gameJson) {
+    public static String startGame(Game game) {
 
-        return ServerConnection.put(Config.getServerPathStartGames(), gameJson);
+        String sendingToServer = DataParser.getEncryptedGame(game);
+
+        String dataReceived = ServerConnection.post(Config.getServerPathStartGames(), sendingToServer);
+
+        return DataParser.parseMessage(dataReceived);
     }
 
 
     public static String deleteGame(int gameId) {
 
-        return ServerConnection.delete(Config.getServerPathGames() + gameId);
+        String receivedData = ServerConnection.delete(Config.getServerPathGames() + gameId);
+
+        return DataParser.parseMessage(receivedData);
     }
 
     public static String getGame(int gameId){
@@ -87,9 +103,11 @@ public class Api {
         return ServerConnection.get(Config.getServerPathGame() + gameId);
     }
 
-    public static String getHighScores(){
+    public static ArrayList<Score> getHighScores(){
 
-        return ServerConnection.get(Config.getServerPathHighScores());
+        String dataReceived = ServerConnection.get(Config.getServerPathHighScores());
+
+        return DataParser.getDecryptedScoresList(dataReceived);
     }
 
 
@@ -101,10 +119,12 @@ public class Api {
     }
 
 
-    public static String getGamesByStatusAndUserId(String status, int userId){
+    public static ArrayList<Game> getGamesByStatusAndUserId(String status, int userId){
 
-        //TODO: forwardslash...
-        return ServerConnection.get(Config.getServerPathGames() + status + userId);
+        String dataReceived = ServerConnection.get(Config.getServerPathGames() + status + userId);
+
+        //returning the games list
+        return DataParser.getDecryptedGamesList(dataReceived);
     }
 
     public static String getScoresByUserId(int userId){
