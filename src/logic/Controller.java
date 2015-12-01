@@ -101,7 +101,6 @@ public class Controller {
 
                     tableLogic.setGameOverviewerTableModel(currentUser);
                     tableLogic.setGameChooserTableModel(currentUser);
-                    tableLogic.setUserTableModel(currentUser);
                     tableLogic.setHighScoresMovingPanel(new MovingHighScoresHandlerClass());
                 }
                 else {
@@ -131,6 +130,7 @@ public class Controller {
             else if (e.getActionCommand().equals(Config.getBtnWatchReplayText())) {
 
                 screen.getMainMenuPanel().show(Config.getGameOverviewerScreen());
+                tableLogic.setGameOverviewerTableModel(currentUser);
             }
             else if (e.getActionCommand().equals(Config.getBtnShowHighScoreText())) {
 
@@ -218,9 +218,14 @@ public class Controller {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            gameEngineLogic.draw(newGame);
-            tableLogic.setGameChooserTableModel(currentUser);
-            tableLogic.setGameOverviewerTableModel(currentUser);
+            String message = gameEngineLogic.draw(newGame);
+
+            if (message != null) {
+                //tableLogic.setGameChooserTableModel(currentUser);
+                //tableLogic.setGameOverviewerTableModel(currentUser);
+                DialogMessage.showMessage(screen, message);
+                screen.getMainMenuPanel().show(Config.getGameChooserScreen());
+            }
 
         }
     }
@@ -340,20 +345,23 @@ public class Controller {
 
                 newGame = gameChooserLogic.joinGame(currentUser);
 
-                screen.getMainMenuPanel().addPlaySnake(new SnakeEngineDrawClass(), newGame);
+                if (newGame != null) {
+                    screen.getMainMenuPanel().addPlaySnake(new SnakeEngineDrawClass(), newGame);
 
-                //Adding keybinding to register user input for snake movement
-                screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getUp(),
-                        new SnakeEngineKeyBindingHandlerClass(Character.toString(Config.getUp())));
-                screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getDown(),
-                        new SnakeEngineKeyBindingHandlerClass(Character.toString(Config.getDown())));
-                screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getLeft(),
-                        new SnakeEngineKeyBindingHandlerClass(Character.toString(Config.getLeft())));
-                screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getRight(),
-                        new SnakeEngineKeyBindingHandlerClass(Character.toString(Config.getRight())));
+                    //Adding keybinding to register user input for snake movement
+                    screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getUp(),
+                            new SnakeEngineKeyBindingHandlerClass(Character.toString(Config.getUp())));
+                    screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getDown(),
+                            new SnakeEngineKeyBindingHandlerClass(Character.toString(Config.getDown())));
+                    screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getLeft(),
+                            new SnakeEngineKeyBindingHandlerClass(Character.toString(Config.getLeft())));
+                    screen.getMainMenuPanel().getSnakeGameEngine().getActionMap().put(Config.getRight(),
+                            new SnakeEngineKeyBindingHandlerClass(Character.toString(Config.getRight())));
+                }
             }
             else if (e.getActionCommand().equals(Config.getBtnCreateNewGameText())){
 
+                tableLogic.setUserTableModel(currentUser);
                 screen.getMainMenuPanel().show(Config.getCreateNewGameScreen());
             }
             else if (e.getActionCommand().equals(Config.getBtnRefreshText())){

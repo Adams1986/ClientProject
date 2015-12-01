@@ -35,7 +35,6 @@ public class GameOverviewerLogic {
         else
             DialogMessage.showMessage(screen, "As if! You have to play the game before you can watch a replay");
 
-
         return replayGame;
     }
 

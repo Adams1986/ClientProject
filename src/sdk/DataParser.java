@@ -119,14 +119,14 @@ public class DataParser {
 
     }
 
-    public static ArrayList<Gamer> getDecryptedUserList(String jsonData){
+    public static ArrayList<User> getDecryptedUserList(String jsonData){
 
         Gson gson = new Gson();
         HashMap<String, String> jsonHashMap = gson.fromJson(jsonData, HashMap.class);
         String encryptedUsers = jsonHashMap.get("data");
         String jsonUsers = Security.decrypt(encryptedUsers, Config.getEncryptionkey());
 
-        return gson.fromJson(jsonUsers, new TypeToken<ArrayList<Gamer>>(){}.getType());
+        return gson.fromJson(jsonUsers, new TypeToken<ArrayList<User>>(){}.getType());
 
     }
 

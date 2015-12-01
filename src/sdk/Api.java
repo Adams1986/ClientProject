@@ -27,8 +27,9 @@ public class Api {
      * Retrieves all users from the server and saves them in an arraylist
      * @return ArrayList of all users/gamers
      */
-    public static ArrayList<Gamer> getUsers(int userId) {
+    public static ArrayList<User> getUsers(int userId) {
 
+//        String dataReceived = ServerConnection.get(Config.getServerPathUsers());
         String dataReceived = ServerConnection.get(Config.getServerPathUsers() + userId);
 
         return DataParser.getDecryptedUserList(dataReceived);

@@ -147,7 +147,7 @@ public class CreateNewGamePanel extends JPanel {
         return gameNameField.getText();
     }
 
-    public void setOpponentTableModel(ArrayList<Gamer> users){
+    public void setOpponentTableModel(ArrayList<User> users){
 
         tableModel = new UserTableModel(users);
         opponentTable.setModel(tableModel);

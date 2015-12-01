@@ -30,7 +30,7 @@ public class TableLogic {
 
     public void setUserTableModel(User currentUser){
 
-        ArrayList<Gamer> users = Api.getUsers(currentUser.getId());
+        ArrayList<User> users = Api.getUsers(currentUser.getId());
         screen.getMainMenuPanel().getCreateNewGamePanel().setOpponentTableModel(users);
     }
 

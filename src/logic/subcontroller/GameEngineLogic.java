@@ -18,9 +18,9 @@ public class GameEngineLogic {
         this.screen = screen;
     }
 
-    public boolean draw(Game newGame) {
+    public String draw(Game newGame) {
 
-        String message;
+        String message = null;
 
         //if game has not ended yet, move snake according to the direction and repaint
         if (!screen.getMainMenuPanel().getSnakeGameEngine().isGameEnded()) {
@@ -35,7 +35,6 @@ public class GameEngineLogic {
                 //Attempt to create the game and show response from server
                 message = Api.createGame(newGame);
 
-                DialogMessage.showMessage(screen, message);
             }
             else {
 
@@ -43,15 +42,14 @@ public class GameEngineLogic {
 
                 message = Api.joinGame(newGame);
                 Api.startGame(newGame);
-                DialogMessage.showMessage(screen, message);
+                //TODO: add replay functionality after startGame
             }
 
             //stops animation
             screen.getMainMenuPanel().getSnakeGameEngine().stopTimer();
             screen.getMainMenuPanel().getCreateNewGamePanel().resetFields();
             screen.getMainMenuPanel().setSidePanelState(true);
-            screen.getMainMenuPanel().show(Config.getGameChooserScreen());
         }
-        return screen.getMainMenuPanel().getSnakeGameEngine().isGameEnded();
+        return message;
     }
 }

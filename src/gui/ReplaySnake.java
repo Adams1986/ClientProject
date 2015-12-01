@@ -14,7 +14,7 @@ import java.util.LinkedList;
  */
 public class ReplaySnake extends JPanel {
 
-    private Gamer user;
+    private Gamer host;
     private Gamer opponent;
 
     //Timer instead of Thread.sleep. Important in a JPanel
@@ -39,7 +39,7 @@ public class ReplaySnake extends JPanel {
         game.getHost().getSnake().add(new Point((game.getMapSize() - 2) / 2, (game.getMapSize() - 2) / 2));
 
         this.game = game;
-        user = game.getHost();
+        host = game.getHost();
         if (game.getOpponent() != null) {
 
             game.getOpponent().setSnakeColor(Color.RED);
@@ -73,19 +73,31 @@ public class ReplaySnake extends JPanel {
 
         super.paintComponent(g);
 
-        drawBoard(g);
-        drawSnake(g, user);
-        drawGameInfo(g, game);
         tm.start();
+        drawBoard(g);
+        drawGameInfo(g, game);
 
-        //makes it possible to replay runs with single user
-        if (opponent.getControls() != null) {
-            drawSnake(g, opponent);
+        //if statement that makes sure to draw the winner last. So he is the one 'eating' the other one on screen
+        if (game.getWinner() != null && game.getWinner().getId() == host.getId()){
+            //makes it possible to replay runs with only host
+            if (opponent.getControls() != null) {
 
+                drawSnake(g, opponent);
+            }
+            drawSnake(g, host);
+        }
+        else {
 
+            drawSnake(g, host);
+            //makes it possible to replay runs with only host
+            if (opponent.getControls() != null) {
+
+                drawSnake(g, opponent);
+            }
         }
 
         if (gameHasEnded) {
+
             drawWinnerInfo(g, game);
             tm.stop();
         }
@@ -128,6 +140,7 @@ public class ReplaySnake extends JPanel {
      */
     private void drawGameInfo(Graphics g, Game game) {
 
+        g.setColor(Color.WHITE);
         g.drawString("Replaying game: " + game.getName(), Config.getDefaultXPosJComponent(), Config.getY9PosJComponent());
     }
 

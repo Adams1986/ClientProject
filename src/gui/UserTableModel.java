@@ -13,14 +13,14 @@ import java.util.List;
  */
 public class UserTableModel extends AbstractTableModel {
 
-    private List<Gamer> userList;
+    private List<User> userList;
     private int numberOfRows;
     private String [] columns;
 //    private static final int FIRST_NAME = Config.getIndexOne();
 //    private static final int LAST_NAME = Config.getIndexTwo();
 //    private static final int USERNAME = Config.getIndexThree();
 
-    public UserTableModel (ArrayList<Gamer> users){
+    public UserTableModel (ArrayList<User> users){
 
         userList = users;
         columns = Config.getColumnNamesUserTable();
@@ -56,7 +56,7 @@ public class UserTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int row, int column) {
 
-        Gamer user = userList.get(row);
+        User user = userList.get(row);
 
         switch (column){
 

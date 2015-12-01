@@ -2,11 +2,15 @@ package sdk;
 
 import com.sun.jersey.api.client.*;
 
+import javax.ws.rs.core.MultivaluedMap;
+
 /**
  * Generic methods to access the server. One for each of the following: get, post, put and delete. Will likewise be used
  * in a generic way in the Api class which will only take and receive Strings in json format.
  */
 public class ServerConnection {
+
+    private static MultivaluedMap<String, String> token;
 
     /**
      * get method. Receives a string with the path with which to get data from the server. Returns it in the message
@@ -21,8 +25,9 @@ public class ServerConnection {
 
         try {
 
+//            System.out.println(token.get("authorization").get(0));
             WebResource webResource = client.resource("http://" + Config.getIpAddress() + ":" + Config.getServerPort() + "/api/" + path);
-            ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
+            ClientResponse response = webResource.accept("application/json").header("authorization", token.get("authorization").get(0)).get(ClientResponse.class);
 
             if (response != null) {
 
@@ -58,6 +63,10 @@ public class ServerConnection {
             if (response != null) {
 
                 message = response.getEntity(String.class);
+
+                System.out.println(response.getHeaders().get("authorization") != null);
+                if (response.getHeaders().get("authorization") != null)
+                    token = response.getHeaders();
 
             }
 
