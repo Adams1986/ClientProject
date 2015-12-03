@@ -12,7 +12,7 @@ public class Api {
     /**
      * Authenticates a user passed in the parameter to see if user exists with username and password
      * @param currentUser
-     * @return String jsonData with info regarding success of login attempt
+     * @return String parsed message with info regarding success of login attempt
      */
     public static String authenticateLogin(User currentUser) {
 
@@ -20,12 +20,16 @@ public class Api {
 
         String dataReceived = ServerConnection.post(Config.getServerPathLogin(), sendingToServer);
 
-        return DataParser.parseLoginData(dataReceived, currentUser);
+        //setting the current users information
+        DataParser.setDecryptedUser(dataReceived, currentUser);
+
+        //returning message from server
+        return DataParser.parseMessage(dataReceived);
     }
 
     /**
      * Retrieves all users from the server and saves them in an arraylist
-     * @return ArrayList of all users/gamers
+     * @returns ArrayList of all users/gamers
      */
     public static ArrayList<User> getUsers(int userId) {
 
@@ -36,23 +40,24 @@ public class Api {
     }
 
     /**
-     * returns a single user from the user id, in a json string format
+     * Parses server response -> sets user -> return the message from server
      * @param user
      * @return
      */
     public static String getUser(User user){
 
         String dataReceived = ServerConnection.get(Config.getServerPathUser() + user.getId());
-        User temp = DataParser.getDecryptedUser(dataReceived);
 
-        if (temp != null) {
-            user.setId(temp.getId());
-            user.setUsername(temp.getUsername());
-        }
+        DataParser.setDecryptedUser(dataReceived, user);
 
         return DataParser.parseMessage(dataReceived);
     }
 
+    /**
+     *
+     * @param createNewUser
+     * @return
+     */
     public static String createUser(User createNewUser){
 
         String sendingToServer = DataParser.getEncryptedUser(createNewUser);
@@ -62,6 +67,11 @@ public class Api {
         return DataParser.parseMessage(dataReceived);
     }
 
+    /**
+     *
+     * @param newGame
+     * @return
+     */
     public static String createGame(Game newGame){
 
         String sendingToServer = DataParser.getEncryptedGame(newGame);
@@ -72,6 +82,11 @@ public class Api {
 
     }
 
+    /**
+     *
+     * @param game
+     * @return
+     */
     public static String joinGame(Game game){
 
         String sendingToServer = DataParser.getEncryptedGame(game);
@@ -81,7 +96,11 @@ public class Api {
         return DataParser.parseMessage(dataReceived);
     }
 
-
+    /**
+     *
+     * @param game
+     * @return
+     */
     public static String startGame(Game game) {
 
         String sendingToServer = DataParser.getEncryptedGame(game);
@@ -91,7 +110,11 @@ public class Api {
         return DataParser.parseMessage(dataReceived);
     }
 
-
+    /**
+     *
+     * @param gameId
+     * @return
+     */
     public static String deleteGame(int gameId) {
 
         String receivedData = ServerConnection.delete(Config.getServerPathGames() + gameId);
@@ -99,11 +122,22 @@ public class Api {
         return DataParser.parseMessage(receivedData);
     }
 
-    public static String getGame(int gameId){
+    /**
+     * TODO: change or delete
+     * @param gameId
+     * @return
+     */
+    public static Game getGame(int gameId){
 
-        return ServerConnection.get(Config.getServerPathGame() + gameId);
+        String receivedData =  ServerConnection.get(Config.getServerPathGame() + gameId);
+
+        return DataParser.getDecryptedGame(receivedData);
     }
 
+    /**
+     *
+     * @return
+     */
     public static ArrayList<Score> getHighScores(){
 
         String dataReceived = ServerConnection.get(Config.getServerPathHighScores());
@@ -111,15 +145,25 @@ public class Api {
         return DataParser.getDecryptedScoresList(dataReceived);
     }
 
+    /**
+     * //TODO change
+     * @param userId
+     * @return
+     */
+    public static ArrayList<Game> getGamesByUserID(int userId){
 
-    public static String getGamesByUserID(int userId){
+        String dataReceived = ServerConnection.get(Config.getServerPathGames());
 
-        return ServerConnection.get(Config.getServerPathGames());
+        return DataParser.getDecryptedGamesList(dataReceived);
 
-        //return new Gson().fromJson(jsonData, new TypeToken<ArrayList<Game>>(){}.getType());
     }
 
-
+    /**
+     *
+     * @param status
+     * @param userId
+     * @return
+     */
     public static ArrayList<Game> getGamesByStatusAndUserId(String status, int userId){
 
         String dataReceived = ServerConnection.get(Config.getServerPathGames() + status + userId);
@@ -128,8 +172,15 @@ public class Api {
         return DataParser.getDecryptedGamesList(dataReceived);
     }
 
-    public static String getScoresByUserId(int userId){
+    /**
+     * //TODO: change or delete
+     * @param userId
+     * @return
+     */
+    public static ArrayList<Score> getScoresByUserId(int userId){
 
-        return ServerConnection.get(Config.getServerPathScores() + userId);
+        String dataReceived = ServerConnection.get(Config.getServerPathScores() + userId);
+
+        return DataParser.getDecryptedScoresList(dataReceived);
     }
 }

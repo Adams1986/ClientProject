@@ -73,6 +73,7 @@ public class ReplaySnake extends JPanel {
 
         super.paintComponent(g);
 
+        //if this is set in controller, maybe panel can be added straight away to screen?
         tm.start();
         drawBoard(g);
         drawGameInfo(g, game);
