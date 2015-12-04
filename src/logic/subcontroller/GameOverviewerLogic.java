@@ -3,6 +3,7 @@ package logic.subcontroller;
 import gui.DialogMessage;
 import gui.Screen;
 import sdk.Api;
+import sdk.Config;
 import sdk.dto.Game;
 import sdk.dto.User;
 
@@ -21,31 +22,20 @@ public class GameOverviewerLogic {
         this.screen = screen;
     }
 
-    public Game showReplay(ActionListener l, int userId){
+    public Game showReplay(ActionListener l, Game replayGame, int userId, boolean isFromHighScorePanel){
 
-        Game replayGame = screen.getMainMenuPanel().getGameOverviewerPanel().getGame();
-
-        if (replayGame.getHost().getId() == userId ||
-                ( replayGame.getOpponent().getId() == userId && replayGame.getOpponent().getControls() != null ) ) {
+        if ( ( replayGame.getHost().getId() == userId ||
+                ( replayGame.getOpponent().getId() == userId && replayGame.getOpponent().getControls() != null ) )
+                || isFromHighScorePanel) {
 
             screen.getMainMenuPanel().addReplaySnakeToPanel(replayGame, l);
             screen.getMainMenuPanel().setSidePanelState(false);
+            System.out.println("in here");
         }
         
         else
-            DialogMessage.showMessage(screen, "As if! You have to play the game before you can watch a replay");
+            DialogMessage.showMessage(screen, Config.getNoPeakingOtherGamesText());
 
         return replayGame;
-    }
-
-
-    public ArrayList<Game> refreshTable(User currentUser){
-
-        String gameStatus = screen.getMainMenuPanel().getGameOverviewerPanel().getTypeOfGameChoice();
-        ArrayList<Game> games = Api.getGamesByStatusAndUserId(gameStatus, currentUser.getId());
-
-        screen.getMainMenuPanel().getGameOverviewerPanel().setGameTableModel(games);
-
-        return games;
     }
 }

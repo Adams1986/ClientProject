@@ -34,6 +34,26 @@ public class LoginLogic {
 
 
     /**
+     * Method resets state of client application -> logs out
+     */
+    public boolean logOut() {
+
+        boolean isAuthenticated = false;
+
+        screen.getMainMenuPanel().show(Config.getGameChooserScreen());
+        screen.show(Config.getLoginScreen());
+
+        setIsRunning(false);
+        screen.getMainMenuPanel().resetFields();
+
+        //
+        Api.resetToken();
+
+        return isAuthenticated;
+    }
+
+
+    /**
      * Starts a new thread that changes the top left hand corner information every 1250 millis
      * @param currentUser
      * @param messageFromServer

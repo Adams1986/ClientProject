@@ -1,7 +1,7 @@
 {
   "ipaddress3": "172.17.174.121",
-  "ipaddress": "localhost",
-  "ipaddress2": "192.168.1.40",
+  "ipaddress2": "localhost",
+  "ipaddress": "192.168.1.40",
   "ipaddress4": "192.168.1.53",
   "ipaddress1": "192.168.43.110",
   "serverport": 8888,
@@ -159,6 +159,7 @@
   "createuseremptyfields": "Please fill out all fields!",
   "openchallengestext": "Open challenges",
   "comboboxactioncommand": "combo box firing action",
-  "btnstopreplaytext": "End replay"
-
+  "btnstopreplaytext": "End replay",
+  "failedserverconnectiontext": "{\"message\":\"Connection to server failed\"}",
+  "nopeaking": "As if! You have to play the game before you can watch a replay"
 }

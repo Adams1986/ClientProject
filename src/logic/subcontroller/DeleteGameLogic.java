@@ -17,8 +17,11 @@ public class DeleteGameLogic {
 
     public String deleteGame() {
 
-        int gameId = screen.getMainMenuPanel().getDeleteGamePanel().getGameToDelete().getGameId();
+        if (screen.getMainMenuPanel().getDeleteGamePanel().getGameToDelete() != null) {
+            int gameId = screen.getMainMenuPanel().getDeleteGamePanel().getGameToDelete().getGameId();
 
-        return Api.deleteGame(gameId);
+            return Api.deleteGame(gameId);
+        }
+        return "";
     }
 }

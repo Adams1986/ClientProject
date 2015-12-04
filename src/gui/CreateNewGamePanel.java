@@ -15,6 +15,7 @@ import java.util.ArrayList;
  */
 public class CreateNewGamePanel extends JPanel {
 
+    private JButton btnRefresh;
     private JLabel headerLabel;
     private JButton btnSend;
     private JTable opponentTable;
@@ -31,7 +32,7 @@ public class CreateNewGamePanel extends JPanel {
 
         setLayout(null);
 
-        //headerLabel = new JLabel(Config.getCreateNewGameHeaderText());
+        btnRefresh = new JButton(Config.getBtnRefreshText());
         gameNameField = new JTextField();
         btnSend = new JButton(Config.getBtnSendText());
         mapSizeChooser = new JComboBox<>();
@@ -59,7 +60,10 @@ public class CreateNewGamePanel extends JPanel {
         mapSizeChooser.setBounds(Config.getDefaultXPosJComponent(), Config.getY10PosJComponent(),
                 Config.getDefaultWidthJComponent(), Config.getDefaultHeightJComponent());
 
-        openGame.setBounds(Config.getX1PosJComponent(), Config.getY8PosJComponent(),
+        openGame.setBounds(Config.getX1PosJComponent()-40, Config.getY8PosJComponent(),
+                Config.getDefaultWidthJComponent(), Config.getDefaultHeightJComponent());
+
+        btnRefresh.setBounds(Config.getX1PosJComponent(), Config.getY8PosJComponent(),
                 Config.getDefaultWidthJComponent(), Config.getDefaultHeightJComponent());
 
 
@@ -80,6 +84,7 @@ public class CreateNewGamePanel extends JPanel {
         setOpponentTableState(false);
 
         //adding components to the panel
+        add(btnRefresh);
         add(gameNameField);
         add(btnSend);
         add(scrollPane);
@@ -168,6 +173,7 @@ public class CreateNewGamePanel extends JPanel {
      */
     public void addActionListeners (ActionListener l){
 
+        btnRefresh.addActionListener(l);
         btnSend.addActionListener(l);
         openGame.addActionListener(l);
     }
@@ -190,5 +196,4 @@ public class CreateNewGamePanel extends JPanel {
         openGame.setSelected(true);
         setOpponentTableState(false);
     }
-
 }

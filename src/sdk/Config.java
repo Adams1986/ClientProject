@@ -8,6 +8,20 @@ import java.io.IOException;
 
 public class Config {
 
+    public static final int USERNAME = 0;
+    public static final int FIRST_NAME = 1;
+    public static final int LAST_NAME = 2;
+    public static final int TOTAL_SCORE = 3;
+    public static final int SCORE = 1;
+    public static final int GAME_NAME = 2;
+    public static final int GAME_ID = 3;
+    public static final int HOST = 0;
+    public static final int OPPONENT = 1;
+    public static final int GAME_STATUS = 3;
+    public static final int GAME_CREATED = 4;
+    public static final int WINNER_USERNAME = 5;
+    public static final int MAP_SIZE = 6;
+
     private static String hashingSalt;
     private static String encryptionkey;
 
@@ -158,6 +172,8 @@ public class Config {
     private static String createUserEmptyFieldsText;
     private static String comboBoxActionCommand;
     private static String btnStopReplayText;
+    private static String failedServerConnectionText;
+    private static String noPeakingOtherGamesText;
 
 
     public static void init () {
@@ -220,15 +236,15 @@ public class Config {
             setLogoutMessage((String) jsonObject.get("logoutmessage"));
             setLogoutTitle((String) jsonObject.get("logouttitle"));
 
-            getColumnNamesUserTable()[0] = (String) jsonObject.get("firstname");
-            getColumnNamesUserTable()[1] = (String) jsonObject.get("lastname");
-            getColumnNamesUserTable()[2] = (String) jsonObject.get("username");
+            getColumnNamesUserTable()[0] = (String) jsonObject.get("username");
+            getColumnNamesUserTable()[1] = (String) jsonObject.get("firstname");
+            getColumnNamesUserTable()[2] = (String) jsonObject.get("lastname");
             getColumnNamesUserTable()[3] = (String) jsonObject.get("totalscore");
 
             getColumnNameHighScoresTable()[0] = (String) jsonObject.get("username");
             getColumnNameHighScoresTable()[1] = (String) jsonObject.get("highscore");
-            getColumnNameHighScoresTable()[2] = (String) jsonObject.get("gameid");
-            getColumnNameHighScoresTable()[3] = (String) jsonObject.get("gamename");
+            getColumnNameHighScoresTable()[2] = (String) jsonObject.get("gamename");
+            getColumnNameHighScoresTable()[3] = (String) jsonObject.get("gameid");
 
             getColumnNamesGameTable()[0] = (String) jsonObject.get("challenger");
             getColumnNamesGameTable()[1] = (String) jsonObject.get("opponent");
@@ -363,6 +379,8 @@ public class Config {
             setCreateUserEmptyFieldsText((String) jsonObject.get("createuseremptyfields"));
             setComboBoxActionCommand((String) jsonObject.get("comboboxactioncommand"));
             setBtnStopReplayText((String) jsonObject.get("btnstopreplaytext"));
+            setFailedServerConnectionText((String) jsonObject.get("failedserverconnectiontext"));
+            setNoPeakingOtherGamesText((String) jsonObject.get("nopeaking"));
 
 
         } catch (org.json.simple.parser.ParseException e) {
@@ -1486,5 +1504,21 @@ public class Config {
 
     public static void setBtnStopReplayText(String btnStopReplayText) {
         Config.btnStopReplayText = btnStopReplayText;
+    }
+
+    public static String getFailedServerConnectionText() {
+        return failedServerConnectionText;
+    }
+
+    public static void setFailedServerConnectionText(String failedServerConnectionText) {
+        Config.failedServerConnectionText = failedServerConnectionText;
+    }
+
+    public static String getNoPeakingOtherGamesText() {
+        return noPeakingOtherGamesText;
+    }
+
+    public static void setNoPeakingOtherGamesText(String noPeakingOtherGamesText) {
+        Config.noPeakingOtherGamesText = noPeakingOtherGamesText;
     }
 }

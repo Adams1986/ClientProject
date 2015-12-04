@@ -118,18 +118,22 @@ public class ReplaySnake extends JPanel {
         if (game.getWinner().getUsername() != null) {
 
             if (game.getWinner().getId() == game.getHost().getId()) {
+
                 g.setColor(game.getHost().getSnakeColor());
             }
             else {
+
                 g.setColor(game.getOpponent().getSnakeColor());
             }
 
             g.drawString(game.getWinner().getUsername() + Config.getWinnerText(), Config.getDefaultXPosJComponent(), Config.getY10PosJComponent());
         }
         else if (game.getOpponent().getUsername() != null){
+
             g.drawString(Config.getGameTiedText(), Config.getDefaultXPosJComponent(), Config.getY10PosJComponent());
         }
         else {
+
             g.drawString(Config.getAwaitingOpponentText(), Config.getDefaultXPosJComponent(), Config.getY10PosJComponent());
         }
     }

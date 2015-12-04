@@ -43,35 +43,41 @@ public class UserTableModel extends AbstractTableModel {
     @Override
     public int getRowCount() {
 
-        numberOfRows = userList.size();
+        if (userList != null) {
+            numberOfRows = userList.size();
 
-        return numberOfRows;
+            return numberOfRows;
+        }
+        return 0;
     }
 
     @Override
     public int getColumnCount() {
+
         return columns.length;
     }
 
     @Override
     public Object getValueAt(int row, int column) {
 
-        User user = userList.get(row);
+        if (userList != null) {
+            User user = userList.get(row);
 
-        switch (column){
+            switch (column) {
 
-            case 0:
-                return user.getFirstName();
+                case Config.USERNAME:
+                    return user.getUsername();
 
-            case 1:
-                return user.getLastName();
+                case Config.FIRST_NAME:
+                    return user.getFirstName();
 
-            case 2:
-                return user.getUsername();
-            case 3:
-                return user.getTotalScore();
+                case Config.LAST_NAME:
+                    return user.getLastName();
+
+                case Config.TOTAL_SCORE:
+                    return user.getTotalScore();
+            }
         }
-
         return null;
     }
 

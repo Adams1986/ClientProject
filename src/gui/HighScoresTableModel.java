@@ -39,10 +39,13 @@ public class HighScoresTableModel extends AbstractTableModel {
     @Override
     public int getRowCount() {
 
-        numberOfRows
-                = highScores.size();
+        if (highScores != null) {
+            numberOfRows = highScores.size();
 
-        return numberOfRows;
+            return numberOfRows;
+        }
+
+        return 0;
     }
 
     @Override
@@ -53,23 +56,24 @@ public class HighScoresTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int row, int column) {
 
-        Score score = highScores.get(row);
+        if (highScores != null) {
+            Score score = highScores.get(row);
 
-        //TODO: change for better scaling?
-        switch (column){
+            //TODO: change for better scaling?
+            switch (column) {
 
-            case 0:
-                return score.getGame().getWinner().getUsername();
+                case Config.USERNAME:
+                    return score.getGame().getWinner().getUsername();
 
-            case 1:
-                return score.getScore();
+                case Config.SCORE:
+                    return score.getScore();
 
-            case 2:
-                return score.getGame().getGameId();
+                case Config.GAME_NAME:
+                    return score.getGame().getName();
 
-            case 3:
-                return score.getGame().getName();
-
+                case Config.GAME_ID:
+                    return score.getGame().getGameId();
+            }
         }
 
         return null;

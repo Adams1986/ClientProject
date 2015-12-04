@@ -39,9 +39,14 @@ public class GameTableModel extends AbstractTableModel {
     @Override
     public int getRowCount() {
 
-        numberOfRows = gameList.size();
+        if (gameList != null) {
 
-        return numberOfRows;
+            numberOfRows = gameList.size();
+
+            return numberOfRows;
+        }
+
+        return 0;
     }
 
     @Override
@@ -52,32 +57,33 @@ public class GameTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int row, int column) {
 
-        Game game = gameList.get(row);
+        if (gameList != null) {
+            Game game = gameList.get(row);
 
-        //TODO: change for better scaling?
-        switch (column){
+            switch (column) {
 
-            case 0:
-                return game.getHost().getUsername();
+                case Config.HOST:
+                    return game.getHost().getUsername();
 
-            case 1:
-                return game.getOpponent().getUsername();
+                case Config.OPPONENT:
+                    return game.getOpponent().getUsername();
 
-            case 2:
-                return game.getName();
+                case Config.GAME_NAME:
+                    return game.getName();
 
-            case 3:
-                return game.getStatus();
+                case Config.GAME_STATUS:
+                    return game.getStatus();
 
-            case 4:
-                return game.getCreated();
+                case Config.GAME_CREATED:
+                    return game.getCreated();
 
-            case 5:
-                return game.getWinner().getUsername();
+                case Config.WINNER_USERNAME:
+                    return game.getWinner().getUsername();
 
-            case 6:
-                return game.getMapSize();
+                case Config.MAP_SIZE:
+                    return game.getMapSize();
 
+            }
         }
 
         return null;
@@ -86,5 +92,10 @@ public class GameTableModel extends AbstractTableModel {
     public Game getGameFromTable(int row){
 
         return gameList.get(row);
+    }
+
+    public void removeGame(int row) {
+
+        gameList.remove(row);
     }
 }

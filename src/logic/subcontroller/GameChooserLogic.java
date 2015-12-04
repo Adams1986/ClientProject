@@ -29,6 +29,8 @@ public class GameChooserLogic {
             newGame = screen.getMainMenuPanel().getGameChooserPanel().getGame();
             newGame.getOpponent().setId(currentUser.getId());
 
+
+            screen.getMainMenuPanel().getGameChooserPanel().removeGameFromTable();
             screen.getMainMenuPanel().setSidePanelState(false);
 
         }

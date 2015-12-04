@@ -114,7 +114,11 @@ public class DataParser {
 
         Gson gson = new Gson();
         HashMap<String, String> jsonHashMap = gson.fromJson(jsonData, HashMap.class);
-        String encryptedUsers = jsonHashMap.get("data");
+        String encryptedUsers = "";
+
+        if (jsonHashMap != null){
+            encryptedUsers = jsonHashMap.get("data");
+        }
         String jsonUsers = Security.decrypt(encryptedUsers, Config.getEncryptionkey());
 
         return gson.fromJson(jsonUsers, new TypeToken<ArrayList<User>>(){}.getType());

@@ -22,12 +22,22 @@ public class ServerConnection {
 
         String message = "";
         Client client = Client.create();
+        String authorizationHeader = null;
 
         try {
 
+            if (token != null){
+
+                authorizationHeader = token.get("authorization").get(0);
+            }
+
 //            System.out.println(token.get("authorization").get(0));
             WebResource webResource = client.resource("http://" + Config.getIpAddress() + ":" + Config.getServerPort() + "/api/" + path);
-            ClientResponse response = webResource.accept("application/json").header("authorization", token.get("authorization").get(0)).get(ClientResponse.class);
+
+            ClientResponse response = webResource
+                    .accept("application/json")
+                    .header("authorization", authorizationHeader)
+                    .get(ClientResponse.class);
 
             if (response != null) {
 
@@ -36,7 +46,8 @@ public class ServerConnection {
             }
 
         } catch (ClientHandlerException e) {
-            e.printStackTrace();
+
+            message = Config.getFailedServerConnectionText();
         }
         return message;
     }
@@ -53,12 +64,21 @@ public class ServerConnection {
 
         String message = "";
         Client client = Client.create();
+        String authorizationHeader = null;
 
         try {
 
+            if (token != null){
+
+                authorizationHeader = token.get("authorization").get(0);
+            }
+
             WebResource webResource = client.resource("http://" + Config.getIpAddress() + ":" + Config.getServerPort() + "/api/" + path);
 
-            ClientResponse response = webResource.accept("application/json").post(ClientResponse.class, data);
+            ClientResponse response = webResource
+                    .accept("application/json")
+                    .header("authorization", authorizationHeader)
+                    .post(ClientResponse.class, data);
 
             if (response != null) {
 
@@ -72,7 +92,7 @@ public class ServerConnection {
 
         } catch (ClientHandlerException e) {
 
-            message = "{\"message\":\"Connection to server failed\"}";
+            message = Config.getFailedServerConnectionText();
         }
         return message;
     }
@@ -86,12 +106,21 @@ public class ServerConnection {
 
         String message = "";
         Client client = Client.create();
+        String authorizationHeader = null;
 
         try {
 
+            if (token != null){
+
+                authorizationHeader = token.get("authorization").get(0);
+            }
+
             WebResource webResource = client.resource("http://" + Config.getIpAddress() + ":" + Config.getServerPort() + "/api/" + path);
 
-            ClientResponse response = webResource.accept("application/json").delete(ClientResponse.class);
+            ClientResponse response = webResource
+                    .accept("application/json")
+                    .header("authorization", authorizationHeader)
+                    .delete(ClientResponse.class);
 
             if (response != null) {
 
@@ -99,7 +128,8 @@ public class ServerConnection {
 
             }
         } catch (ClientHandlerException e) {
-            e.printStackTrace();
+
+            message = Config.getFailedServerConnectionText();
         }
         return message;
     }
@@ -114,12 +144,20 @@ public class ServerConnection {
 
         String message = "";
         Client client = Client.create();
+        String authorizationHeader = null;
 
         try {
 
+            if (token != null){
+
+                authorizationHeader = token.get("authorization").get(0);
+            }
+
             WebResource webResource = client.resource("http://" + Config.getIpAddress() + ":" + Config.getServerPort() + "/api/" + path);
 
-            ClientResponse response = webResource.accept("application/json")
+            ClientResponse response = webResource
+                    .accept("application/json")
+                    .header("authorization", authorizationHeader)
                     .put(ClientResponse.class, data);
 
             if (response != null) {
@@ -129,8 +167,14 @@ public class ServerConnection {
             }
 
         } catch (ClientHandlerException e) {
-            e.printStackTrace();
+
+            message = Config.getFailedServerConnectionText();
         }
         return message;
+    }
+
+    public static void resetToken() {
+
+        token = null;
     }
 }

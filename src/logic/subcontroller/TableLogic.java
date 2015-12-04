@@ -3,7 +3,6 @@ package logic.subcontroller;
 import gui.Screen;
 import sdk.*;
 import sdk.dto.Game;
-import sdk.dto.Gamer;
 import sdk.dto.Score;
 import sdk.dto.User;
 
@@ -11,6 +10,11 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 
+/**
+ * Controller class that handles setting all the tables in the application. Combines array lists from the API calls
+ * with the tables/table models from the GUI.
+ * Only the
+ */
 public class TableLogic {
 
     private Screen screen;
@@ -23,14 +27,20 @@ public class TableLogic {
     public void setGameOverviewerTableModel(User currentUser){
 
         ArrayList<Game> games = Api.getGamesByStatusAndUserId(
-                screen.getMainMenuPanel().getGameOverviewerPanel().getTypeOfGameChoice(), currentUser.getId());
+                screen.getMainMenuPanel().getGameOverviewerPanel().getTypeOfGameChoice(), currentUser.getId() );
+
 
         screen.getMainMenuPanel().getGameOverviewerPanel().setGameTableModel(games);
     }
 
+    /**
+     * Users are an instansvariable as
+     * @param currentUser
+     */
     public void setUserTableModel(User currentUser){
 
         ArrayList<User> users = Api.getUsers(currentUser.getId());
+
         screen.getMainMenuPanel().getCreateNewGamePanel().setOpponentTableModel(users);
     }
 
@@ -41,10 +51,11 @@ public class TableLogic {
         screen.getMainMenuPanel().getDeleteGamePanel().setDeleteGameTableModel(games);
     }
 
-    //TODO: make instansvariabel for highScores, so they use the same data and moving panel is updated same time as
+
     public void setHighScoreTableModel() {
 
         ArrayList<Score> highScores = Api.getHighScores();
+
         screen.getMainMenuPanel().getHighScoresPanel().setHighScoreTableModel(highScores);
         screen.getMainMenuPanel().getHighScoresMovingPanel().setHighScores(highScores);
     }
@@ -52,18 +63,14 @@ public class TableLogic {
     public void setHighScoresMovingPanel(ActionListener l){
 
         ArrayList<Score> highScores = Api.getHighScores();
+
         screen.getMainMenuPanel().getNewInstanceOfHighScoresMovingPanel(highScores, l);
     }
 
     public void setGameChooserTableModel(User currentUser) {
 
-        ArrayList<Game> games;
-        games = Api.getGamesByStatusAndUserId(screen.getMainMenuPanel().getGameChooserPanel().getTypeOfGameChoice(), currentUser.getId());
-//        if (screen.getMainMenuPanel().getGameChooserPanel().getTypeOfGameChoice().equals(Config.getTypesOfGames()[Config.getIndexOne()]))
-//            //games = DataParser.getDecryptedGamesList(Api.getGamesInvitedByID(currentUser.getId()));
-//            games = DataParser.getDecryptedGamesList(Api.getGamesByStatusAndUserId(screen.getMainMenuPanel().getGameOverviewerPanel().getTypeOfGameChoice() + "/", currentUser.getId()));
-//        else
-//            games = DataParser.getDecryptedGamesList(Api.getGamesByStatusAndUserId(Config.getServerPathOpenGamesByOtherUsers(), currentUser.getId()));
+        ArrayList<Game> games = Api.getGamesByStatusAndUserId(
+                screen.getMainMenuPanel().getGameChooserPanel().getTypeOfGameChoice(), currentUser.getId() );
 
         screen.getMainMenuPanel().getGameChooserPanel().setGameTableModel(games);
     }

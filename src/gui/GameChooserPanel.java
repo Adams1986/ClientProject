@@ -20,6 +20,7 @@ public class GameChooserPanel extends JPanel {
     private JButton btnJoinSelectedGame;
     private JButton btnCreateNewGame;
     private JButton btnRefreshJTable;
+
     private JLabel gameChooserHeader;
     private JComboBox <String> gameType;
     private GameTableModel tableModel;
@@ -135,5 +136,14 @@ public class GameChooserPanel extends JPanel {
 
         gameType.setSelectedIndex(Config.getIndexOne());
 
+    }
+
+    public void setGameChooserHeader(String gameChooserHeader) {
+        this.gameChooserHeader.setText(gameChooserHeader);
+    }
+
+    public void removeGameFromTable(){
+
+        tableModel.removeGame(gamesToJoinTable.getSelectedRow());
     }
 }

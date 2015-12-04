@@ -28,8 +28,6 @@ public class HighScoresMovingPanel extends JPanel{
         y = Config.getStartYMovingPanel();
 
         tm.start();
-
-
     }
 
 
@@ -60,7 +58,7 @@ public class HighScoresMovingPanel extends JPanel{
             noThreeScore = highScores.get(Config.getIndexThree()).getScore();
 
         }
-        catch (IndexOutOfBoundsException e) {}
+        catch (IndexOutOfBoundsException | NullPointerException e) {}
 
         g.setColor(Color.GREEN);
         g.setFont(new Font(Config.getHeaderFont(), Font.BOLD, Config.getHSMovingTextSize()));

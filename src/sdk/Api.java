@@ -1,6 +1,8 @@
 package sdk;
 
 import sdk.dto.*;
+
+import javax.ws.rs.core.MultivaluedMap;
 import java.util.ArrayList;
 
 /**
@@ -33,8 +35,8 @@ public class Api {
      */
     public static ArrayList<User> getUsers(int userId) {
 
-//        String dataReceived = ServerConnection.get(Config.getServerPathUsers());
-        String dataReceived = ServerConnection.get(Config.getServerPathUsers() + userId);
+        String dataReceived = ServerConnection.get(Config.getServerPathUsers());
+//        String dataReceived = ServerConnection.get(Config.getServerPathUsers() + userId);
 
         return DataParser.getDecryptedUserList(dataReceived);
     }
@@ -182,5 +184,10 @@ public class Api {
         String dataReceived = ServerConnection.get(Config.getServerPathScores() + userId);
 
         return DataParser.getDecryptedScoresList(dataReceived);
+    }
+
+    public static void resetToken() {
+
+        ServerConnection.resetToken();
     }
 }

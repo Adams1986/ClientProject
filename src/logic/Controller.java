@@ -15,7 +15,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 /**
- * Created by ADI on 24-10-2015.
+ * Class contains the implementation of the action- and item listeners to handle button events etc. Furthermore it combines
+ * the action- and item events with the subcontrollers, thereby combining the UI and the SDK.
  */
 public class Controller {
 
@@ -33,11 +34,12 @@ public class Controller {
     private DeleteGameLogic deleteGameLogic;
     private GameOverviewerLogic gameOverviewerLogic;
     private GameChooserLogic gameChooserLogic;
-    private GameEngineLogic gameEngineLogic;
+    private CreateGameLogic createGameLogic;
     private CreateUserLogic createUserLogic;
     private boolean isAuthenticated;
 
 
+    //creating instances of gui (screen), sub controllers and the current user
     public Controller(){
 
         screen = new Screen();
@@ -46,7 +48,7 @@ public class Controller {
         deleteGameLogic = new DeleteGameLogic(screen);
         gameOverviewerLogic = new GameOverviewerLogic(screen);
         gameChooserLogic = new GameChooserLogic(screen);
-        gameEngineLogic = new GameEngineLogic(screen);
+        createGameLogic = new CreateGameLogic(screen);
         createUserLogic = new CreateUserLogic(screen);
 
         //instantiating the currentUser object, which will be used to the logged on state in the client
@@ -68,6 +70,7 @@ public class Controller {
         screen.getMainMenuPanel().getGameChooserPanel().addActionListeners(new GameChooserHandlerClass());
         screen.getMainMenuPanel().getDeleteGamePanel().addActionListeners(new DeleteGameHandlerClass());
         screen.getMainMenuPanel().getGameOverviewerPanel().addActionListeners(new GameOverviewerHandlerClass());
+        screen.getMainMenuPanel().getHighScoresPanel().addActionListeners(new HighScoresHandlerClass());
 
         //injection of item listeners for the combo boxes
         screen.getMainMenuPanel().getGameChooserPanel().addItemListeners(new GameChooserHandlerClass());
@@ -82,6 +85,8 @@ public class Controller {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+
+            System.out.println(currentUser.getUsername());
 
 
             if (e.getActionCommand().equals(Config.getBtnLoginText())) {
@@ -99,7 +104,8 @@ public class Controller {
                     //setting user info.
                     loginLogic.setUserInfo(currentUser, message);
 
-                    tableLogic.setGameOverviewerTableModel(currentUser);
+                    //setting tables for welcome screen
+                    tableLogic.setUserTableModel(currentUser);
                     tableLogic.setGameChooserTableModel(currentUser);
                     tableLogic.setHighScoresMovingPanel(new MovingHighScoresHandlerClass());
                 }
@@ -136,32 +142,31 @@ public class Controller {
 
                 screen.getMainMenuPanel().show(Config.getHighScoresScreen());
                 tableLogic.setHighScoreTableModel();
-
             }
             else if (e.getActionCommand().equals(Config.getBtnDeleteGameText())) {
 
                 screen.getMainMenuPanel().show(Config.getDeleteGameScreen());
                 tableLogic.setGamesToDeleteTableModel(currentUser);
-
             }
             else if (e.getActionCommand().equals(Config.getBtnLogoutText())) {
 
                 if (DialogMessage.showConfirmMessage(screen, Config.getLogoutMessage(), Config.getLogoutTitle())) {
 
-                    screen.getMainMenuPanel().show(Config.getGameChooserScreen());
-                    screen.show(Config.getLoginScreen());
+                    isAuthenticated = loginLogic.logOut();
 
-                    isAuthenticated = false;
                     //'resetting' current user object when logging out
                     currentUser = new User();
 
-                    loginLogic.setIsRunning(false);
-                    screen.getMainMenuPanel().resetFields();
+                    System.out.println(currentUser.getUsername());
+                    System.out.println(isAuthenticated);
                 }
             }
         }
     }
 
+    /**
+     * Inner class that handles what to do when client attempts to create a new user
+     */
     private class CreateUserHandlerClass implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -172,7 +177,8 @@ public class Controller {
 
                 if (!message.equals(Config.getConfirmedUserCreationText())) {
 
-                } else
+                }
+                else
                     screen.getCreateUserPanel().clearFields();
             }
             else if (e.getActionCommand().equals(Config.getBtnBackToLoginText())) {
@@ -181,6 +187,10 @@ public class Controller {
         }
     }
 
+    /**
+     * Implementation of key binding instead of keylistener. Inner class registers keyboard input and sets direction
+     * of the snake accordingly
+     */
     private class SnakeEngineKeyBindingHandlerClass extends AbstractAction {
 
         public SnakeEngineKeyBindingHandlerClass(String text){
@@ -211,20 +221,26 @@ public class Controller {
     }
 
     /**
-     * Inner class that handles whether to draw snake or stop drawing and create a new game.
+     * Inner class that handles whether to draw snake or stop drawing and create the game.
      */
     private class SnakeEngineDrawClass implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            String message = gameEngineLogic.draw(newGame);
+            String message = createGameLogic.draw(newGame);
 
             if (message != null) {
-                //tableLogic.setGameChooserTableModel(currentUser);
-                //tableLogic.setGameOverviewerTableModel(currentUser);
+
                 DialogMessage.showMessage(screen, message);
                 screen.getMainMenuPanel().show(Config.getGameChooserScreen());
+
+
+                //starting new thread where client tries to create game ten times if server connection has failed
+                if (message.equals("Connection to server failed")){
+
+                    createGameLogic.saveGameInCache(newGame);
+                }
             }
 
         }
@@ -242,9 +258,12 @@ public class Controller {
             screen.getMainMenuPanel().getCreateNewGamePanel().setOpponentTableState(
                     !screen.getMainMenuPanel().getCreateNewGamePanel().getOpenGameChoice());
 
-            if (e.getActionCommand().equals(Config.getBtnSendText())) {
+            if (e.getActionCommand().equals(Config.getBtnRefreshText())){
 
-                //TODO: move shit to subcontroller
+                tableLogic.setUserTableModel(currentUser);
+            }
+            else if (e.getActionCommand().equals(Config.getBtnSendText())) {
+
                 try {
                     newGame = new Game();
 
@@ -292,6 +311,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Class handles how to show replays in client.
+     */
     private class ReplaySnakeHandlerClass implements ActionListener {
 
         int counter = Config.getCount();
@@ -336,6 +358,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Handles events from the GameChooserPanel to start the snake game engine so user can play a game on the client app
+     */
     private class GameChooserHandlerClass implements ActionListener, ItemListener {
 
         @Override
@@ -361,7 +386,6 @@ public class Controller {
             }
             else if (e.getActionCommand().equals(Config.getBtnCreateNewGameText())){
 
-                tableLogic.setUserTableModel(currentUser);
                 screen.getMainMenuPanel().show(Config.getCreateNewGameScreen());
             }
             else if (e.getActionCommand().equals(Config.getBtnRefreshText())){
@@ -370,14 +394,22 @@ public class Controller {
             }
         }
 
+        /**
+         * Item listener fro the combo box. method uses table logic sub controller to set what to show in the tables
+         * @param e
+         */
         @Override
         public void itemStateChanged(ItemEvent e) {
             
             if (e.getStateChange() == ItemEvent.SELECTED && isAuthenticated)
+
                 tableLogic.setGameChooserTableModel(currentUser);
         }
     }
 
+    /**
+     * Takes care of the logic of how to delete a game.
+     */
     private class DeleteGameHandlerClass implements ActionListener {
 
         @Override
@@ -399,6 +431,10 @@ public class Controller {
         }
     }
 
+    /**
+     * Class instantiates the replayer. The gameOverviewerLogic method - show replay returns the selected game which
+     * will be used in the replay handler class
+     */
     private class GameOverviewerHandlerClass implements ActionListener, ItemListener {
 
 
@@ -409,8 +445,8 @@ public class Controller {
             if (e.getActionCommand().equals(Config.getBtnReplayText())){
 
                 try {
-
-                    replayGame = gameOverviewerLogic.showReplay(new ReplaySnakeHandlerClass(), currentUser.getId());
+                    replayGame = screen.getMainMenuPanel().getGameOverviewerPanel().getGame();
+                    replayGame = gameOverviewerLogic.showReplay(new ReplaySnakeHandlerClass(), replayGame, currentUser.getId(), false);
                 }
                 catch (IndexOutOfBoundsException e2){
 
@@ -425,6 +461,10 @@ public class Controller {
             }
         }
 
+        /**
+         * Item listener for the combo box
+         * @param e
+         */
         @Override
         public void itemStateChanged(ItemEvent e) {
 
@@ -456,6 +496,26 @@ public class Controller {
             }
 
             screen.getMainMenuPanel().getHighScoresMovingPanel().repaint();
+        }
+    }
+
+    private class HighScoresHandlerClass implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            try {
+                replayGame = screen.getMainMenuPanel().getHighScoresPanel().getGameFromHighScore();
+
+                replayGame = gameOverviewerLogic.showReplay(
+                        new ReplaySnakeHandlerClass(), replayGame, currentUser.getId(), true );
+
+            }
+            catch (IndexOutOfBoundsException e2){
+
+                DialogMessage.showMessage(screen, Config.getMissingGameSelectionText());
+                screen.getMainMenuPanel().setSidePanelState(true);
+            }
         }
     }
 }
