@@ -56,7 +56,7 @@ public class Api {
     }
 
     /**
-     *
+     * Connects to servers API for creating a user. Uses the server connection class' post method to send data
      * @param createNewUser
      * @return
      */
@@ -70,7 +70,7 @@ public class Api {
     }
 
     /**
-     *
+     * Method is used to create a new game. Can be either an open or pending (another user was invited) game.
      * @param newGame
      * @return
      */
@@ -85,7 +85,7 @@ public class Api {
     }
 
     /**
-     *
+     * Method is used to join an existing game which is open
      * @param game
      * @return
      */
@@ -99,7 +99,7 @@ public class Api {
     }
 
     /**
-     *
+     * Method is used to play a game. Either after joining an open game or if player was invited by another player
      * @param game
      * @return
      */
@@ -113,7 +113,8 @@ public class Api {
     }
 
     /**
-     *
+     * Will be used to delete a game, if the user wishes to do so. Method will be combined with an array list of games
+     * that are either open or pending, not finished!
      * @param gameId
      * @return
      */
@@ -126,6 +127,7 @@ public class Api {
 
     /**
      * TODO: change or delete
+     * Method can be used to get a single game from the server
      * @param gameId
      * @return
      */
@@ -137,7 +139,7 @@ public class Api {
     }
 
     /**
-     *
+     * Method is used to get the top 15 high scores from the server.
      * @return
      */
     public static ArrayList<Score> getHighScores(){
@@ -149,19 +151,21 @@ public class Api {
 
     /**
      * //TODO change
+     * Can be used for returning a list of games from a user
      * @param userId
      * @return
      */
     public static ArrayList<Game> getGamesByUserID(int userId){
 
-        String dataReceived = ServerConnection.get(Config.getServerPathGames());
+        String dataReceived = ServerConnection.get(Config.getServerPathGames() + userId);
 
         return DataParser.getDecryptedGamesList(dataReceived);
 
     }
 
     /**
-     *
+     * This is a very flexible method that can return a whole range of different lists of games. Will be used in a number
+     * of different ways, e.g. for the Game overviewer to see all users different types of games and statuses
      * @param status
      * @param userId
      * @return
@@ -176,6 +180,7 @@ public class Api {
 
     /**
      * //TODO: change or delete
+     * Gets scores for a user
      * @param userId
      * @return
      */
@@ -186,6 +191,10 @@ public class Api {
         return DataParser.getDecryptedScoresList(dataReceived);
     }
 
+    /**
+     * Resets the JWT token. To be used when logging out so the token isn't stored in the cache before a new user attempts
+     * to log on.
+     */
     public static void resetToken() {
 
         ServerConnection.resetToken();

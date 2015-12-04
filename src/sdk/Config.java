@@ -6,6 +6,9 @@ import org.json.simple.parser.JSONParser;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * The config class. Contain all or almost all variables used in the application, that do not come from the server itself
+ */
 public class Config {
 
     public static final int USERNAME = 0;
@@ -174,6 +177,7 @@ public class Config {
     private static String btnStopReplayText;
     private static String failedServerConnectionText;
     private static String noPeakingOtherGamesText;
+    private static String totalScoreText;
 
 
     public static void init () {
@@ -381,6 +385,7 @@ public class Config {
             setBtnStopReplayText((String) jsonObject.get("btnstopreplaytext"));
             setFailedServerConnectionText((String) jsonObject.get("failedserverconnectiontext"));
             setNoPeakingOtherGamesText((String) jsonObject.get("nopeaking"));
+            setTotalScoreText((String) jsonObject.get("totalscoretext"));
 
 
         } catch (org.json.simple.parser.ParseException e) {
@@ -1520,5 +1525,13 @@ public class Config {
 
     public static void setNoPeakingOtherGamesText(String noPeakingOtherGamesText) {
         Config.noPeakingOtherGamesText = noPeakingOtherGamesText;
+    }
+
+    public static String getTotalScoreText() {
+        return totalScoreText;
+    }
+
+    public static void setTotalScoreText(String totalScoreText) {
+        Config.totalScoreText = totalScoreText;
     }
 }

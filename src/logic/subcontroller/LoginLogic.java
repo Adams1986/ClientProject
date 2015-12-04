@@ -67,6 +67,7 @@ public class LoginLogic {
 
                 //integer determining which set of information to show
                 int showInfo = 0;
+                //setting boolean to true to start running the while loop
                 setIsRunning(true);
                 screen.getMainMenuPanel().setWelcomeMessage(messageFromServer);
 
@@ -101,8 +102,8 @@ public class LoginLogic {
                                 break;
                             //showing the total score the user has.
                             case 4:
-                                screen.getMainMenuPanel().setWelcomeMessage("Total score: ");
-                                screen.getMainMenuPanel().setInfoMessage(currentUser.getTotalScore()+"");
+                                screen.getMainMenuPanel().setWelcomeMessage(Config.getTotalScoreText());
+                                screen.getMainMenuPanel().setInfoMessage(Integer.toString(currentUser.getTotalScore()));
                                 showInfo = 0;
                                 break;
                         }

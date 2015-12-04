@@ -156,9 +156,6 @@ public class Controller {
 
                     //'resetting' current user object when logging out
                     currentUser = new User();
-
-                    System.out.println(currentUser.getUsername());
-                    System.out.println(isAuthenticated);
                 }
             }
         }
@@ -175,14 +172,14 @@ public class Controller {
 
                 String message = createUserLogic.create();
 
-                if (!message.equals(Config.getConfirmedUserCreationText())) {
-
-                }
-                else
+                if (message.equals(Config.getConfirmedUserCreationText())) {
                     screen.getCreateUserPanel().clearFields();
+                }
             }
             else if (e.getActionCommand().equals(Config.getBtnBackToLoginText())) {
+
                 screen.show(Config.getLoginScreen());
+                screen.getCreateUserPanel().clearFields();
             }
         }
     }
@@ -235,7 +232,6 @@ public class Controller {
                 DialogMessage.showMessage(screen, message);
                 screen.getMainMenuPanel().show(Config.getGameChooserScreen());
 
-
                 //starting new thread where client tries to create game ten times if server connection has failed
                 if (message.equals("Connection to server failed")){
 
@@ -256,7 +252,7 @@ public class Controller {
 
             //enable table whenever the open game check box is not selected
             screen.getMainMenuPanel().getCreateNewGamePanel().setOpponentTableState(
-                    !screen.getMainMenuPanel().getCreateNewGamePanel().getOpenGameChoice());
+                    !screen.getMainMenuPanel().getCreateNewGamePanel().getOpenGameChoice() );
 
             if (e.getActionCommand().equals(Config.getBtnRefreshText())){
 
@@ -268,6 +264,7 @@ public class Controller {
                     newGame = new Game();
 
                     if (!screen.getMainMenuPanel().getCreateNewGamePanel().getGameNameText().equals(Config.getClearField())) {
+
                         newGame.setName(screen.getMainMenuPanel().getCreateNewGamePanel().getGameNameText());
 
                         Gamer host = new Gamer();
@@ -277,6 +274,7 @@ public class Controller {
 
                         //only sets opponent if open game is not checked. Api makes sure to create game accordingly
                         if (!screen.getMainMenuPanel().getCreateNewGamePanel().getOpenGameChoice()) {
+
                             opponent.setId(screen.getMainMenuPanel().getCreateNewGamePanel().getOpponent().getId());
                             newGame.setOpponent(opponent);
                         }
@@ -299,13 +297,14 @@ public class Controller {
                         screen.getMainMenuPanel().setSidePanelState(false);
                     }
                     else {
-                        JOptionPane.showMessageDialog(screen, Config.getMissingGameNameText());
+
+                        DialogMessage.showMessage(screen, Config.getMissingGameNameText());
                         screen.getMainMenuPanel().getCreateNewGamePanel().requestFocusGameNameField();
                     }
 
                 } catch (ArrayIndexOutOfBoundsException e2) {
                     e2.printStackTrace();
-                    JOptionPane.showMessageDialog(screen, Config.getMissingOpponentText());
+                    DialogMessage.showMessage(screen, Config.getMissingOpponentText());
                 }
             }
         }
@@ -347,7 +346,6 @@ public class Controller {
             if(isAnimationDone){
 
                 screen.getMainMenuPanel().getReplaySnake().setGameHasEnded(true);
-                //screen.getMainMenuPanel().getReplaySnake().stopTimer();
                 screen.getMainMenuPanel().setSidePanelState(true);
                 counter = Config.getCount();
             }
@@ -453,7 +451,6 @@ public class Controller {
                     DialogMessage.showMessage(screen, Config.getMissingGameSelectionText());
                     screen.getMainMenuPanel().setSidePanelState(true);
                 }
-
             }
             else if (e.getActionCommand().equals(Config.getBtnRefreshText())){
 
@@ -485,7 +482,7 @@ public class Controller {
         public void actionPerformed(ActionEvent e) {
 
             //As long as the high scores are visible the y-coordinates will be incremented by 1
-            if (screen.getMainMenuPanel().getHighScoresMovingPanel().getYCoord() < Config.getY4PosJComponent()) {
+            if ( screen.getMainMenuPanel().getHighScoresMovingPanel().getYCoord() < Config.getY4PosJComponent() ) {
 
                 screen.getMainMenuPanel().getHighScoresMovingPanel().setYCoord(
                         screen.getMainMenuPanel().getHighScoresMovingPanel().getYCoord() + 1);

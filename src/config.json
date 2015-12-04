@@ -161,5 +161,6 @@
   "comboboxactioncommand": "combo box firing action",
   "btnstopreplaytext": "End replay",
   "failedserverconnectiontext": "{\"message\":\"Connection to server failed\"}",
-  "nopeaking": "As if! You have to play the game before you can watch a replay"
+  "nopeaking": "As if! You have to play the game before you can watch a replay",
+  "totalscoretext": "Total score: "
 }

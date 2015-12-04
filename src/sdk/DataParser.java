@@ -19,6 +19,11 @@ import java.util.HashMap;
 //TODO remove hardcoding from class. Plus major clean up needed!
 public class DataParser {
 
+    /**
+     * Parses a string into a hash map and returns the value with the key 'message'
+     * @param dataToBeParsed
+     * @return
+     */
     public static String parseMessage(String dataToBeParsed){
 
         HashMap<String, String> mapWithData = new Gson().fromJson(dataToBeParsed, HashMap.class);
@@ -28,6 +33,7 @@ public class DataParser {
     }
 
     //Method overload to create a method that sets the id for a user. Used for the login API.
+    //TODO: as it is not used atm
     public static String parseMessage(String dataToBeParsed, User user){
 
         JSONParser jsonParser = new JSONParser();
@@ -50,16 +56,23 @@ public class DataParser {
         return message;
     }
 
+    /**
+     * Method takes a user DTO and a string. Gets a user object from the encrypted to from the hash map and sets a
+     * number of values in the user object that was passed into the method.
+     * @param dataToBeParsed
+     * @param user
+     */
     public static void setDecryptedUser(String dataToBeParsed, User user){
 
         //Issue with json, as it reads/converts ints to doubles, so little workaround to get the userid with gson lib
-        //HashMap<String, Double> mapWithUserId = gson.fromJson(dataToBeParsed, HashMap.class);
         HashMap<String, String> mapWithData = new Gson().fromJson(dataToBeParsed, HashMap.class);
         String encryptedData = mapWithData.get("data");
 
         if (encryptedData != null) {
 
+            //creating temp user from data
             User temp = getDecryptedUser(encryptedData);
+            //setting values to the user object that was passed in params
             user.setId(temp.getId());
             user.setFirstName(temp.getFirstName());
             user.setLastName(temp.getLastName());
@@ -68,6 +81,11 @@ public class DataParser {
         }
     }
 
+    /**
+     * Takes a user object and returns it as an encrypted JSON string
+     * @param user
+     * @return
+     */
     public static String getEncryptedUser(User user){
 
         HashMap<String, String> encryptedDto = new HashMap<>();
@@ -76,6 +94,11 @@ public class DataParser {
         return new Gson().toJson(encryptedDto);
     }
 
+    /**
+     * Takes a string of json and decrypts it to a user object
+     * @param jsonData
+     * @return
+     */
     public static User getDecryptedUser(String jsonData){
 
         Gson gson = new Gson();
@@ -88,6 +111,11 @@ public class DataParser {
 
     }
 
+    /**
+     * Decrypts a game object
+     * @param jsonData
+     * @return
+     */
     public static Game getDecryptedGame(String jsonData){
 
         Gson gson = new Gson();
@@ -99,6 +127,11 @@ public class DataParser {
 
     }
 
+    /**
+     * Decrypts a score object
+     * @param jsonData
+     * @return
+     */
     public static Score getDecryptedScore(String jsonData){
 
         Gson gson = new Gson();
@@ -110,6 +143,11 @@ public class DataParser {
 
     }
 
+    /**
+     * Creates a array list from the encrypted string that is passed to it
+     * @param jsonData
+     * @return
+     */
     public static ArrayList<User> getDecryptedUserList(String jsonData){
 
         Gson gson = new Gson();
@@ -122,21 +160,28 @@ public class DataParser {
         String jsonUsers = Security.decrypt(encryptedUsers, Config.getEncryptionkey());
 
         return gson.fromJson(jsonUsers, new TypeToken<ArrayList<User>>(){}.getType());
-
     }
 
+    /**
+     *
+     * @param jsonData
+     * @returns a list of games objects
+     */
     public static ArrayList<Game> getDecryptedGamesList(String jsonData) {
 
-        //TODO: encrypt on server
         Gson gson = new Gson();
         HashMap<String, String> jsonHashMap = gson.fromJson(jsonData, HashMap.class);
         String encryptedGames = jsonHashMap.get("data");
         String jsonGames = Security.decrypt(encryptedGames, Config.getEncryptionkey());
 
         return gson.fromJson(jsonGames, new TypeToken<ArrayList<Game>>(){}.getType());
-        //return gson.fromJson(jsonData, new TypeToken<ArrayList<Game>>(){}.getType());
     }
 
+    /**
+     * Takes a game object and returns it as an encrypted json string
+     * @param game
+     * @return
+     */
     public static String getEncryptedGame(Game game) {
 
         HashMap<String, String> encryptedDto = new HashMap<>();
@@ -144,9 +189,13 @@ public class DataParser {
         encryptedDto.put("data", encryptedGame);
 
         return new Gson().toJson(encryptedDto);
-        //return new Gson().toJson(game);
     }
 
+    /**
+     * Decrypts a list of score objects from a json string
+     * @param jsonData
+     * @return
+     */
     public static ArrayList<Score> getDecryptedScoresList(String jsonData) {
 
         Gson gson = new Gson();
@@ -155,6 +204,5 @@ public class DataParser {
         String jsonScores = Security.decrypt(encryptedScores, Config.getEncryptionkey());
 
         return gson.fromJson(jsonScores, new TypeToken<ArrayList<Score>>(){}.getType());
-        //return gson.fromJson(jsonData, new TypeToken<ArrayList<Score>>(){}.getType());
     }
 }

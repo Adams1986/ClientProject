@@ -10,7 +10,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
- * The Main menu. Is a customised panel which contains the view of the clients main menu
+ * The Main menu. Is a customised panel which contains the view of the clients main menu. Combines a lot of the other
+ * custom panels from the GUI package. Also contains JButtons for easy navigation no matter where in menu you are
  */
 public class MainMenuPanel extends JPanel{
 
@@ -99,6 +100,11 @@ public class MainMenuPanel extends JPanel{
         add(centerPanel);
     }
 
+    /**
+     * Adds the panel for showing top three high scores when called.
+     * @param highScores
+     * @param l
+     */
     public void getNewInstanceOfHighScoresMovingPanel(ArrayList<Score> highScores, ActionListener l){
 
         highScoresMovingPanel = new HighScoresMovingPanel(highScores, l);
@@ -108,6 +114,10 @@ public class MainMenuPanel extends JPanel{
         sidePanel.add(highScoresMovingPanel);
     }
 
+    /**
+     * Method sets up easy and flexible changes in text appearance for possible changes depending on preferences by user
+     * @param f
+     */
     public void setFonts(Font f){
 
         welcomeLabel.setFont(f);
@@ -119,6 +129,11 @@ public class MainMenuPanel extends JPanel{
         highScoresPanel.setFonts(f);
     }
 
+    /**
+     * Method sets up easy and flexible changes in textcolor for possible changes in appearances for the user to
+     * change depending on preferences
+     * @param c
+     */
     public void setTextColor(Color c){
 
         welcomeLabel.setForeground(c);
@@ -131,6 +146,11 @@ public class MainMenuPanel extends JPanel{
         highScoresPanel.setTextColor(c);
     }
 
+    /**
+     * Method sets up easy and flexible changes in background layout for possible changes in appearances for the user to
+     * change depending on preferences
+     * @param c
+     */
     public void setBackgroundColor(Color c){
 
         setBackground(c);
@@ -247,6 +267,9 @@ public class MainMenuPanel extends JPanel{
     }
 
 
+    /**
+     * Resets all fields to 'clean' state of client before a new user logs on
+     */
     public void resetFields(){
 
         createNewGamePanel.resetFields();

@@ -9,16 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by ADI on 31-10-2015.
+ * Template table model for showing users in a JTable
  */
 public class UserTableModel extends AbstractTableModel {
 
     private List<User> userList;
     private int numberOfRows;
     private String [] columns;
-//    private static final int FIRST_NAME = Config.getIndexOne();
-//    private static final int LAST_NAME = Config.getIndexTwo();
-//    private static final int USERNAME = Config.getIndexThree();
 
     public UserTableModel (ArrayList<User> users){
 
@@ -27,7 +24,6 @@ public class UserTableModel extends AbstractTableModel {
 
         fireTableStructureChanged();
     }
-
 
 
     @Override
@@ -81,6 +77,11 @@ public class UserTableModel extends AbstractTableModel {
         return null;
     }
 
+    /**
+     * Makes it possible to returns a user object from the table which implements this template
+     * @param row
+     * @return
+     */
     public User getUserFromTable(int row){
 
         return userList.get(row);

@@ -19,7 +19,12 @@ public class GameChooserLogic {
         this.screen = screen;
     }
 
-    //TODO: join game api call? how would that work?
+    /**
+     * returns a selected game from the game chooser panel and removes it 'manually' instead of needing to call server API
+     * for new list
+     * @param currentUser
+     * @return
+     */
     public Game joinGame(User currentUser) {
 
         Game newGame = null;
@@ -31,6 +36,7 @@ public class GameChooserLogic {
 
 
             screen.getMainMenuPanel().getGameChooserPanel().removeGameFromTable();
+            //disabling sidepanel to start game activity
             screen.getMainMenuPanel().setSidePanelState(false);
 
         }

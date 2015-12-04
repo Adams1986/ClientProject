@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
- * Created by ADI on 15-11-2015.
+ * Logic sub controller which handles instantiating replays
  */
 public class GameOverviewerLogic {
 
@@ -22,15 +22,24 @@ public class GameOverviewerLogic {
         this.screen = screen;
     }
 
+    /**
+     * Takes care of showing replays of already played games. Takes a lot of parameters...
+     * @param l
+     * @param replayGame
+     * @param userId
+     * @param isFromHighScorePanel
+     * @return
+     */
     public Game showReplay(ActionListener l, Game replayGame, int userId, boolean isFromHighScorePanel){
 
+        //checking to see if the current users id is either the same as host id, or same as opponent id and is not null
+        //added small extra check with boolean to allow highscores to show all the highest scoring games
         if ( ( replayGame.getHost().getId() == userId ||
                 ( replayGame.getOpponent().getId() == userId && replayGame.getOpponent().getControls() != null ) )
                 || isFromHighScorePanel) {
 
             screen.getMainMenuPanel().addReplaySnakeToPanel(replayGame, l);
             screen.getMainMenuPanel().setSidePanelState(false);
-            System.out.println("in here");
         }
         
         else
