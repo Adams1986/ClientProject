@@ -15,9 +15,11 @@ public class Config {
     public static final int FIRST_NAME = 1;
     public static final int LAST_NAME = 2;
     public static final int TOTAL_SCORE = 3;
+
     public static final int SCORE = 1;
     public static final int GAME_NAME = 2;
     public static final int GAME_ID = 3;
+
     public static final int HOST = 0;
     public static final int OPPONENT = 1;
     public static final int GAME_STATUS = 3;
@@ -181,6 +183,9 @@ public class Config {
     private static String tokenHeaderKey;
     private static String dataKey;
     private static String communicationFormat;
+    private static String headerDataKey;
+    private static String serverPathGamesById;
+    private static String serverPathScoresById;
 
 
     public static void init () {
@@ -392,6 +397,9 @@ public class Config {
             setTokenHeaderKey((String) jsonObject.get("tokenheaderkey"));
             setDataKey((String) jsonObject.get("datakey"));
             setCommunicationFormat((String) jsonObject.get("communicationformat"));
+            setHeaderDataKey((String) jsonObject.get("headerdatakey"));
+            setServerPathGamesById((String) jsonObject.get("serverpathgamesbyid"));
+            setServerPathScoresById((String) jsonObject.get("serverpathscoresbyid"));
 
         } catch (org.json.simple.parser.ParseException e) {
             e.printStackTrace();
@@ -1562,5 +1570,29 @@ public class Config {
 
     public static void setCommunicationFormat(String communicationFormat) {
         Config.communicationFormat = communicationFormat;
+    }
+
+    public static String getHeaderDataKey() {
+        return headerDataKey;
+    }
+
+    public static void setHeaderDataKey(String headerDataKey) {
+        Config.headerDataKey = headerDataKey;
+    }
+
+    public static String getServerPathGamesById() {
+        return serverPathGamesById;
+    }
+
+    public static void setServerPathGamesById(String serverPathGamesById) {
+        Config.serverPathGamesById = serverPathGamesById;
+    }
+
+    public static String getServerPathScoresById() {
+        return serverPathScoresById;
+    }
+
+    public static void setServerPathScoresById(String serverPathScoresById) {
+        Config.serverPathScoresById = serverPathScoresById;
     }
 }

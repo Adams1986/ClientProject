@@ -57,6 +57,14 @@ public class Screen extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * used to navigate betweenn login and menu screens
+     * @param card
+     */
+    public void show(String card){
+        cl.show(clPanel, card);
+    }
+
     public void setFonts(Font f){
 
         mainMenuPanel.setFonts(f);
@@ -84,21 +92,10 @@ public class Screen extends JFrame {
         loginPanel.setBackground(c);
     }
 
-    /**
-     * get method to call on login panels methods from logic
-     * @return
-     */
+    //Getters and setters for the three 'outer'panels
     public LoginPanel getLoginPanel(){
 
         return loginPanel;
-    }
-
-    /**
-     * used to navigate betweenn login and menu screens
-     * @param card
-     */
-    public void show(String card){
-        cl.show(clPanel, card);
     }
 
     public MainMenuPanel getMainMenuPanel() {

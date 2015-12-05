@@ -24,10 +24,10 @@ public class TableLogic {
         this.screen = screen;
     }
 
-    public void setGameOverviewerTableModel(User currentUser){
+    public void setGameOverviewerTableModel(int userId){
 
         ArrayList<Game> games = Api.getGamesByStatusAndUserId(
-                screen.getMainMenuPanel().getGameOverviewerPanel().getTypeOfGameChoice(), currentUser.getId() );
+                screen.getMainMenuPanel().getGameOverviewerPanel().getTypeOfGameChoice(), userId);
 
 
         screen.getMainMenuPanel().getGameOverviewerPanel().setGameTableModel(games);
@@ -35,18 +35,17 @@ public class TableLogic {
 
     /**
      * Users are an instansvariable as
-     * @param currentUser
      */
-    public void setUserTableModel(User currentUser){
+    public void setUserTableModel(int userId){
 
-        ArrayList<User> users = Api.getUsers(currentUser.getId());
+        ArrayList<User> users = Api.getUsers(userId);
 
         screen.getMainMenuPanel().getCreateNewGamePanel().setOpponentTableModel(users);
     }
 
-    public void setGamesToDeleteTableModel(User currentUser){
+    public void setGamesToDeleteTableModel(int userId){
 
-        ArrayList<Game> games = Api.getGamesByStatusAndUserId(Config.getServerPathOpenAndPendingGamesById(), currentUser.getId());
+        ArrayList<Game> games = Api.getGamesByStatusAndUserId(Config.getServerPathOpenAndPendingGamesById(), userId);
 
         screen.getMainMenuPanel().getDeleteGamePanel().setDeleteGameTableModel(games);
     }
@@ -67,10 +66,10 @@ public class TableLogic {
         screen.getMainMenuPanel().getNewInstanceOfHighScoresMovingPanel(highScores, l);
     }
 
-    public void setGameChooserTableModel(User currentUser) {
+    public void setGameChooserTableModel(int userId) {
 
         ArrayList<Game> games = Api.getGamesByStatusAndUserId(
-                screen.getMainMenuPanel().getGameChooserPanel().getTypeOfGameChoice(), currentUser.getId() );
+                screen.getMainMenuPanel().getGameChooserPanel().getTypeOfGameChoice(), userId);
 
         screen.getMainMenuPanel().getGameChooserPanel().setGameTableModel(games);
     }

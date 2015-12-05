@@ -18,7 +18,7 @@ public class ServerConnection {
      * @param path
      * @return
      */
-    public static String get (String path) {
+    public static String get (String path, String headerData) {
 
         String message = "";
         Client client = Client.create();
@@ -37,6 +37,7 @@ public class ServerConnection {
             ClientResponse response = webResource
                     .accept(Config.getCommunicationFormat())
                     .header(Config.getTokenHeaderKey(), authorizationHeader)
+                    .header(Config.getHeaderDataKey(), headerData)
                     .get(ClientResponse.class);
 
             if (response != null) {
@@ -102,7 +103,7 @@ public class ServerConnection {
      * @param path
      * @return
      */
-    public static String delete(String path){
+    public static String delete(String path, String headerData){
 
         String message = "";
         Client client = Client.create();
@@ -120,6 +121,7 @@ public class ServerConnection {
             ClientResponse response = webResource
                     .accept(Config.getCommunicationFormat())
                     .header(Config.getTokenHeaderKey(), authorizationHeader)
+                    .header(Config.getHeaderDataKey(), headerData)
                     .delete(ClientResponse.class);
 
             if (response != null) {

@@ -2,7 +2,6 @@ package sdk;
 
 import sdk.dto.*;
 
-import javax.ws.rs.core.MultivaluedMap;
 import java.util.ArrayList;
 
 /**
@@ -35,8 +34,8 @@ public class Api {
      */
     public static ArrayList<User> getUsers(int userId) {
 
-        String dataReceived = ServerConnection.get(Config.getServerPathUsers());
-//        String dataReceived = ServerConnection.get(Config.getServerPathUsers() + userId);
+//        String dataReceived = ServerConnection.get(Config.getServerPathUsers(), Config.getClearField());
+        String dataReceived = ServerConnection.get(Config.getServerPathUsers(), Integer.toString(userId));
 
         return DataParser.getDecryptedUserList(dataReceived);
     }
@@ -48,7 +47,7 @@ public class Api {
      */
     public static String getUser(User user){
 
-        String dataReceived = ServerConnection.get(Config.getServerPathUser() + user.getId());
+        String dataReceived = ServerConnection.get(Config.getServerPathUser(), Integer.toString(user.getId()));
 
         DataParser.setDecryptedUser(dataReceived, user);
 
@@ -120,7 +119,7 @@ public class Api {
      */
     public static String deleteGame(int gameId) {
 
-        String receivedData = ServerConnection.delete(Config.getServerPathGames() + gameId);
+        String receivedData = ServerConnection.delete(Config.getServerPathGames(), Integer.toString(gameId));
 
         return DataParser.parseMessage(receivedData);
     }
@@ -133,7 +132,7 @@ public class Api {
      */
     public static Game getGame(int gameId){
 
-        String receivedData =  ServerConnection.get(Config.getServerPathGame() + gameId);
+        String receivedData =  ServerConnection.get(Config.getServerPathGame(), Integer.toString(gameId));
 
         return DataParser.getDecryptedGame(receivedData);
     }
@@ -144,7 +143,7 @@ public class Api {
      */
     public static ArrayList<Score> getHighScores(){
 
-        String dataReceived = ServerConnection.get(Config.getServerPathHighScores());
+        String dataReceived = ServerConnection.get(Config.getServerPathHighScores(), Config.getClearField());
 
         return DataParser.getDecryptedScoresList(dataReceived);
     }
@@ -152,12 +151,11 @@ public class Api {
     /**
      * //TODO change
      * Can be used for returning a list of games from a user
-     * @param userId
      * @return
      */
-    public static ArrayList<Game> getGamesByUserID(int userId){
+    public static ArrayList<Game> getGamesByUserID(){
 
-        String dataReceived = ServerConnection.get(Config.getServerPathGames() + userId);
+        String dataReceived = ServerConnection.get(Config.getServerPathGamesById(), Config.getClearField());
 
         return DataParser.getDecryptedGamesList(dataReceived);
 
@@ -167,12 +165,16 @@ public class Api {
      * This is a very flexible method that can return a whole range of different lists of games. Will be used in a number
      * of different ways, e.g. for the Game overviewer to see all users different types of games and statuses
      * @param status
-     * @param userId
      * @return
      */
-    public static ArrayList<Game> getGamesByStatusAndUserId(String status, int userId){
+    public static ArrayList<Game> getGamesByStatusAndUserId(String status, int userid){
 
-        String dataReceived = ServerConnection.get(Config.getServerPathGames() + status + userId);
+//        status = DataParser.encryptMessage(status);
+//        System.out.println(status);
+//        status = Security.decrypt(status, Config.getEncryptionkey());
+//        System.out.println(status);
+        String formattedData = DataParser.getFormattedDataToSend(status, userid);
+        String dataReceived = ServerConnection.get(Config.getServerPathGames(), formattedData);
 
         //returning the games list
         return DataParser.getDecryptedGamesList(dataReceived);
@@ -181,12 +183,11 @@ public class Api {
     /**
      * //TODO: change or delete
      * Gets scores for a user
-     * @param userId
      * @return
      */
-    public static ArrayList<Score> getScoresByUserId(int userId){
+    public static ArrayList<Score> getScoresByUserId(){
 
-        String dataReceived = ServerConnection.get(Config.getServerPathScores() + userId);
+        String dataReceived = ServerConnection.get(Config.getServerPathScoresById(), Config.getClearField());
 
         return DataParser.getDecryptedScoresList(dataReceived);
     }

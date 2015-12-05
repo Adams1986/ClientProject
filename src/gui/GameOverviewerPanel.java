@@ -70,7 +70,7 @@ public class GameOverviewerPanel extends JPanel {
 
         String selectedItem = (String) gameType.getSelectedItem();
         //TODO check if works with added forwardslash
-        return selectedItem.replace(" ", "_")+"/";
+        return selectedItem.replace(" ", "_");
     }
 
     public void setFonts(Font f){

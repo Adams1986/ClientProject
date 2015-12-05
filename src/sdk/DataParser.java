@@ -56,6 +56,11 @@ public class DataParser {
         return message;
     }
 
+    public static String encryptMessage(String dataToBeEncrypted){
+
+        return Security.encrypt(dataToBeEncrypted, Config.getEncryptionkey());
+    }
+
     /**
      * Method takes a user DTO and a string. Gets a user object from the encrypted to from the hash map and sets a
      * number of values in the user object that was passed into the method.
@@ -204,5 +209,10 @@ public class DataParser {
         String jsonScores = Security.decrypt(encryptedScores, Config.getEncryptionkey());
 
         return gson.fromJson(jsonScores, new TypeToken<ArrayList<Score>>(){}.getType());
+    }
+
+    public static String getFormattedDataToSend(String s, int i){
+
+        return s + "---" + i;
     }
 }

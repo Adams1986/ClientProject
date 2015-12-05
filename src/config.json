@@ -150,11 +150,13 @@
   "welcometext": "Welcome ",
   "serverpathpendinggamesid": "pending/",
   "serverpathopengamesid": "openbyid/",
+  "serverpathgamesbyid": "games/userid/",
+  "serverpathscoresbyid": "scores/userid/",
   "serverpathfinishedgamesid": "finished/",
   "hsmovingtextsize": 16,
   "startymovingpanel": -100,
   "delaymovingpanel": 40,
-  "serverpathopenandpending": "Open_and_pending/",
+  "serverpathopenandpending": "Open_and_pending",
   "serverpathopenfromotherusers": "openfromotherusers/",
   "createuseremptyfields": "Please fill out all fields!",
   "openchallengestext": "Open challenges",
@@ -165,5 +167,6 @@
   "totalscoretext": "Total score: ",
   "tokenheaderkey": "authorization",
   "communicationformat": "application/json",
-  "datakey": "data"
+  "datakey": "data",
+  "headerdatakey": "headerData"
 }

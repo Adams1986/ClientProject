@@ -105,8 +105,8 @@ public class Controller {
                     loginLogic.setUserInfo(currentUser, message);
 
                     //setting tables for welcome screen
-                    tableLogic.setUserTableModel(currentUser);
-                    tableLogic.setGameChooserTableModel(currentUser);
+                    tableLogic.setUserTableModel(currentUser.getId());
+                    tableLogic.setGameChooserTableModel(currentUser.getId());
                     tableLogic.setHighScoresMovingPanel(new MovingHighScoresHandlerClass());
                 }
                 else {
@@ -136,7 +136,7 @@ public class Controller {
             else if (e.getActionCommand().equals(Config.getBtnWatchReplayText())) {
 
                 screen.getMainMenuPanel().show(Config.getGameOverviewerScreen());
-                tableLogic.setGameOverviewerTableModel(currentUser);
+                tableLogic.setGameOverviewerTableModel(currentUser.getId());
             }
             else if (e.getActionCommand().equals(Config.getBtnShowHighScoreText())) {
 
@@ -146,7 +146,7 @@ public class Controller {
             else if (e.getActionCommand().equals(Config.getBtnDeleteGameText())) {
 
                 screen.getMainMenuPanel().show(Config.getDeleteGameScreen());
-                tableLogic.setGamesToDeleteTableModel(currentUser);
+                tableLogic.setGamesToDeleteTableModel(currentUser.getId());
             }
             else if (e.getActionCommand().equals(Config.getBtnLogoutText())) {
 
@@ -256,7 +256,7 @@ public class Controller {
 
             if (e.getActionCommand().equals(Config.getBtnRefreshText())){
 
-                tableLogic.setUserTableModel(currentUser);
+                tableLogic.setUserTableModel(currentUser.getId());
             }
             else if (e.getActionCommand().equals(Config.getBtnSendText())) {
 
@@ -388,7 +388,7 @@ public class Controller {
             }
             else if (e.getActionCommand().equals(Config.getBtnRefreshText())){
 
-                tableLogic.setGameChooserTableModel(currentUser);
+                tableLogic.setGameChooserTableModel(currentUser.getId());
             }
         }
 
@@ -401,7 +401,7 @@ public class Controller {
             
             if (e.getStateChange() == ItemEvent.SELECTED && isAuthenticated)
 
-                tableLogic.setGameChooserTableModel(currentUser);
+                tableLogic.setGameChooserTableModel(currentUser.getId());
         }
     }
 
@@ -416,9 +416,18 @@ public class Controller {
             if (DialogMessage.showConfirmMessage(screen, Config.getBtnDeleteText(), Config.getBtnDeleteGameText())) {
 
                 try {
-                    DialogMessage.showMessage(screen, deleteGameLogic.deleteGame());
 
-                    tableLogic.setGamesToDeleteTableModel(currentUser);
+                    String message = deleteGameLogic.deleteGame();
+                    DialogMessage.showMessage(screen, message);
+
+                    if (!message.equals("Your session has expired. Please login again")) {
+
+                        tableLogic.setGamesToDeleteTableModel(currentUser.getId());
+                    }
+                    else {
+                        loginLogic.logOut();
+                        currentUser = new User();
+                    }
                 }
                 //Catch the missing selection and prompt the user
                 catch (IndexOutOfBoundsException e2) {
@@ -454,7 +463,7 @@ public class Controller {
             }
             else if (e.getActionCommand().equals(Config.getBtnRefreshText())){
 
-                tableLogic.setGameOverviewerTableModel(currentUser);
+                tableLogic.setGameOverviewerTableModel(currentUser.getId());
             }
         }
 
@@ -467,7 +476,7 @@ public class Controller {
 
             //using boolean isAuthenticated to prevent server call when logging out of client and combo box is reset
             if (e.getStateChange() == ItemEvent.SELECTED && isAuthenticated)
-                tableLogic.setGameOverviewerTableModel(currentUser);
+                tableLogic.setGameOverviewerTableModel(currentUser.getId());
         }
     }
 

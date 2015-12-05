@@ -3,10 +3,10 @@ package sdk;
 import sun.misc.BASE64Encoder;
 import sun.misc.BASE64Decoder;
 /**
- * This class contains methods which returns either a hashed or
+ * This class contains methods which returns an
  * encrypted/decrypted string from a string argument
  * @author Team Depardieu
- * Usage: security.hashing(String), security.encrypt(String message, String key),
+ * Usage: security.encrypt(String message, String key),
  * security.decrypt(String message, String key)
  */
 public class Security {

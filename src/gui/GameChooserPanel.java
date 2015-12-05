@@ -85,7 +85,7 @@ public class GameChooserPanel extends JPanel {
     public String getTypeOfGameChoice (){
 
         String selectedItem = (String) gameType.getSelectedItem();
-        return selectedItem.replace(" ", "_")+ "/";
+        return selectedItem.replace(" ", "_");
     }
 
     public void setFonts(Font f){
