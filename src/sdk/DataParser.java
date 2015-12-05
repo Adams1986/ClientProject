@@ -66,7 +66,7 @@ public class DataParser {
 
         //Issue with json, as it reads/converts ints to doubles, so little workaround to get the userid with gson lib
         HashMap<String, String> mapWithData = new Gson().fromJson(dataToBeParsed, HashMap.class);
-        String encryptedData = mapWithData.get("data");
+        String encryptedData = mapWithData.get(Config.getDataKey());
 
         if (encryptedData != null) {
 
@@ -89,7 +89,7 @@ public class DataParser {
     public static String getEncryptedUser(User user){
 
         HashMap<String, String> encryptedDto = new HashMap<>();
-        encryptedDto.put("data", Security.encrypt(new Gson().toJson(user), Config.getEncryptionkey()));
+        encryptedDto.put(Config.getDataKey(), Security.encrypt(new Gson().toJson(user), Config.getEncryptionkey()));
 
         return new Gson().toJson(encryptedDto);
     }
@@ -103,7 +103,7 @@ public class DataParser {
 
         Gson gson = new Gson();
         HashMap<String, String> jsonHashMap = gson.fromJson(jsonData, HashMap.class);
-        String encryptedUser = jsonHashMap.get("data");
+        String encryptedUser = jsonHashMap.get(Config.getDataKey());
         String jsonUser = Security.decrypt(encryptedUser, Config.getEncryptionkey());
         System.out.println(jsonUser);
 
@@ -120,7 +120,7 @@ public class DataParser {
 
         Gson gson = new Gson();
         HashMap<String, String> jsonHashMap = gson.fromJson(jsonData, HashMap.class);
-        String encryptedUser = jsonHashMap.get("data");
+        String encryptedUser = jsonHashMap.get(Config.getDataKey());
         String jsonUser = Security.decrypt(encryptedUser, Config.getEncryptionkey());
 
         return gson.fromJson(jsonUser, Game.class);
@@ -136,7 +136,7 @@ public class DataParser {
 
         Gson gson = new Gson();
         HashMap<String, String> jsonHashMap = gson.fromJson(jsonData, HashMap.class);
-        String encryptedUser = jsonHashMap.get("data");
+        String encryptedUser = jsonHashMap.get(Config.getDataKey());
         String jsonUser = Security.decrypt(encryptedUser, Config.getEncryptionkey());
 
         return gson.fromJson(jsonUser, Score.class);
@@ -155,7 +155,7 @@ public class DataParser {
         String encryptedUsers = "";
 
         if (jsonHashMap != null){
-            encryptedUsers = jsonHashMap.get("data");
+            encryptedUsers = jsonHashMap.get(Config.getDataKey());
         }
         String jsonUsers = Security.decrypt(encryptedUsers, Config.getEncryptionkey());
 
@@ -171,7 +171,7 @@ public class DataParser {
 
         Gson gson = new Gson();
         HashMap<String, String> jsonHashMap = gson.fromJson(jsonData, HashMap.class);
-        String encryptedGames = jsonHashMap.get("data");
+        String encryptedGames = jsonHashMap.get(Config.getDataKey());
         String jsonGames = Security.decrypt(encryptedGames, Config.getEncryptionkey());
 
         return gson.fromJson(jsonGames, new TypeToken<ArrayList<Game>>(){}.getType());
@@ -186,7 +186,7 @@ public class DataParser {
 
         HashMap<String, String> encryptedDto = new HashMap<>();
         String encryptedGame = Security.encrypt(new Gson().toJson(game), Config.getEncryptionkey());
-        encryptedDto.put("data", encryptedGame);
+        encryptedDto.put(Config.getDataKey(), encryptedGame);
 
         return new Gson().toJson(encryptedDto);
     }
@@ -200,7 +200,7 @@ public class DataParser {
 
         Gson gson = new Gson();
         HashMap<String, String> jsonHashMap = gson.fromJson(jsonData, HashMap.class);
-        String encryptedScores = jsonHashMap.get("data");
+        String encryptedScores = jsonHashMap.get(Config.getDataKey());
         String jsonScores = Security.decrypt(encryptedScores, Config.getEncryptionkey());
 
         return gson.fromJson(jsonScores, new TypeToken<ArrayList<Score>>(){}.getType());

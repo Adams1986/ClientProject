@@ -178,6 +178,9 @@ public class Config {
     private static String failedServerConnectionText;
     private static String noPeakingOtherGamesText;
     private static String totalScoreText;
+    private static String tokenHeaderKey;
+    private static String dataKey;
+    private static String communicationFormat;
 
 
     public static void init () {
@@ -386,7 +389,9 @@ public class Config {
             setFailedServerConnectionText((String) jsonObject.get("failedserverconnectiontext"));
             setNoPeakingOtherGamesText((String) jsonObject.get("nopeaking"));
             setTotalScoreText((String) jsonObject.get("totalscoretext"));
-
+            setTokenHeaderKey((String) jsonObject.get("tokenheaderkey"));
+            setDataKey((String) jsonObject.get("datakey"));
+            setCommunicationFormat((String) jsonObject.get("communicationformat"));
 
         } catch (org.json.simple.parser.ParseException e) {
             e.printStackTrace();
@@ -1533,5 +1538,29 @@ public class Config {
 
     public static void setTotalScoreText(String totalScoreText) {
         Config.totalScoreText = totalScoreText;
+    }
+
+    public static String getTokenHeaderKey() {
+        return tokenHeaderKey;
+    }
+
+    public static void setTokenHeaderKey(String tokenHeaderKey) {
+        Config.tokenHeaderKey = tokenHeaderKey;
+    }
+
+    public static String getDataKey() {
+        return dataKey;
+    }
+
+    public static void setDataKey(String dataKey) {
+        Config.dataKey = dataKey;
+    }
+
+    public static String getCommunicationFormat() {
+        return communicationFormat;
+    }
+
+    public static void setCommunicationFormat(String communicationFormat) {
+        Config.communicationFormat = communicationFormat;
     }
 }

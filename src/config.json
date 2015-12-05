@@ -162,5 +162,8 @@
   "btnstopreplaytext": "End replay",
   "failedserverconnectiontext": "{\"message\":\"Connection to server failed\"}",
   "nopeaking": "As if! You have to play the game before you can watch a replay",
-  "totalscoretext": "Total score: "
+  "totalscoretext": "Total score: ",
+  "tokenheaderkey": "authorization",
+  "communicationformat": "application/json",
+  "datakey": "data"
 }

@@ -28,15 +28,15 @@ public class ServerConnection {
 
             if (token != null){
 
-                authorizationHeader = token.get("authorization").get(0);
+                authorizationHeader = token.get(Config.getTokenHeaderKey()).get(Config.getIndexOne());
             }
 
 //            System.out.println(token.get("authorization").get(0));
             WebResource webResource = client.resource("http://" + Config.getIpAddress() + ":" + Config.getServerPort() + "/api/" + path);
 
             ClientResponse response = webResource
-                    .accept("application/json")
-                    .header("authorization", authorizationHeader)
+                    .accept(Config.getCommunicationFormat())
+                    .header(Config.getTokenHeaderKey(), authorizationHeader)
                     .get(ClientResponse.class);
 
             if (response != null) {
@@ -70,22 +70,22 @@ public class ServerConnection {
 
             if (token != null){
 
-                authorizationHeader = token.get("authorization").get(0);
+                authorizationHeader = token.get(Config.getTokenHeaderKey()).get(0);
             }
 
             WebResource webResource = client.resource("http://" + Config.getIpAddress() + ":" + Config.getServerPort() + "/api/" + path);
 
             ClientResponse response = webResource
-                    .accept("application/json")
-                    .header("authorization", authorizationHeader)
+                    .accept(Config.getCommunicationFormat())
+                    .header(Config.getTokenHeaderKey(), authorizationHeader)
                     .post(ClientResponse.class, data);
 
             if (response != null) {
 
                 message = response.getEntity(String.class);
 
-                System.out.println(response.getHeaders().get("authorization") != null);
-                if (response.getHeaders().get("authorization") != null)
+                System.out.println(response.getHeaders().get(Config.getTokenHeaderKey()) != null);
+                if (response.getHeaders().get(Config.getTokenHeaderKey()) != null)
                     token = response.getHeaders();
 
             }
@@ -112,14 +112,14 @@ public class ServerConnection {
 
             if (token != null){
 
-                authorizationHeader = token.get("authorization").get(0);
+                authorizationHeader = token.get(Config.getTokenHeaderKey()).get(Config.getIndexOne());
             }
 
             WebResource webResource = client.resource("http://" + Config.getIpAddress() + ":" + Config.getServerPort() + "/api/" + path);
 
             ClientResponse response = webResource
-                    .accept("application/json")
-                    .header("authorization", authorizationHeader)
+                    .accept(Config.getCommunicationFormat())
+                    .header(Config.getTokenHeaderKey(), authorizationHeader)
                     .delete(ClientResponse.class);
 
             if (response != null) {
@@ -150,14 +150,14 @@ public class ServerConnection {
 
             if (token != null){
 
-                authorizationHeader = token.get("authorization").get(0);
+                authorizationHeader = token.get(Config.getTokenHeaderKey()).get(Config.getIndexOne());
             }
 
             WebResource webResource = client.resource("http://" + Config.getIpAddress() + ":" + Config.getServerPort() + "/api/" + path);
 
             ClientResponse response = webResource
-                    .accept("application/json")
-                    .header("authorization", authorizationHeader)
+                    .accept(Config.getCommunicationFormat())
+                    .header(Config.getTokenHeaderKey(), authorizationHeader)
                     .put(ClientResponse.class, data);
 
             if (response != null) {
