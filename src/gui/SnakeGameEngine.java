@@ -86,19 +86,7 @@ public class SnakeGameEngine extends JPanel {
         drawBoard(g);
         drawSnake(g);
 
-        if (gameEnded) {
-
-            //drawMessage(g);
-        }
-
     }
-
-//    private void drawMessage(Graphics g) {
-//
-//        g.setColor(Color.CYAN);
-//        g.setFont(new Font("Sans Serif", Font.BOLD, 20));
-//        g.drawString("Hello there", 40, 500);
-//    }
 
 
 

@@ -108,6 +108,9 @@ public class Controller {
                     tableLogic.setUserTableModel(currentUser.getId());
                     tableLogic.setGameChooserTableModel(currentUser.getId());
                     tableLogic.setHighScoresMovingPanel(new MovingHighScoresHandlerClass());
+
+                    //reset info label from login panel
+                    screen.getLoginPanel().resetLoginInfoLabel();
                 }
                 else {
                     screen.getLoginPanel().setFailedLoginAttempt(message);
@@ -152,10 +155,9 @@ public class Controller {
 
                 if (DialogMessage.showConfirmMessage(screen, Config.getLogoutMessage(), Config.getLogoutTitle())) {
 
-                    isAuthenticated = loginLogic.logOut();
-
                     //'resetting' current user object when logging out
                     currentUser = new User();
+                    isAuthenticated = loginLogic.logOut();
                 }
             }
         }
@@ -399,7 +401,7 @@ public class Controller {
         @Override
         public void itemStateChanged(ItemEvent e) {
             
-            if (e.getStateChange() == ItemEvent.SELECTED && isAuthenticated)
+            if (e.getStateChange() == ItemEvent.SELECTED && currentUser.getUsername() != null)
 
                 tableLogic.setGameChooserTableModel(currentUser.getId());
         }
@@ -425,12 +427,12 @@ public class Controller {
                         tableLogic.setGamesToDeleteTableModel(currentUser.getId());
                     }
                     else {
-                        loginLogic.logOut();
                         currentUser = new User();
+                        isAuthenticated = loginLogic.logOut();
                     }
                 }
                 //Catch the missing selection and prompt the user
-                catch (IndexOutOfBoundsException e2) {
+                catch (IndexOutOfBoundsException | NullPointerException e2) {
 
                     DialogMessage.showMessage(screen, Config.getMissingGameSelectionText());
                 }
@@ -475,7 +477,7 @@ public class Controller {
         public void itemStateChanged(ItemEvent e) {
 
             //using boolean isAuthenticated to prevent server call when logging out of client and combo box is reset
-            if (e.getStateChange() == ItemEvent.SELECTED && isAuthenticated)
+            if (e.getStateChange() == ItemEvent.SELECTED && currentUser.getUsername() != null)
                 tableLogic.setGameOverviewerTableModel(currentUser.getId());
         }
     }

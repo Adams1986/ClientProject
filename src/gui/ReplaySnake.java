@@ -128,7 +128,7 @@ public class ReplaySnake extends JPanel {
 
             g.drawString(game.getWinner().getUsername() + Config.getWinnerText(), Config.getDefaultXPosJComponent(), Config.getY10PosJComponent());
         }
-        else if (game.getOpponent().getUsername() != null){
+        else if (game.getWinner().getUsername() != null){
 
             g.drawString(Config.getGameTiedText(), Config.getDefaultXPosJComponent(), Config.getY10PosJComponent());
         }

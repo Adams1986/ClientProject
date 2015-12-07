@@ -103,7 +103,7 @@ public class CreateGameLogic {
                         }
                         if (!messageFromServer.equals("Connection to server failed")){
 
-                            tryToCreateGame = 10;
+                            tryToCreateGame = 11;
                         }
                         else {
 
@@ -114,11 +114,13 @@ public class CreateGameLogic {
                         }
                         else {
                             failMessage = "Resending game, attempt: " + tryToCreateGame + "/10";
+
+                            if (tryToCreateGame < 11)
                             screen.getMainMenuPanel().getGameChooserPanel().setGameChooserHeader(failMessage);
                         }
                     }
                     Thread.sleep(3500);
-                    if (failMessage.equals("Resending game, attempt: 10/10")) {
+                    if (tryToCreateGame != 11) {
                         DialogMessage.showMessage(screen, "Failed to send your game");
                     }
                     else {

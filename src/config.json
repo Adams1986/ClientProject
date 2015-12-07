@@ -5,7 +5,6 @@
   "ipaddress4": "192.168.1.53",
   "ipaddress1": "192.168.43.110",
   "serverport": 8888,
-  "serverport1": 9998,
   "hashingsalt": "123456",
   "encryptionkey": "123456",
   "up": "w",

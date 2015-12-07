@@ -4,7 +4,6 @@ import sdk.Config;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
@@ -28,6 +27,7 @@ public class LoginPanel extends JPanel{
 
         setLayout(null);
 
+        //instantiating components
         infoLabel = new JLabel(Config.getLoginInfoLabelText());
         usernameField = new JTextField();
         passwordField = new JPasswordField();
@@ -36,9 +36,8 @@ public class LoginPanel extends JPanel{
         depardieu = new ImageIcon(Config.getDepardieuImagePath());
         iconLabel = new JLabel(depardieu);
 
-        btnLogin.setOpaque(true);
-        btnLogin.setBackground(Color.GREEN);
 
+        //setting position of components
         infoLabel.setBounds(Config.getDefaultXPosJComponent(), Config.getY1PosJComponent(),
                 Config.getWidth2JComponent()    , Config.getDefaultHeightJComponent());
 
@@ -57,6 +56,7 @@ public class LoginPanel extends JPanel{
         iconLabel.setBounds(Config.getX2PosJComponent(), Config.getY3PosJComponent(),
                 Config.getDepardieuWidth(), Config.getDepardieuHeight());
 
+        //adding to the panel
         add(infoLabel);
         add(usernameField);
         add(passwordField);
@@ -75,6 +75,11 @@ public class LoginPanel extends JPanel{
         infoLabel.setForeground(c);
     }
 
+    /**
+     * Method to be used in the controller to inject the action listener and thereby allowing controller to handle
+     * events
+     * @param l
+     */
     public void addActionListeners(ActionListener l) {
 
         btnLogin.addActionListener(l);
@@ -87,18 +92,34 @@ public class LoginPanel extends JPanel{
         passwordField.setText(Config.getClearField());
     }
 
+    /**
+     * @returns users input in the username text field
+     */
     public String getUsernameInput() {
 
         return usernameField.getText();
     }
 
+    /**
+     *
+     * @returns users input in the password field
+     */
     public String getPasswordInput() {
 
         return new String(passwordField.getPassword());
     }
 
+    /**
+     * Set-method that allows the controller to set a message to show the user if login fails.
+     * @param message
+     */
     public void setFailedLoginAttempt(String message) {
 
         infoLabel.setText(message);
+    }
+
+    public void resetLoginInfoLabel(){
+
+        infoLabel.setText(Config.getLoginInfoLabelText());
     }
 }

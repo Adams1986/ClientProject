@@ -46,7 +46,7 @@ public class LoginLogic {
         setIsRunning(false);
         screen.getMainMenuPanel().resetFields();
 
-        //
+        //removing token from cache
         Api.resetToken();
 
         return isAuthenticated;
