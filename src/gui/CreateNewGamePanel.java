@@ -1,7 +1,6 @@
 package gui;
 
 import sdk.Config;
-import sdk.dto.Gamer;
 import sdk.dto.User;
 
 import javax.swing.*;

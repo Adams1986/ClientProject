@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
- * Created by simonadams on 20/11/15.
+ * A view used to show high scores. Includes a table to show these high scores.
  */
 public class HighScoresPanel extends JPanel {
 
@@ -29,6 +29,7 @@ public class HighScoresPanel extends JPanel {
         scrollPane = new JScrollPane(highScoresTable);
         btnReplay = new JButton(Config.getBtnReplayText());
 
+        //placing the components
         highScoresHeader.setBounds(Config.getDefaultXPosJComponent(), Config.getY1PosJComponent(),
                 Config.getWidth2JComponent(), Config.getDefaultHeightJComponent());
 
@@ -38,11 +39,13 @@ public class HighScoresPanel extends JPanel {
         btnReplay.setBounds(Config.getDefaultXPosJComponent(), Config.getY8PosJComponent(),
                 Config.getDefaultWidthJComponent(), Config.getDefaultHeightJComponent());
 
+        //adding components to panel
         add(highScoresHeader);
         add(scrollPane);
         add(btnReplay);
     }
 
+    //Several getters and setters to be used in the controller or screen class.
     public void setFonts(Font f){
 
         highScoresHeader.setFont(f);

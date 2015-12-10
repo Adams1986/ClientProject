@@ -1,9 +1,5 @@
 {
-  "ipaddress3": "172.17.174.121",
-  "ipaddress2": "localhost",
-  "ipaddress": "192.168.1.40",
-  "ipaddress4": "192.168.1.53",
-  "ipaddress1": "192.168.43.110",
+  "ipaddress": "localhost",
   "serverport": 8888,
   "hashingsalt": "123456",
   "encryptionkey": "123456",
@@ -167,5 +163,6 @@
   "tokenheaderkey": "authorization",
   "communicationformat": "application/json",
   "datakey": "data",
+  "messagekey": "message",
   "headerdatakey": "headerData"
 }

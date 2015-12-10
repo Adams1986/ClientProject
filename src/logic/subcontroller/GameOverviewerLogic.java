@@ -38,7 +38,9 @@ public class GameOverviewerLogic {
                 ( replayGame.getOpponent().getId() == userId && replayGame.getOpponent().getControls() != null ) )
                 || isFromHighScorePanel) {
 
+            //uses add replay.. method to create a new instance of the ReplaySnake class and showing it on the screen.
             screen.getMainMenuPanel().addReplaySnakeToPanel(replayGame, l);
+            //deactivating menu panel
             screen.getMainMenuPanel().setSidePanelState(false);
         }
         

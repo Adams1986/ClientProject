@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by ADI on 31-10-2015.
+ * A model for showing scores in a table. To be used by the high scores panel. The getValueAt method sets the column
+ * values in the table.
  */
 public class HighScoresTableModel extends AbstractTableModel {
 
@@ -59,7 +60,6 @@ public class HighScoresTableModel extends AbstractTableModel {
         if (highScores != null) {
             Score score = highScores.get(row);
 
-            //TODO: change for better scaling?
             switch (column) {
 
                 case Config.USERNAME:
@@ -79,6 +79,11 @@ public class HighScoresTableModel extends AbstractTableModel {
         return null;
     }
 
+    /**
+     * Returns the score object for the specified row. Can be used to get a user-selected score.
+     * @param row
+     * @return
+     */
     public Score getHighscoreFromTable(int row){
 
         return highScores.get(row);

@@ -21,12 +21,15 @@ public class DeleteGameLogic {
      */
     public String deleteGame() {
 
+        //checking to see if a game was selected before starting server communication
         if (screen.getMainMenuPanel().getDeleteGamePanel().getGameToDelete() != null) {
 
+            //getting game id from the selected game and using it for the Api.deleteGame method
             int gameId = screen.getMainMenuPanel().getDeleteGamePanel().getGameToDelete().getGameId();
 
             return Api.deleteGame(gameId);
         }
+        //if no game was selected send an empty string
         return "";
     }
 }

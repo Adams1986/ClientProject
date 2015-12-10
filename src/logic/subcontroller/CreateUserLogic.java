@@ -7,7 +7,8 @@ import sdk.Config;
 import sdk.dto.User;
 
 /**
- * Created by simonadams on 20/11/15.
+ * Contains the create method which creates a new User object from UI input and tries to create the user with the Api
+ * method createUser
  */
 public class CreateUserLogic {
 
@@ -27,17 +28,20 @@ public class CreateUserLogic {
 
         if (screen.getCreateUserPanel().checkForEmptyFields()) {
 
+            //setting object variables from UI
             createNewUser.setFirstName(screen.getCreateUserPanel().getFirstNameField());
             createNewUser.setLastName(screen.getCreateUserPanel().getLastNameField());
             createNewUser.setEmail(screen.getCreateUserPanel().getEmailField());
             createNewUser.setUsername(screen.getCreateUserPanel().getUsernameField());
             createNewUser.setPassword(screen.getCreateUserPanel().getPasswordField());
 
+            //Sending new user object to server and saving the server message
             message = Api.createUser(createNewUser);
         }
         else
             message = Config.getCreateUserEmptyFieldsText();
 
+        //displaying message from server
         DialogMessage.showMessage(screen, message);
 
         return message;

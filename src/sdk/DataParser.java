@@ -2,9 +2,6 @@ package sdk;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import sdk.dto.Game;
 import sdk.dto.Score;
 import sdk.dto.User;
@@ -29,32 +26,9 @@ public class DataParser {
         HashMap<String, String> mapWithData = new Gson().fromJson(dataToBeParsed, HashMap.class);
 
         //getting string with key value message and returning it
-        return mapWithData.get("message");
+        return mapWithData.get(Config.getMessageKey());
     }
 
-    //Method overload to create a method that sets the id for a user. Used for the login API.
-    //TODO: as it is not used atm
-    public static String parseMessage(String dataToBeParsed, User user){
-
-        JSONParser jsonParser = new JSONParser();
-        String message = "";
-
-        try {
-
-            Object obj = jsonParser.parse(dataToBeParsed);
-            JSONObject jsonObject = (JSONObject) obj;
-
-            message = ((String) jsonObject.get("message"));
-
-            if (jsonObject.get("userid") != null)
-                user.setId((int)(long) jsonObject.get("userid"));
-
-        } catch (ParseException p){
-
-        }
-
-        return message;
-    }
 
     public static String encryptMessage(String dataToBeEncrypted){
 
@@ -149,7 +123,7 @@ public class DataParser {
     }
 
     /**
-     * Creates a array list from the encrypted string that is passed to it
+     * Creates an array list from the encrypted string that is passed to it
      * @param jsonData
      * @return
      */
@@ -213,6 +187,8 @@ public class DataParser {
 
     public static String getFormattedDataToSend(String s, int i){
 
+        //creating a string with a divider so that the string can be easily parsed back to original values (String and
+        //int) that are passed to method in parameters
         return s + "---" + i;
     }
 }

@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by ADI on 31-10-2015.
+ * A model to use for a table to show a list of games. "Converts" an array list with game objects into a table with
+ * rows and columns
  */
 public class GameTableModel extends AbstractTableModel {
 

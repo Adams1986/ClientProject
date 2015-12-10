@@ -8,7 +8,7 @@ import sdk.dto.User;
 import java.util.ArrayList;
 
 /**
- * Created by simonadams on 05/12/15.
+ * Class not used yet. Mentioned in the report for future, better handling of server responses
  */
 public class DataHelper {
 

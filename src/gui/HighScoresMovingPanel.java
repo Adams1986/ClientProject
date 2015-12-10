@@ -9,7 +9,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
- * Created by simonadams on 22/11/15.
+ * Creates a panel with moving text to show a top three best high scores. Uses a list of score objects to get these
+ * high scores.
  */
 public class HighScoresMovingPanel extends JPanel{
 
@@ -31,6 +32,10 @@ public class HighScoresMovingPanel extends JPanel{
     }
 
 
+    /**
+     * Overriding the paintComponent method from JPanels and using the graphics object to write the text to show
+     * @param g
+     */
     @Override
     protected void paintComponent(Graphics g) {
 

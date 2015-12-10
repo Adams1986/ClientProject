@@ -31,7 +31,9 @@ public class GameChooserLogic {
 
         try {
 
+            //getting the selected game from the game chooser panel
             newGame = screen.getMainMenuPanel().getGameChooserPanel().getGame();
+            //opponent id is the current user's as he has joined the game
             newGame.getOpponent().setId(currentUser.getId());
 
 

@@ -267,6 +267,7 @@ public class Controller {
 
                     if (!screen.getMainMenuPanel().getCreateNewGamePanel().getGameNameText().equals(Config.getClearField())) {
 
+                        //sets the name of the in the game object
                         newGame.setName(screen.getMainMenuPanel().getCreateNewGamePanel().getGameNameText());
 
                         Gamer host = new Gamer();
@@ -304,8 +305,10 @@ public class Controller {
                         screen.getMainMenuPanel().getCreateNewGamePanel().requestFocusGameNameField();
                     }
 
-                } catch (ArrayIndexOutOfBoundsException e2) {
-                    e2.printStackTrace();
+                }
+                //prompts user with message if no selection made
+                catch (ArrayIndexOutOfBoundsException e2) {
+
                     DialogMessage.showMessage(screen, Config.getMissingOpponentText());
                 }
             }
@@ -513,12 +516,15 @@ public class Controller {
         public void actionPerformed(ActionEvent e) {
 
             try {
+                //setting the game object to the game chosen in the high scores table
                 replayGame = screen.getMainMenuPanel().getHighScoresPanel().getGameFromHighScore();
 
+                //show replay of the above selected game
                 replayGame = gameOverviewerLogic.showReplay(
                         new ReplaySnakeHandlerClass(), replayGame, currentUser.getId(), true );
 
             }
+            //prompt user with a message if trying to replay a game without selecting anything
             catch (IndexOutOfBoundsException e2){
 
                 DialogMessage.showMessage(screen, Config.getMissingGameSelectionText());

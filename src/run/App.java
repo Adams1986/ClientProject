@@ -1,21 +1,18 @@
 package run;
 
-import com.google.gson.Gson;
 import logic.Controller;
 import sdk.Config;
-import sdk.Security;
-import sdk.dto.User;
 
-import java.util.HashMap;
 
 /**
- * Created by ADI on 24-10-2015.
+ * Main method. Starts the client by calling the run method from the controller.
  */
 public class App {
 
 
     public static void main(String[] args) {
 
+        //initialises the values from the Config file, containing variable values.
         Config.init();
 
         Controller controller = new Controller();

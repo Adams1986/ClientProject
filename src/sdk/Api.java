@@ -34,7 +34,6 @@ public class Api {
      */
     public static ArrayList<User> getUsers(int userId) {
 
-//        String dataReceived = ServerConnection.get(Config.getServerPathUsers(), Config.getClearField());
         String dataReceived = ServerConnection.get(Config.getServerPathUsers(), Integer.toString(userId));
 
         return DataParser.getDecryptedUserList(dataReceived);

@@ -186,6 +186,7 @@ public class Config {
     private static String headerDataKey;
     private static String serverPathGamesById;
     private static String serverPathScoresById;
+    private static String messageKey;
 
 
     public static void init () {
@@ -396,6 +397,7 @@ public class Config {
             setTotalScoreText((String) jsonObject.get("totalscoretext"));
             setTokenHeaderKey((String) jsonObject.get("tokenheaderkey"));
             setDataKey((String) jsonObject.get("datakey"));
+            setMessageKey((String) jsonObject.get("messagekey"));
             setCommunicationFormat((String) jsonObject.get("communicationformat"));
             setHeaderDataKey((String) jsonObject.get("headerdatakey"));
             setServerPathGamesById((String) jsonObject.get("serverpathgamesbyid"));
@@ -1594,5 +1596,13 @@ public class Config {
 
     public static void setServerPathScoresById(String serverPathScoresById) {
         Config.serverPathScoresById = serverPathScoresById;
+    }
+
+    public static String getMessageKey() {
+        return messageKey;
+    }
+
+    public static void setMessageKey(String messageKey) {
+        Config.messageKey = messageKey;
     }
 }

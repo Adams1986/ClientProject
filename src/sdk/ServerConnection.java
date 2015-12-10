@@ -10,6 +10,7 @@ import javax.ws.rs.core.MultivaluedMap;
  */
 public class ServerConnection {
 
+    //Map used to store token received from the server
     private static MultivaluedMap<String, String> token;
 
     /**
@@ -31,7 +32,6 @@ public class ServerConnection {
                 authorizationHeader = token.get(Config.getTokenHeaderKey()).get(Config.getIndexOne());
             }
 
-//            System.out.println(token.get("authorization").get(0));
             WebResource webResource = client.resource("http://" + Config.getIpAddress() + ":" + Config.getServerPort() + "/api/" + path);
 
             ClientResponse response = webResource
@@ -175,6 +175,9 @@ public class ServerConnection {
         return message;
     }
 
+    /**
+     * Method sets the token to null. To be used when user logs out, so a token is not stored in the client.
+     */
     public static void resetToken() {
 
         token = null;

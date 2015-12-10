@@ -36,13 +36,14 @@ public class SnakeGameEngine extends JPanel {
 
         gameEnded = false;
 
+        //adding keybindings and set the focus to this panel when creating an object of it.
         keyBindings();
         focusThis();
     }
 
 
     /**
-     * Gives focus to SnakeGameEngine panel. Important for the key listener!
+     * Gives focus to SnakeGameEngine panel.
      *
      */
     public void focusThis(){
@@ -52,6 +53,9 @@ public class SnakeGameEngine extends JPanel {
         requestFocusInWindow();
     }
 
+    /**
+     * Implementation of key bindings instead of keylistener. Helps with determining input from the user.
+     */
     public void keyBindings() {
 
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, Config.getKeyStrokeModifier()),
@@ -65,7 +69,9 @@ public class SnakeGameEngine extends JPanel {
 
     }
 
-
+    /**
+     * Method determines where the snake starts. Different location whether it is host or opponent playing
+     */
     private void generateDefaultSnake() {
 
         snake.clear();
@@ -89,7 +95,11 @@ public class SnakeGameEngine extends JPanel {
     }
 
 
-
+    /**
+     * Method used to draw the snake. First sets the color either red or blue depending on host or opponent playing.
+     * Then draws a rectangle for every point of the snake (linked list)
+     * @param g
+     */
     private void drawSnake(Graphics g){
 
         if (game.getHost().getControls() != null)
@@ -103,6 +113,10 @@ public class SnakeGameEngine extends JPanel {
         }
     }
 
+    /**
+     * Draws the board. A rectangle for the frame and vertical and horizontal lines to create the grid.
+     * @param g
+     */
     private void drawBoard(Graphics g){
 
         g.setColor(Color.GREEN);
@@ -124,6 +138,13 @@ public class SnakeGameEngine extends JPanel {
     }
 
 
+    /**
+     * The move method determines where and whether to add a new point to the snake. First uses the char passed as a
+     * parameter to determine which direction the snake is moving and therefore what effect that has to the new point
+     * to add to the snake.
+     * Also determines if the new point is valid, else it ends the game.
+     * @param ch
+     */
     public void move(char ch) {
 
         if (direction == Config.getAwaiting()) return;

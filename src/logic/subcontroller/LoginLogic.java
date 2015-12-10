@@ -40,9 +40,12 @@ public class LoginLogic {
 
         boolean isAuthenticated = false;
 
+        //reset main menu to the original panel showing when loggin in
         screen.getMainMenuPanel().show(Config.getGameChooserScreen());
+        //directs user to the login view
         screen.show(Config.getLoginScreen());
 
+        //stops the thread
         setIsRunning(false);
         screen.getMainMenuPanel().resetFields();
 
