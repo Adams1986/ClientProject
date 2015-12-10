@@ -128,13 +128,12 @@ public class ReplaySnake extends JPanel {
 
             g.drawString(game.getWinner().getUsername() + Config.getWinnerText(), Config.getDefaultXPosJComponent(), Config.getY10PosJComponent());
         }
-        else if (game.getWinner().getUsername() != null){
-
-            g.drawString(Config.getGameTiedText(), Config.getDefaultXPosJComponent(), Config.getY10PosJComponent());
-        }
         else {
 
-            g.drawString(Config.getAwaitingOpponentText(), Config.getDefaultXPosJComponent(), Config.getY10PosJComponent());
+            if (game.getHost().getControls() != null && game.getOpponent().getControls() != null)
+                g.drawString(Config.getGameTiedText(), Config.getDefaultXPosJComponent(), Config.getY10PosJComponent());
+            else
+                g.drawString(Config.getAwaitingOpponentText(), Config.getDefaultXPosJComponent(), Config.getY10PosJComponent());
         }
     }
 
