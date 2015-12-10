@@ -86,9 +86,6 @@ public class Controller {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            System.out.println(currentUser.getUsername());
-
-
             if (e.getActionCommand().equals(Config.getBtnLoginText())) {
 
                 String message = loginLogic.authenticated(currentUser);

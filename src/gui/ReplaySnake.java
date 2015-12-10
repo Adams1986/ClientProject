@@ -50,7 +50,7 @@ public class ReplaySnake extends JPanel {
         }
 
         tm = new Timer(Config.getDelay(), l);
-        System.out.println(Config.getDelay());
+
         gameHasEnded = false;
 
     }

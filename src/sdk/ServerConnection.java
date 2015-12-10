@@ -85,7 +85,6 @@ public class ServerConnection {
 
                 message = response.getEntity(String.class);
 
-                System.out.println(response.getHeaders().get(Config.getTokenHeaderKey()) != null);
                 if (response.getHeaders().get(Config.getTokenHeaderKey()) != null)
                     token = response.getHeaders();
 

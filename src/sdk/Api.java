@@ -168,10 +168,6 @@ public class Api {
      */
     public static ArrayList<Game> getGamesByStatusAndUserId(String status, int userid){
 
-//        status = DataParser.encryptMessage(status);
-//        System.out.println(status);
-//        status = Security.decrypt(status, Config.getEncryptionkey());
-//        System.out.println(status);
         String formattedData = DataParser.getFormattedDataToSend(status, userid);
         String dataReceived = ServerConnection.get(Config.getServerPathGames(), formattedData);
 

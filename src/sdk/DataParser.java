@@ -84,7 +84,6 @@ public class DataParser {
         HashMap<String, String> jsonHashMap = gson.fromJson(jsonData, HashMap.class);
         String encryptedUser = jsonHashMap.get(Config.getDataKey());
         String jsonUser = Security.decrypt(encryptedUser, Config.getEncryptionkey());
-        System.out.println(jsonUser);
 
         return gson.fromJson(jsonUser, User.class);
 
