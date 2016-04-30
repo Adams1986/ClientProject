@@ -465,6 +465,15 @@ public class Controller {
             }
             else if (e.getActionCommand().equals(Config.getBtnRefreshText())){
 
+                Thread test = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                });
+
+                test.start();
+
                 tableLogic.setGameOverviewerTableModel(currentUser.getId());
             }
         }

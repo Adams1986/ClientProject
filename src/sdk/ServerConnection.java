@@ -115,7 +115,7 @@ public class ServerConnection {
                 authorizationHeader = token.get(Config.getTokenHeaderKey()).get(Config.getIndexOne());
             }
 
-            WebResource webResource = client.resource("http://" + Config.getIpAddress() + ":" + Config.getServerPort() + "/api/" + path);
+            WebResource webResource = client.resource("http://" + Config.getIpAddress() + /*":" + Config.getServerPort() + */"/api/" + path);
 
             ClientResponse response = webResource
                     .accept(Config.getCommunicationFormat())
